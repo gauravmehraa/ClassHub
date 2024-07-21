@@ -106,5 +106,5 @@
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
   "include": ["src/**/*.ts", "src/*.ts"],
-  // "files": ["./src/models/custom.d.ts"]
+  "files": ["./src/types/custom.d.ts"]
 }
