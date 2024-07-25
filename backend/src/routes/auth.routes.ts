@@ -1,15 +1,13 @@
 import express, { Router } from "express";
-import { signupTeacher, signupStudent, login, logout } from "../controllers/auth.controller";
-import protectRoute from "../middleware/protectRoute";
+import { signup, login, logout } from "../controllers/auth.controller";
+import { verifyUser } from "../middleware/verify";
 
 const router: Router = express.Router();
 
-router.post("/signup/teacher", signupTeacher);
-
-router.post("/signup/student", signupStudent);
+router.post("/signup", signup);
 
 router.post("/login", login);
 
-router.post("/logout", protectRoute, logout);
+router.post("/logout", verifyUser, logout);
 
 export default router;
