@@ -5,4 +5,5 @@ export interface IClass {
   year: string;
   program: string;
   seats: number;
+  subjects: Types.ObjectId[];
 }

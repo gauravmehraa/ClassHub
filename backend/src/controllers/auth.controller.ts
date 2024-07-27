@@ -8,7 +8,7 @@ import { generateTeacherToken, generateStudentToken } from "../utils/token";
 
 export const signup = async(req: Request, res: Response) => {
   try{
-    const { role, name, email, password, confirmPassword, qualification, dateOfBirth, address, phoneNumber, gender, classID, secret } = req.body;
+    const { role, name, email, password, confirmPassword, qualification, dateOfBirth, address, phoneNumber, gender, classID, subjectID, secret } = req.body;
 
     if(!process.env.SECRET_PHRASE){
       throw new Error("No secret phrase defined");
@@ -38,7 +38,7 @@ export const signup = async(req: Request, res: Response) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     let newUser;
-    if(role === "Teacher") newUser = new Teacher({ name, email, hashedPassword, qualification });
+    if(role === "Teacher") newUser = new Teacher({ name, email, hashedPassword, qualification, subjectID });
     else newUser = new Student({ name, email, hashedPassword, dateOfBirth, address, phoneNumber, gender, classID });
 
     if(newUser){

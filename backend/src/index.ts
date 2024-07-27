@@ -5,6 +5,7 @@ import { connectToDB } from "./connections/mongo";
 
 import authRoutes from "./routes/auth.routes";
 import classRoutes from "./routes/class.routes";
+import subjectRoutes from "./routes/subject.routes";
 import feedbackRoutes from "./routes/feedback.routes";
 
 dotenv.config();
@@ -18,6 +19,7 @@ app.use(cookieParser());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/class', classRoutes);
+app.use('/api/subject', subjectRoutes);
 app.use('/api/feedback', feedbackRoutes);
 
 app.listen(PORT, () => {

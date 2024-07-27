@@ -5,7 +5,12 @@ import { IFeedback } from "../types/feedback.type";
 export const getFeedback = async(req: Request, res: Response) => {
   try{
     const id  = req.user._id;
-    const feedbacks: IFeedback[] = await Feedback.find({
+    const role = req.cookies.role;
+    let feedbacks: IFeedback[];
+    if(role === 'Teacher') feedbacks = await Feedback.find({
+      teacherID: { $eq: id }
+    });
+    else feedbacks = await Feedback.find({
       studentID: { $eq: id }
     });
     res.status(200).json(feedbacks);

@@ -14,6 +14,12 @@ const classSchema = new Schema<IClass>({
     type: Number,
     required: true,
   },
+  subjects: {
+    type: [Schema.Types.ObjectId],
+    ref: "Subject",
+    required: true,
+    default: []
+  }
 }, { timestamps: true });
 
 const Class = model<IClass>("Class", classSchema);

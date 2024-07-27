@@ -6,6 +6,11 @@ const subjectSchema = new Schema<ISubject>({
     type: String,
     required: true,
   },
+  teacherID: {
+    type: Schema.Types.ObjectId,
+    ref: "Teacher",
+    required: false,
+  }
 }, { timestamps: true });
 
 const Subject = model<ISubject>("Subject", subjectSchema);
