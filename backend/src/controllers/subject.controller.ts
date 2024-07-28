@@ -16,6 +16,14 @@ export const getSubjects = async(req: Request, res: Response) => {
 export const addSubject = async(req: Request, res: Response) => {
   try{
     const { name, teacherID } = req.body;
+
+    const existingSubject: ISubject[] = await Subject.find({ name: { $eq: name } });
+
+    if(existingSubject.length !== 0){
+      res.status(400).json({error: "Subject is already registered"});
+      return;
+    }
+    
     const newSubject = new Subject({ name, teacherID });
     if(newSubject){
       await newSubject.save();

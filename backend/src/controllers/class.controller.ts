@@ -18,8 +18,8 @@ export const addClass = async(req: Request, res: Response) => {
     const { year, program, seats, subjects } = req.body;
 
     const existingClass: IClass[] = await Class.find({
+      year: { $eq: year },
       program: { $eq: program },
-      seats: { $eq: seats },
     });
 
     if(existingClass.length !== 0){
@@ -53,8 +53,8 @@ export const editClass = async(req: Request, res: Response) => {
     const { id: classID } = req.params;
     const { year, program, seats, subjects } = req.body;
 
-    const updatedClass = await Class.findOneAndUpdate(
-      { _id: classID },
+    const updatedClass = await Class.findByIdAndUpdate(
+      classID,
       { year, program, seats, subjects },
       { new: true }
     );
@@ -78,7 +78,7 @@ export const deleteClass = async(req: Request, res: Response) => {
   try{
     const { id: classID } = req.params;
 
-    const existingClass = await Class.findOne({ _id: classID });
+    const existingClass = await Class.findById(classID);
 
     if(!existingClass){
       res.status(500).json({ error: "No class to be deleted" });

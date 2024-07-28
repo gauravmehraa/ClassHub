@@ -7,12 +7,8 @@ export const getFeedback = async(req: Request, res: Response) => {
     const id  = req.user._id;
     const role = req.cookies.role;
     let feedbacks: IFeedback[];
-    if(role === 'Teacher') feedbacks = await Feedback.find({
-      teacherID: { $eq: id }
-    });
-    else feedbacks = await Feedback.find({
-      studentID: { $eq: id }
-    });
+    if(role === 'Teacher') feedbacks = await Feedback.find({ teacherID: { $eq: id } });
+    else feedbacks = await Feedback.find({ studentID: { $eq: id } });
     res.status(200).json(feedbacks);
   }
   catch (error) {
@@ -83,7 +79,8 @@ export const deleteFeedback = async(req: Request, res: Response) => {
       return;
     }
 
-    await Feedback.findByIdAndDelete(feedbackID);
+    await feedback.deleteOne();
+    await feedback.save();
     res.status(200).json({ message: "Feedback successfully deleted" });
 
   }

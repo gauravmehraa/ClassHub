@@ -68,7 +68,7 @@ export const login = async(req: Request, res: Response) => {
     if(role === 'Teacher') user = await Teacher.findOne({ email });
     else user = await Student.findOne({ email });
 
-    if (!user || !user.hashedPassword) {
+    if (!user || !password) {
       res.status(400).json({ error: "Invalid username or password" });
       return;
     }
@@ -88,8 +88,6 @@ export const login = async(req: Request, res: Response) => {
       name: user.name,
       email: user.email
     });
-
-
   }
   catch (error) {
     console.log(`[ERROR] - Login Controller: ${(error as Error).message}`);

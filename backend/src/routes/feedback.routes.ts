@@ -1,8 +1,8 @@
-import express, { Router } from "express";
+import { Router } from "express";
 import { verifyTeacher, verifyUser } from "../middleware/verify";
 import { addFeedback, getFeedback, editFeedback, deleteFeedback } from "../controllers/feedback.controller";
 
-const router: Router = express.Router();
+const router: Router = Router();
 
 router.get("/", verifyUser, getFeedback);
 

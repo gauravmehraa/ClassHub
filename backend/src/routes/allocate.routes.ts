@@ -1,11 +1,11 @@
-import express, { Router } from "express";
+import { Router } from "express";
 import { allocateClassToStudent, allocateSubjectToClass } from "../controllers/allocate.controller";
 import { verifyTeacher } from "../middleware/verify";
 
-const router: Router = express.Router();
+const router: Router = Router();
 
-router.post("/class/:id", verifyTeacher, allocateClassToStudent);
+router.patch("/class/:id", verifyTeacher, allocateClassToStudent);
 
-router.post("/subject/:id", verifyTeacher, allocateSubjectToClass);
+router.patch("/subject/:id", verifyTeacher, allocateSubjectToClass);
 
 export default router;
