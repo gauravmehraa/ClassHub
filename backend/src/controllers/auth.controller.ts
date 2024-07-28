@@ -9,7 +9,7 @@ import { generateTeacherToken, generateStudentToken } from "../utils/token";
 export const signup = async(req: Request, res: Response) => {
   try{
     const { role, name, email, password, confirmPassword, qualification, dateOfBirth, address, phoneNumber, gender, classID, secret } = req.body;
-
+    
     if(!process.env.SECRET_PHRASE){
       throw new Error("No secret phrase defined");
     }
@@ -46,9 +46,9 @@ export const signup = async(req: Request, res: Response) => {
       else generateStudentToken(newUser._id, res);
       await newUser.save();
       res.status(201).json({
-        _id: newUser._id,
         name: newUser.name,
-        email: newUser.email
+        email: newUser.email,
+        role
       });
     }
     else{
@@ -64,6 +64,7 @@ export const signup = async(req: Request, res: Response) => {
 export const login = async(req: Request, res: Response) => {
   try{
     const { role, email, password } = req.body;
+    
     let user;
     if(role === 'Teacher') user = await Teacher.findOne({ email });
     else user = await Student.findOne({ email });
@@ -84,9 +85,9 @@ export const login = async(req: Request, res: Response) => {
     else generateStudentToken(user._id, res);
 
     res.status(201).json({
-      _id: user._id,
       name: user.name,
-      email: user.email
+      email: user.email,
+      role
     });
   }
   catch (error) {
