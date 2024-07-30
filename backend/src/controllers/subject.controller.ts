@@ -73,7 +73,7 @@ export const deleteSubject = async(req: Request, res: Response) => {
   try{
     const { id: subjectID } = req.params;
 
-    const subject = await Subject.findOne({ _id: subjectID });
+    const subject = await Subject.findById(subjectID);
 
     if(!subject){
       res.status(500).json({ error: "No subject to be deleted" });
