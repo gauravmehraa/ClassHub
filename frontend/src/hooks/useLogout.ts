@@ -10,7 +10,7 @@ const useLogout = () => {
   const logout = async() => {
     setLoading(true);
     try{
-      await sleep(150);
+      await sleep(200);
       const response: Response = await fetch("/api/auth/logout",{
         method: "POST",
       });

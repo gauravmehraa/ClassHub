@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import { Toaster } from 'react-hot-toast';
+import Feedback from './pages/Feedback';
 
 const App: React.FC = () => {
 
@@ -15,6 +16,7 @@ const App: React.FC = () => {
           <Route index element={authUser? <Home/>: <Navigate to='/login'/>}/>
           <Route path='login' element={authUser? <Navigate to='/'/>: <Login/>}/>
           <Route path='signup' element={authUser? <Navigate to='/'/>: <Signup/>}/>
+          <Route path='feedback' element={authUser? <Feedback/>:<Navigate to='/login'/>}/>
         </Route>
       </Routes>
       <Toaster/>

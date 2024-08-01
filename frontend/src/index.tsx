@@ -5,6 +5,7 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 
 import { AuthContextProvider } from './context/AuthContext';
+import { SettingsContextProvider } from './context/SettingsContext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -14,7 +15,9 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthContextProvider>
-        <App/>
+        <SettingsContextProvider>
+          <App/>
+          </SettingsContextProvider>
       </AuthContextProvider>
     </BrowserRouter>
   </React.StrictMode>
