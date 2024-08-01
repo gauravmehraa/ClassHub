@@ -10,6 +10,7 @@ import notesRoutes from "./routes/notes.routes";
 import subjectRoutes from "./routes/subject.routes";
 import allocateRoutes from "./routes/allocate.routes";
 import quizRoutes from "./routes/quiz.routes";
+import questionRoutes from "./routes/question.routes";
 import feedbackRoutes from "./routes/feedback.routes";
 
 dotenv.config();
@@ -28,6 +29,7 @@ app.use('/api/subject', subjectRoutes);
 app.use('/api/notes', notesRoutes);
 app.use('/api/allocate', allocateRoutes);
 app.use('/api/quiz', quizRoutes);
+app.use('/api/question', questionRoutes);
 app.use('/api/feedback', feedbackRoutes);
 
 app.listen(PORT, () => {

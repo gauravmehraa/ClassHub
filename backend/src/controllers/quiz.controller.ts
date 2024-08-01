@@ -15,7 +15,7 @@ export const getQuizzesByTeacher = async(req: Request, res: Response) => {
     const subjectIDs = teachersSubjects.map((subject: ISubject) => { return subject._id } );
     const quizzes = await Quiz.find(
       { subjectID: { $in: subjectIDs }}
-    ).select("-updatedAt -__v")
+    ).select("-updatedAt -__v").populate("questions");
     res.status(200).json(quizzes);
   }
   catch (error) {
@@ -67,6 +67,31 @@ export const addQuiz = async(req: Request, res: Response) => {
   }
   catch (error) {
     console.log(`[ERROR] - Add Quiz Controller: ${(error as Error).message}`);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+export const editQuiz = async(req: Request, res: Response) => {
+  try{
+    const { id: quizID } = req.params;
+    const { topic, subjectID } = req.body;
+
+    const updatedQuiz = await Quiz.findByIdAndUpdate(
+      quizID,
+      { topic, subjectID },
+      { new: true }
+    );
+
+    if(!updatedQuiz){
+      res.status(500).json({ error: "No quiz to be edited" });
+      return;
+    }
+
+    await updatedQuiz.save();
+    res.status(200).json(updatedQuiz);
+  }
+  catch (error) {
+    console.log(`[ERROR] - Edit Quiz Controller: ${(error as Error).message}`);
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
