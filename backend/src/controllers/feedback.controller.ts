@@ -7,8 +7,19 @@ export const getFeedback = async(req: Request, res: Response) => {
     const id  = req.user._id;
     const role = req.cookies.role;
     let feedbacks: IFeedback[];
-    if(role === 'Teacher') feedbacks = await Feedback.find({ teacherID: { $eq: id } });
-    else feedbacks = await Feedback.find({ studentID: { $eq: id } });
+    if(role === 'Teacher'){
+      feedbacks = await Feedback.find({ teacherID: { $eq: id } }).populate({
+        path: "studentID",
+        select: "-hashedPassword -teacherID -dateOfBirth -address -phoneNumber -gender -createdAt -updatedAt -__v "
+      }).select("-__v -updatedAt -teacherID");
+    }
+    else{
+      feedbacks = await Feedback.find({ studentID: { $eq: id } }).populate({
+        path: "studentID",
+        select: "-hashedPassword -teacherID -dateOfBirth -address -phoneNumber -gender -createdAt -updatedAt -__v "
+      }).select("-__v -updatedAt -teacherID");
+    }
+
     res.status(200).json(feedbacks);
   }
   catch (error) {
