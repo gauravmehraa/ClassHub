@@ -4,7 +4,7 @@ import useGetFeedback from "../hooks/useGetFeedback"
 const Feedback = () => {
   const { loading, feedbacks } = useGetFeedback();
   return (
-    <div>
+    <div className="flex flex-row gap-4">
       {
         loading ?
         <span className='loading loading-spinner'></span>:
