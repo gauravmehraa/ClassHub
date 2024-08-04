@@ -84,11 +84,14 @@ export const login = async(req: Request, res: Response) => {
     if(role === 'Teacher') generateTeacherToken(user._id, res);
     else generateStudentToken(user._id, res);
 
-    res.status(201).json({
+    const data: any = {
       name: user.name,
       email: user.email,
       role
-    });
+    }
+
+    if(user instanceof Student) data.classID = user.classID;
+    res.status(201).json(data);
   }
   catch (error) {
     console.log(`[ERROR] - Login Controller: ${(error as Error).message}`);

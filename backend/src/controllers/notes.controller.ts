@@ -121,7 +121,7 @@ export const addNote = async(req: Request, res: Response) => {
 export const editNote = async(req: Request, res: Response) => {
   try{
     const { id: noteID } = req.params;
-    const { subjectID, title, description } = req.body;
+    const { title, description } = req.body;
     const file = req.file;
     
     const s3 = await connectToS3();
@@ -136,8 +136,7 @@ export const editNote = async(req: Request, res: Response) => {
       return;
     }
 
-    const updatedData: any = { subjectID, title, description };
-
+    const updatedData: any = { title, description };
     if(file){
       const deleteParameters = {
         Bucket: 'student-management-dev',

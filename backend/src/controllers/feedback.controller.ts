@@ -15,9 +15,9 @@ export const getFeedback = async(req: Request, res: Response) => {
     }
     else{
       feedbacks = await Feedback.find({ studentID: { $eq: id } }).populate({
-        path: "studentID",
-        select: "-hashedPassword -teacherID -dateOfBirth -address -phoneNumber -gender -createdAt -updatedAt -__v "
-      }).select("-__v -updatedAt -teacherID");
+        path: "teacherID",
+        select: "-hashedPassword -studentID -qualification -createdAt -updatedAt -__v "
+      }).select("-__v -updatedAt -studentID");
     }
 
     res.status(200).json(feedbacks);
