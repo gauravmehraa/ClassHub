@@ -1,20 +1,20 @@
-import { MdModeEdit } from "react-icons/md";
 import { MouseEvent, useState } from "react";
-import useEditNote from "../hooks/useEditNote";
-//import useAddNote from "../hooks/useAddNote";
+import useAddNote from "../hooks/useAddNote";
+import useGetSubjects from "../hooks/useGetSubjects";
 
 const AddNoteModal = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [subject, setSubject] = useState("");
+  const [subjectID, setSubjectID] = useState("");
   const [file, setFile] = useState<File | null>(null);
 
-  //const { addNote, loading } = useAddNote();
-  const { editNote, loading } = useEditNote();
+  const { addNote, loading } = useAddNote();
+  const { subjects } = useGetSubjects();
 
   const handleCancel: any = async(e: MouseEvent) => {
     setTitle("");
     setDescription("");
+    setSubjectID("");
     setFile(null);
   }
 
@@ -23,7 +23,7 @@ const AddNoteModal = () => {
     formData.append("title", title);
     if(description.trim() !== "") formData.append("description", description);
     if(file) formData.append("file", file);
-    //await editNote(formData, props.link._id);
+    await addNote(formData);
     (document.getElementById("note_add") as HTMLDialogElement).close();
     window.location.reload();
   }
@@ -63,13 +63,14 @@ const AddNoteModal = () => {
         <div className="mt-6">
           <label className="ml-2 font-semibold">Subject</label>
           <select
-            className="grow select select-bordered focus:outline-none"
-            value={subject}
+            className="grow select select-bordered focus:outline-none ml-2"
+            value={subjectID}
             autoComplete="off"
-            onChange={(e) => setSubject(e.target.value)}
+            onChange={(e) => setSubjectID(e.target.value)}
           >
-            <option value="Student">Student</option>
-            <option value="Teacher">Teacher</option>
+            { typeof(subjects) !== "undefined" && subjects.map((subject: any) => (
+              <option key={subject._id} value={subject._id}>{subject.name}</option>
+            ))}
           </select>
         </div>
 

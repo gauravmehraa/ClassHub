@@ -3,7 +3,6 @@ import { getDate } from "../utils/date"
 
 const FeedbackCard = (props: { data: any }) => {
   const { authUser } = useAuthContext();
-  console.log(props.data);
   return (
     <div className="bg-white max-w-72 min-w-72 p-5 rounded-lg">
       <div>

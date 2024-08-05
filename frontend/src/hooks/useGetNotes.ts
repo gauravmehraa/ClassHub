@@ -27,7 +27,7 @@ const useGetNotes = () => {
       }
     }
     getNotes();
-  }, []);
+  }, [authUser]);
   return { loading, notes };
 }
 
