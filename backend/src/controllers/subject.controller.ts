@@ -2,9 +2,24 @@ import { Request, Response } from "express";
 import Subject from "../models/subject.model";
 import { ISubject } from "../types/subject.type";
 
-export const getSubjects = async(req: Request, res: Response) => {
+export const getAllSubjects = async(req: Request, res: Response) => {
   try{
     const subjects: ISubject[] = await Subject.find().select("-createdAt -updatedAt -__v");
+    res.status(200).json(subjects);
+  }
+  catch (error) {
+    console.log(`[ERROR] - Get Subjects Controller: ${(error as Error).message}`);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+export const getSubjects = async(req: Request, res: Response) => {
+  try{
+    const id  = req.user._id;
+    const role = req.cookies.role;
+    let subjects: ISubject[];
+    if(role === 'Teacher') subjects = await Subject.find({ teacherID: { $eq: id } }).select("-createdAt -updatedAt -teacherID -__v");
+    else subjects = await Subject.find({ studentID: { $eq: id } });
     res.status(200).json(subjects);
   }
   catch (error) {
