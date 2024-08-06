@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
-import useLogin from "../hooks/useLogin";
+import useLogin from "../hooks/auth/useLogin";
 import { IoEye, IoEyeOff, IoPerson, IoKey } from "react-icons/io5";
 
 const Login = () => {

@@ -1,12 +1,11 @@
 import { MdModeEdit } from "react-icons/md";
 import { MouseEvent, useState } from "react";
-import useEditNote from "../hooks/useEditNote";
+import useEditNote from "../hooks/notes/useEditNote";
 
 const EditNoteModal = (props: { subjectname: string, link: any }) => {
   const [title, setTitle] = useState(props.link.title);
   const [description, setDescription] = useState(props.link.description || "");
   const [file, setFile] = useState<File | null>(null);
-
 
   const { editNote, loading } = useEditNote();
 

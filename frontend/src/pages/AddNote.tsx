@@ -1,8 +1,8 @@
-import { MouseEvent, useState } from "react";
-import useAddNote from "../hooks/useAddNote";
-import useGetSubjects from "../hooks/useGetSubjects";
+import React, { FormEvent, useState } from 'react'
+import useAddNote from '../hooks/notes/useAddNote';
+import useGetSubjects from '../hooks/subjects/useGetSubjects';
 
-const AddNoteModal = () => {
+const AddNote = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [subjectID, setSubjectID] = useState("");
@@ -11,33 +11,33 @@ const AddNoteModal = () => {
   const { addNote, loading } = useAddNote();
   const { subjects } = useGetSubjects();
 
-  const handleCancel: any = async(e: MouseEvent) => {
+  const handleReset: any = async(e: FormEvent) => {
     setTitle("");
     setDescription("");
     setSubjectID("");
     setFile(null);
   }
 
-  const handleSubmit: any = async(e: MouseEvent) => {
+  const handleSubmit: any = async(e: FormEvent) => {
+    e.preventDefault();
     let formData = new FormData();
     formData.append("title", title);
     formData.append("subjectID", subjectID);
     if(description.trim() !== "") formData.append("description", description);
     if(file) formData.append("file", file);
     await addNote(formData);
-    (document.getElementById("note_add") as HTMLDialogElement).close();
-    window.location.reload();
+    setTitle("");
+    setDescription("");
+    setSubjectID("");
+    setFile(null);
   }
-  return (
-    <div className="flex items-center">
-    <button
-      onClick={()=>(document.getElementById("note_add") as HTMLDialogElement).showModal()}
-      className='btn btn-lg mx-auto bg-gray-400 text-black'
-    >Add Note</button>
-    <dialog id="note_add" className="modal text-white">
-      <div className="modal-box w-11/12 max-w-xl font-normal">
-        <h3 className="text-2xl">Add Notes</h3>
 
+  return (
+    <div>
+
+      <h3 className="text-2xl text-center">Add Notes</h3>
+      <form onSubmit={handleSubmit} onReset={handleReset}>
+        
         <div className="mt-6">
           <label className="ml-2 font-semibold">Title</label>
           <input
@@ -83,20 +83,18 @@ const AddNoteModal = () => {
             className='w-full mt-2 file-input file-input-bordered flex items-center focus:outline-none'
             accept="application/msword, application/vnd.ms-powerpoint, application/pdf"
           />
-        </div>        
-
-        <div className="modal-action">
-          <form method="dialog">
-            <button className="btn m-2 btn-error" onClick={handleCancel}>Cancel</button>
-            <div className="btn m-2 btn-success" onClick={handleSubmit}>
-              { loading ? <span className='loading loading-spinner'></span>: "Save" }
-            </div>
-          </form>
         </div>
-      </div>
-    </dialog>
-  </div>
+        
+        <div className='mt-6 flex justify-end'>
+          <button type='reset' className="btn m-2 btn-info"> Reset </button>
+          <button type='submit' className="btn m-2 btn-success">
+            { loading ? <span className='loading loading-spinner'></span>: "Save" }
+          </button>
+        </div>
+
+      </form>
+    </div>
   )
 }
 
-export default AddNoteModal;
+export default AddNote
