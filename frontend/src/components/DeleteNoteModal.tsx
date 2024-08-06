@@ -11,7 +11,7 @@ const DeleteNoteModal = (props: { subjectname: string, link: any }) => {
     <div className="flex items-center">
     <BsFillTrash3Fill
       onClick={()=>(document.getElementById(`note_delete_${props.link._id}`) as HTMLDialogElement).showModal()}
-      className='text-black ml-4 h-4 w-4 cursor-pointer hover:text-red-400'
+      className='text-black h-4 w-4 cursor-pointer hover:text-red-400'
     />
     <dialog id={`note_delete_${props.link._id}`} className="modal text-white">
       <div className="modal-box w-11/12 max-w-xl font-normal">

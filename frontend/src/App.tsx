@@ -11,7 +11,7 @@ const App: React.FC = () => {
 
   const { authUser } = useAuthContext();
   return (
-    <div className='h-screen my-12 flex flex-col items-center justify-center'>
+    <div className='h-screen py-12 flex flex-col items-center justify-center'>
       <Routes>
         <Route path='/'>
           <Route index element={authUser? <Home/>: <Navigate to='/login'/>}/>

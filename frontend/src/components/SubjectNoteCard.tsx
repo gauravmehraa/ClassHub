@@ -8,20 +8,22 @@ const SubjectNoteCard = (props: { name: string, links: [] }) => {
     <div className="bg-white mx-8 p-5 rounded-lg">
       <div className='text-2xl font-semibold'>{props.name}</div>
       {props.links.map((link: any) => (
-        <div className='mt-2 mb-4 flex' key={link._id}>
+        <div className='mt-2 mb-4 flex flex-row gap-2 items-center' key={link._id}>
           <a
             href={link.url}
             target='blank'
-            className='text-blue-600 text-lg underline'
+            className='text-blue-600 font-semibold text-lg underline'
           >{link.title}</a>
-          <div>{link.description}</div>
+          { link.description && 
+          <div>({link.description})</div>
+          }
           { authUser.role === "Teacher"?
           <>
             <EditNoteModal subjectname={props.name} link={link}/>
             <DeleteNoteModal subjectname={props.name} link={link}/>
           </>:
           null
-          }
+        }
         </div>
       ))}
     </div>

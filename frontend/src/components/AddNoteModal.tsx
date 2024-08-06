@@ -21,6 +21,7 @@ const AddNoteModal = () => {
   const handleSubmit: any = async(e: MouseEvent) => {
     let formData = new FormData();
     formData.append("title", title);
+    formData.append("subjectID", subjectID);
     if(description.trim() !== "") formData.append("description", description);
     if(file) formData.append("file", file);
     await addNote(formData);
