@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { verifyTeacher } from "../middleware/verify";
-import { getStudentsByClass, deleteStudent } from "../controllers/student.controller";
+import { getStudentsByTeacher, deleteStudent } from "../controllers/student.controller";
 
 const router: Router = Router();
 
-router.get("/:id", verifyTeacher, getStudentsByClass);
+router.get("/", verifyTeacher, getStudentsByTeacher);
 
 router.delete("/delete/:id", verifyTeacher, deleteStudent);
 
