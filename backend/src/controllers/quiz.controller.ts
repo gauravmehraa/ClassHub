@@ -6,6 +6,7 @@ import Question from "../models/question.model";
 import { ISubject } from "../types/subject.type";
 import { IQuiz } from "../types/quiz.type";
 import Class from "../models/class.model";
+import Grade from "../models/grade.model";
 
 export const getQuizzesByTeacher = async(req: Request, res: Response) => {
   try{
@@ -36,7 +37,7 @@ export const getQuizzesByClass = async(req: Request, res: Response) => {
     }
     const subjectIDs = studentClass.subjects.map((subject: any) => subject._id);
 
-    const quizzes = await Quiz.find({ subjectID: { $in: subjectIDs } }).populate({
+    const quizzes: any = await Quiz.find({ subjectID: { $in: subjectIDs } }).populate({
       path: "subjectID",
       select: "name"
     }).populate({
@@ -44,10 +45,14 @@ export const getQuizzesByClass = async(req: Request, res: Response) => {
       select: "-createdAt -updatedAt -__v"
     }).select("-updatedAt -__v");
 
-    res.status(200).json(quizzes);
+    const quizIDs = quizzes.map((quiz: any) => quiz._id);
+    const grades = await Grade.find({ quizID: { $in: quizIDs }});
+    const attemptedQuizIDs = grades.map((grade: any) => grade.quizID.toString());
+    const filteredQuizzes = quizzes.filter((quiz: any) => { return !attemptedQuizIDs.includes(quiz._id.toString()) });
+    res.status(200).json(filteredQuizzes);
   }
   catch (error) {
-    console.log(`[ERROR] - Get Quiz by Subject Controller: ${(error as Error).message}`);
+    console.log(`[ERROR] - Get Quiz by Class Controller: ${(error as Error).message}`);
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
@@ -141,7 +146,7 @@ export const submitQuiz = async(req: Request, res: Response) => {
     const studentID = req.user._id;
     const { quizID, submittedQuestions } = req.body;
 
-    const quiz: any = await Quiz.findById(quizID).populate({
+    const quiz: any = await Quiz.find(quizID).populate({
       path: "questions",
       select: "question options answer score"
     });
@@ -165,10 +170,17 @@ export const submitQuiz = async(req: Request, res: Response) => {
     else if(percentage < 80 && percentage >= 60) grade = 'B';
     else grade = 'C';
     response = { ...response, quizID, studentID, score, grade };
-    res.status(200).json(response);
+    const newGrade = new Grade({studentID, quizID, score, grade});
+    if(newGrade){
+      await newGrade.save();
+      res.status(200).json(response);
+    }
+    else{
+      res.status(400).json({ error: "Invalid data" })
+    }
   }
   catch (error) {
-    console.log(`[ERROR] - Delete Quiz Controller: ${(error as Error).message}`);
+    console.log(`[ERROR] - Submit Quiz Controller: ${(error as Error).message}`);
     res.status(500).json({ error: "Internal Server Error" });
   }
 }

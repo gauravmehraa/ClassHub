@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
-import { useAuthContext } from '../context/AuthContext';
 
 const useGetFeedback = () => {
   const [loading, setLoading] = useState(false);
   const [feedbacks, setFeedbacks] = useState([] as any);
-
+  
+  
   useEffect(() => {
     const getFeedback = async() => {
       setLoading(true);
@@ -26,6 +26,7 @@ const useGetFeedback = () => {
     }
     getFeedback();
   }, []);
+
   return { loading, feedbacks };
 }
 

@@ -1,6 +1,7 @@
 import { MdModeEdit } from "react-icons/md";
 import { MouseEvent, useState } from "react";
 import useEditNote from "../hooks/notes/useEditNote";
+import { sleep } from "../utils/sleep";
 
 const EditNoteModal = (props: { subjectname: string, link: any }) => {
   const [title, setTitle] = useState(props.link.title);
@@ -22,6 +23,7 @@ const EditNoteModal = (props: { subjectname: string, link: any }) => {
     if(file) formData.append("file", file);
     await editNote(formData, props.link._id);
     (document.getElementById(`note_edit_${props.link._id}`) as HTMLDialogElement).close();
+    await sleep(800);
     window.location.reload();
   }
   return (

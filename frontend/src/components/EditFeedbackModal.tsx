@@ -1,19 +1,21 @@
 import { MdModeEdit } from "react-icons/md";
 import { MouseEvent, useState } from "react";
-import useEditNote from "../hooks/notes/useEditNote";
+import useEditFeedback from "../hooks/feedback/useEditFeedback";
+import { sleep } from "../utils/sleep";
 
 const EditFeedbackModal = (props: { feedback: any }) => {
 
   const [content, setContent] = useState(props.feedback.content);
-  const { loading } = useEditNote();
+  const { loading, editFeedback } = useEditFeedback();
 
   const handleCancel: any = async(e: MouseEvent) => {
     setContent(props.feedback.content);
   }
 
   const handleSubmit: any = async(e: MouseEvent) => {
-    // await editNote(content, props.link._id);
+    await editFeedback({content}, props.feedback._id);
     (document.getElementById(`feedback_edit_${props.feedback._id}`) as HTMLDialogElement).close();
+    await sleep(800);
     window.location.reload();
   }
   return (

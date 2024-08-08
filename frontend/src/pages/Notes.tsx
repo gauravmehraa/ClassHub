@@ -3,7 +3,7 @@ import SubjectNoteCard from "../components/SubjectNoteCard";
 import { useAuthContext } from "../context/AuthContext";
 import useGetNotes from "../hooks/notes/useGetNotes";
 
-const Feedback = () => {
+const Notes = () => {
   const { loading, notes } = useGetNotes();
   const { authUser } = useAuthContext();
   return (
@@ -26,4 +26,4 @@ const Feedback = () => {
   )
 }
 
-export default Feedback
+export default Notes

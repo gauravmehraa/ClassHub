@@ -1,12 +1,15 @@
 import { BsFillTrash3Fill } from "react-icons/bs";
 import { MouseEvent } from "react";
-import useDeleteNote from "../hooks/notes/useDeleteNote";
+import useDeleteFeedback from "../hooks/feedback/useDeletFeedback";
 import { getDate } from "../utils/date";
+import { sleep } from "../utils/sleep";
 
 const DeleteFeedbackModal = (props: { feedback: any }) => {
-  const { deleteNote, loading } = useDeleteNote();
+  const { deleteFeedback, loading } = useDeleteFeedback();
   const handleSubmit = async(e: MouseEvent) => {
-    await deleteNote(props.feedback._id);
+    await deleteFeedback(props.feedback._id);
+    await sleep(800);
+    window.location.reload();
   }
   return (
     <div className="flex items-center">

@@ -30,7 +30,8 @@ export const getFeedback = async(req: Request, res: Response) => {
 
 export const addFeedback = async(req: Request, res: Response) => {
   try{
-    const { studentID, teacherID, content } = req.body;
+    const teacherID = req.user._id;
+    const { studentID, content } = req.body
     const newFeedback = new Feedback({ studentID, teacherID, content });
     if(newFeedback){
       await newFeedback.save();
@@ -91,7 +92,6 @@ export const deleteFeedback = async(req: Request, res: Response) => {
     }
 
     await feedback.deleteOne();
-    await feedback.save();
     res.status(200).json({ message: "Feedback successfully deleted" });
 
   }

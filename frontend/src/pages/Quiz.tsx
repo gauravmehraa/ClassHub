@@ -1,51 +1,71 @@
-import React, { useState } from 'react'
+import React, { FormEvent, useState } from 'react'
 import { useLocation } from 'react-router-dom';
+import useSubmitQuiz from '../hooks/quiz/useSubmitQuiz';
+import { FaCheck } from "react-icons/fa"
+import { IoClose } from "react-icons/io5";
+import { useAuthContext } from '../context/AuthContext';
 
 const Quiz = () => {
+  const { authUser } = useAuthContext();
   const location = useLocation();
   const { quiz } = location.state;
+  const { loading, submitQuiz, correctAnswers } = useSubmitQuiz();
 
   const [data, setData] = useState({
     quizID: quiz._id,
     submittedQuestions: {}
   } as any);
 
-  console.log(data);
+  const handleSubmit = async(e: FormEvent) => {
+    e.preventDefault();
+    await submitQuiz(data);
+  }
+  
   return (
     <div className='text-white'>
-      <div className='text-3xl font-bold mb-8'>{quiz.topic}</div>
-      <div>
+      <div className='text-3xl font-bold mb-8 text-center'>{quiz.topic}</div>
+      {
+        JSON.stringify(correctAnswers) !== "{}" &&
+        <div className='text-xl font-bold mb-8 text-center'>Grade Obtained: {correctAnswers.grade}</div>
+      }
+      <form onSubmit={handleSubmit}>
       {
         quiz.questions.map((question: any, index: number) => (
-          <div key={question._id}>
-            <div>{index+1}. {question.question}</div>
-            <div className='flex flex-row gap-4'>
-              {
-                question.options.map((option: any, index: number) => (
-                  <div className="form-control">
-                    <label className="label cursor-pointer gap-2">
-                      <span className="label-text">{option}</span>
-                      <input
-                        type="radio"
-                        name={question.question}
-                        value={index}
-                        className="radio checked:bg-red-500"
-                        onChange={(e) => setData({
-                          ...data, submittedQuestions: {
-                            ...data.submittedQuestions,
-                            [question._id]: parseInt(e.target.value)
-                            }
-                          })}
-                      />
-                    </label>
-                  </div>
-                ))
+          <div key={question._id} className='mt-4'>
+            <div className='flex items-center gap-3'>
+              {index+1}. {question.question}
+              { JSON.stringify(correctAnswers) !== "{}" &&
+                (correctAnswers.results[question._id]? <FaCheck className='text-green-400'/>: <IoClose className='h-6 w-6 text-red-500'/>)
               }
             </div>
+            <div className='flex flex-row gap-4 flex-wrap'>
+              { question.options.map((option: any, index: number) => (
+                <div className="form-control" key={index}>
+                  <label className="label cursor-pointer gap-2">
+                    <span className="label-text">{option}</span>
+                    <input
+                      type="radio"
+                      name={question.question}
+                      value={index+1}
+                      required
+                      disabled={JSON.stringify(correctAnswers) !== "{}" || authUser.role === "Teacher"}
+                      className={`radio checked:bg-red-500 ${(JSON.stringify(correctAnswers) !== "{}" || authUser.role === "Teacher")? "disabled":"" }`}
+                      onChange={(e) => setData({
+                        ...data, submittedQuestions: {
+                          ...data.submittedQuestions,
+                          [question._id]: parseInt(e.target.value)
+                      }})}
+                    />
+                  </label>
+                </div>
+              ))}
+            </div>
           </div>
-        ))
-      }
-      </div>
+        ))}
+        <button type='submit' className={`btn m-2 btn-success block mx-auto ${(JSON.stringify(correctAnswers) !== "{}" || authUser.role === "Teacher")? "btn-disabled":"" }`}>
+            { loading ? <span className='loading loading-spinner'></span>: "Submit" }
+          </button>
+      </form>
     </div>
   )
 }

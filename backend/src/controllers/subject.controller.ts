@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Subject from "../models/subject.model";
 import { ISubject } from "../types/subject.type";
+import Class from "../models/class.model";
 
 export const getAllSubjects = async(req: Request, res: Response) => {
   try{
@@ -101,6 +102,31 @@ export const deleteSubject = async(req: Request, res: Response) => {
   }
   catch (error) {
     console.log(`[ERROR] - Delete Subject Controller: ${(error as Error).message}`);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+export const allocateSubject = async(req: Request, res: Response) => {
+  try{
+    const { id: classID } = req.params;
+    const { subjects } = req.body;
+
+    const updatedClass = await Class.findByIdAndUpdate(
+      classID,
+      { subjects },
+      { new: true }
+    );
+
+    if(!updatedClass){
+      res.status(500).json({ error: "No class to be allocated" });
+      return;
+    }
+
+    await updatedClass.save();
+    res.status(200).json(updatedClass);
+  }
+  catch (error) {
+    console.log(`[ERROR] - Allocate Subject to Class Controller: ${(error as Error).message}`);
     res.status(500).json({ error: "Internal Server Error" });
   }
 }

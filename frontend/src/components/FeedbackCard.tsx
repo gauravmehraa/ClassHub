@@ -4,8 +4,8 @@ import DeleteFeedbackModal from "./DeleteFeedbackModal";
 import EditFeedbackModal from "./EditFeedbackModal";
 
 const FeedbackCard = (props: { data: any }) => {
-
   const { authUser } = useAuthContext();
+  
   return (
     <div className="flex flex-col text-left gap-2 bg-white w-9/10 sm:max-w-96 sm:min-w-96 p-5 rounded-lg">
       <div className="text-xl font-semibold">

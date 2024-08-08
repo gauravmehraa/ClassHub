@@ -11,6 +11,7 @@ import Students from './pages/Students';
 import Profile from './pages/Profile';
 import Quizzes from './pages/Quizzes';
 import Quiz from './pages/Quiz';
+import AddStudent from './pages/AddStudent';
 
 const App: React.FC = () => {
 
@@ -30,7 +31,7 @@ const App: React.FC = () => {
           <Route path='students'>
             <Route index element={authUser && authUser.role === "Teacher"? <Students/>: <Navigate to='/login'/>}/>
             <Route path='profile' element={authUser && authUser.role === "Teacher"? <Profile/>:<Navigate to='/login'/>}/>
-            {/* <Route path='add' element={authUser && authUser.role === "Teacher"? <Register/>:<Navigate to='/login'/>}/> */}
+            <Route path='add' element={authUser && authUser.role === "Teacher"? <AddStudent/>:<Navigate to='/login'/>}/>
           </Route>
           <Route path='quiz'>
             <Route index element={authUser? <Quizzes/>: <Navigate to='/login'/>}/>

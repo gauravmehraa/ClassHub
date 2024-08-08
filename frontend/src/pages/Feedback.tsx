@@ -1,5 +1,5 @@
 import FeedbackCard from "../components/FeedbackCard";
-import useGetFeedback from "../hooks/useGetFeedback"
+import useGetFeedback from "../hooks/feedback/useGetFeedback";
 
 const Feedback = () => {
   const { loading, feedbacks } = useGetFeedback();
@@ -8,7 +8,7 @@ const Feedback = () => {
     {
       loading ?
       <span className='loading loading-spinner mx-auto text-white'></span>:
-      <div className="flex flex-row gap-4 m-2 sm:m-8 items-center">
+      <div className="flex flex-row flex-wrap gap-4 m-2 sm:m-8 items-center justify-evenly">
         { feedbacks.length === 0?
           <div className="mx-auto"> No feedback to show </div>:
           feedbacks.map((feedback: { _id: React.Key | null | undefined; }, index: number) => (
