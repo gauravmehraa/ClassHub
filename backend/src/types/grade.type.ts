@@ -5,4 +5,5 @@ export interface IGrade {
   studentID: Types.ObjectId;
   quizID: Types.ObjectId;
   score: number;
+  grade: String;
 }

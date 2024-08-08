@@ -15,6 +15,10 @@ const gradeSchema = new Schema<IGrade>({
   score: {
     type: Number,
     required: true,
+  },
+  grade: {
+    type: String,
+    required: true,
   }
 }, { timestamps: true });
 

@@ -1,21 +1,22 @@
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
-import { useAuthContext } from '../context/AuthContext';
+import { useAuthContext } from '../../context/AuthContext';
 
-const useGetFeedback = () => {
+const useGetQuizzes = () => {
   const [loading, setLoading] = useState(false);
-  const [feedbacks, setFeedbacks] = useState([] as any);
+  const [quizzes, setQuizzes] = useState([] as any);
+  const { authUser } = useAuthContext();
 
   useEffect(() => {
-    const getFeedback = async() => {
+    const getQuizzes = async() => {
       setLoading(true);
       try{
-        const response: Response = await fetch("/api/feedback/");
+        const response: Response = await fetch(`/api/quiz/${authUser.role === "Teacher"? "teacher": ""}`);
         const data = await response.json();
         if(data.error){
           throw new Error(data.error);
         }
-        setFeedbacks(data);
+        setQuizzes(data);
       }
       catch (error){
         toast.error((error as Error).message);
@@ -24,9 +25,9 @@ const useGetFeedback = () => {
         setLoading(false);
       }
     }
-    getFeedback();
+    getQuizzes();
   }, []);
-  return { loading, feedbacks };
+  return { loading, quizzes };
 }
 
-export default useGetFeedback;
+export default useGetQuizzes;

@@ -5,6 +5,7 @@ import Subject from "../models/subject.model";
 import Question from "../models/question.model";
 import { ISubject } from "../types/subject.type";
 import { IQuiz } from "../types/quiz.type";
+import Class from "../models/class.model";
 
 export const getQuizzesByTeacher = async(req: Request, res: Response) => {
   try{
@@ -24,9 +25,26 @@ export const getQuizzesByTeacher = async(req: Request, res: Response) => {
   }
 }
 
-export const getQuizzesBySubject = async(req: Request, res: Response) => {
+export const getQuizzesByClass = async(req: Request, res: Response) => {
   try{
+    const classID = req.user.classID;
+    const studentClass: any = await Class.findById(classID);
 
+    if(!studentClass){
+      res.status(500).json({ error: "No class" });
+      return;
+    }
+    const subjectIDs = studentClass.subjects.map((subject: any) => subject._id);
+
+    const quizzes = await Quiz.find({ subjectID: { $in: subjectIDs } }).populate({
+      path: "subjectID",
+      select: "name"
+    }).populate({
+      path: "questions",
+      select: "-createdAt -updatedAt -__v"
+    }).select("-updatedAt -__v");
+
+    res.status(200).json(quizzes);
   }
   catch (error) {
     console.log(`[ERROR] - Get Quiz by Subject Controller: ${(error as Error).message}`);
@@ -111,6 +129,43 @@ export const deleteQuiz = async(req: Request, res: Response) => {
     );
     await Quiz.findByIdAndDelete(quizID);
     res.status(200).json({ message: "Quiz successfully deleted" });
+  }
+  catch (error) {
+    console.log(`[ERROR] - Delete Quiz Controller: ${(error as Error).message}`);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+export const submitQuiz = async(req: Request, res: Response) => {
+  try{
+    const studentID = req.user._id;
+    const { quizID, submittedQuestions } = req.body;
+
+    const quiz: any = await Quiz.findById(quizID).populate({
+      path: "questions",
+      select: "question options answer score"
+    });
+    if(!quiz){
+      res.status(500).json({ error: "Quiz does not exist" });
+      return;
+    }
+    const { questions } = quiz;
+    let score = 0;
+    let totalscore = 0;
+    let response: any = { results: {} }
+    questions.forEach((question: any) => {
+      const id = question._id;
+      totalscore += question.score;
+      if(question.answer === submittedQuestions[id]) score += question.score;
+      response.results[id] = question.answer === submittedQuestions[id];
+    });
+    const percentage = (score/totalscore)*100.0;
+    let grade='';
+    if(percentage <= 100 && percentage >= 80) grade = 'A';
+    else if(percentage < 80 && percentage >= 60) grade = 'B';
+    else grade = 'C';
+    response = { ...response, quizID, studentID, score, grade };
+    res.status(200).json(response);
   }
   catch (error) {
     console.log(`[ERROR] - Delete Quiz Controller: ${(error as Error).message}`);
