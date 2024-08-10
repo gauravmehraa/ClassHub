@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import StudentCard from '../components/StudentCard';
 import useGetStudentsByTeacher from '../hooks/students/useGetStudents';
 
@@ -6,6 +7,7 @@ const Students = () => {
   return (
     <div className="flex flex-col text-black w:9/10 sm:w-2/3 p-8">
       <h1 className='text-3xl text-center font-semibold'>Students Dashboard</h1>
+      <Link to ="add" className="mx-auto mt-4 btn btn-md bg-white text-black">Add Student</Link>
       {
         loading ?
         <span className='loading loading-spinner mx-auto text-white'></span>:

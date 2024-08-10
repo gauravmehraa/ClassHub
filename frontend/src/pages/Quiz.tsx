@@ -31,14 +31,14 @@ const Quiz = () => {
       <form onSubmit={handleSubmit}>
       {
         quiz.questions.map((question: any, index: number) => (
-          <div key={question._id} className='mt-4'>
+          <div key={question._id} className="mt-4">
             <div className='flex items-center gap-3'>
               {index+1}. {question.question}
               { JSON.stringify(correctAnswers) !== "{}" &&
                 (correctAnswers.results[question._id]? <FaCheck className='text-green-400'/>: <IoClose className='h-6 w-6 text-red-500'/>)
               }
             </div>
-            <div className='flex flex-row gap-4 flex-wrap'>
+            <div className={`flex flex-row flex-wrap gap-4 ${authUser.role === "Teacher"? "tooltip":""}`} data-tip="Teachers cannot answer">
               { question.options.map((option: any, index: number) => (
                 <div className="form-control" key={index}>
                   <label className="label cursor-pointer gap-2">

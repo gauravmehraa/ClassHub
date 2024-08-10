@@ -6,6 +6,7 @@ import { IoEye, IoEyeOff, IoPerson, IoKey, IoShieldCheckmark, IoSchool } from "r
 const Signup = () => {
 
   const [data, setData] = useState({
+    role: "Teacher",
     name: "",
     email: "",
     password: "",

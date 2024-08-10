@@ -1,5 +1,4 @@
 import React, { FormEvent, useState } from 'react'
-import useGetSubjects from '../hooks/subjects/useGetSubjects';
 import useSignup from '../hooks/auth/useSignup';
 import { IoEye, IoEyeOff } from 'react-icons/io5';
 import useGetClasses from '../hooks/classes/useGetClasses';
@@ -16,6 +15,7 @@ const AddStudent = () => {
     phoneNumber: '', gender: 'Male', classID: ''
   });
 
+  console.log(data);
   const handleReset: any = async(e: FormEvent) => {
     setData({
       role: "Student",
