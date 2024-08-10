@@ -17,7 +17,10 @@ export const getQuizzesByTeacher = async(req: Request, res: Response) => {
     const subjectIDs = teachersSubjects.map((subject: ISubject) => { return subject._id } );
     const quizzes = await Quiz.find(
       { subjectID: { $in: subjectIDs }}
-    ).select("-updatedAt -__v").populate("questions");
+    ).populate("questions").select("-updatedAt -__v").populate({
+      path: "subjectID",
+      select: "name"
+    });
     res.status(200).json(quizzes);
   }
   catch (error) {
@@ -29,6 +32,7 @@ export const getQuizzesByTeacher = async(req: Request, res: Response) => {
 export const getQuizzesByClass = async(req: Request, res: Response) => {
   try{
     const classID = req.user.classID;
+    const studentID = req.user._id;
     const studentClass: any = await Class.findById(classID);
 
     if(!studentClass){
@@ -46,7 +50,10 @@ export const getQuizzesByClass = async(req: Request, res: Response) => {
     }).select("-updatedAt -__v");
 
     const quizIDs = quizzes.map((quiz: any) => quiz._id);
-    const grades = await Grade.find({ quizID: { $in: quizIDs }});
+    const grades = await Grade.find({
+      quizID: { $in: quizIDs },
+      studentID: { $in: studentID },
+    });
     const attemptedQuizIDs = grades.map((grade: any) => grade.quizID.toString());
     const filteredQuizzes = quizzes.filter((quiz: any) => { return !attemptedQuizIDs.includes(quiz._id.toString()) });
     res.status(200).json(filteredQuizzes);
@@ -146,7 +153,7 @@ export const submitQuiz = async(req: Request, res: Response) => {
     const studentID = req.user._id;
     const { quizID, submittedQuestions } = req.body;
 
-    const quiz: any = await Quiz.find(quizID).populate({
+    const quiz: any = await Quiz.findById(quizID).populate({
       path: "questions",
       select: "question options answer score"
     });

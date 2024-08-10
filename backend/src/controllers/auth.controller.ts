@@ -9,7 +9,7 @@ import { generateTeacherToken, generateStudentToken } from "../utils/token";
 export const signup = async(req: Request, res: Response) => {
   try{
     const { role, name, email, password, confirmPassword, qualification, dateOfBirth, address, phoneNumber, gender, classID, secret } = req.body;
-    
+
     if(!process.env.SECRET_PHRASE){
       throw new Error("No secret phrase defined");
     }
