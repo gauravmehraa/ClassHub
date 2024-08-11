@@ -1,27 +1,39 @@
-import React, { FormEvent, useState } from 'react'
-import useAddNote from '../hooks/notes/useAddNote';
+import { FormEvent, useState } from 'react'
 import useGetSubjects from '../hooks/subjects/useGetSubjects';
+import useAddQuiz from '../hooks/quiz/useAddQuiz';
 
 const AddQuiz = () => {
-  const [title, setTitle] = useState('');
+  const [topic, setTopic] = useState('');
   const [subjectID, setSubjectID] = useState('');
   const [questions, setQuestions] = useState<any[]>([]);
   const [count, setCount] = useState(0);
+  const [fadeOutIndex, setFadeOutIndex] = useState(-1);
+  const [fadeInIndex, setFadeInIndex] = useState(-1);
 
-  const { addNote, loading } = useAddNote();
+  const { addQuiz, loading } = useAddQuiz();
   const { subjects } = useGetSubjects();
 
   const handleIncrement: any = () => {
-    setCount(count+1);
+    setCount(count + 1);
+    setFadeInIndex(count);
     setQuestions([...questions, {
       question: '',
       options: [],
       answer: 0,
       score: 0,
-    }])
+    }]);
+    setTimeout(() => setFadeInIndex(-1), 1000);
   }
 
-  console.log(questions);
+  const handleDecrement: any = (deleteIndex: number) => {
+    setFadeOutIndex(deleteIndex);
+    setTimeout(() => {
+      setCount(count - 1);
+      const updatedQuestions = questions.filter((_, index) => index !== deleteIndex);
+      setQuestions(updatedQuestions);
+      setFadeOutIndex(-1);
+    }, 1000);
+  }
 
   const handleReset: any = async(e: FormEvent) => {
     setCount(0);
@@ -30,7 +42,7 @@ const AddQuiz = () => {
 
   const handleSubmit: any = async(e: FormEvent) => {
     e.preventDefault();
-    //await addNote(data);
+    await addQuiz({topic, subjectID, questions});
   }
 
   const handleOptionChange = (questionIndex: number, optionIndex: number, newValue: string) => {
@@ -43,7 +55,6 @@ const AddQuiz = () => {
     };
     setQuestions(updatedQuestions);
   };
-
   return (
     <div className='w-2/3'>
 
@@ -54,8 +65,8 @@ const AddQuiz = () => {
           <label className="ml-2 font-semibold">Topic</label>
           <input
             type='text'
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            value={topic}
+            onChange={(e) => setTopic(e.target.value)}
             className='w-full mt-2 input input-bordered flex items-center focus:outline-none'
             autoComplete='false'
             required={true}
@@ -71,7 +82,7 @@ const AddQuiz = () => {
             onChange={(e) => setSubjectID(e.target.value)}
             required={true}
           >
-            <option value="" disabled={true} selected>Select Class</option>
+            <option value="" disabled={true} selected>Select Subject</option>
             { typeof(subjects) !== "undefined" && subjects.map((subject: any) => (
               <option key={subject._id} value={subject._id}>{subject.name}</option>
             ))}
@@ -82,7 +93,9 @@ const AddQuiz = () => {
             
         {
           questions.map((qn: any, index: number) => (
-            <div key={index}>
+            <div
+              key={index}
+              className={`bg-blue-950 rounded-2xl p-4 my-8 ${fadeOutIndex === index ? 'animate-fade-out' : ''} ${fadeInIndex === index ? 'animate-fade-in' : ''}`}>
               <div className="mt-4">
                 <label className="ml-2 font-semibold">Question {index+1}</label>
                 <input
@@ -98,11 +111,11 @@ const AddQuiz = () => {
                   required={true}
                 />
               </div>
-              <div className='flex justify-between'>
+              <div className='flex flex-row flex-wrap justify-around gap-4'>
                 <div className='flex-wrap items-center'>
-                  <label className="md:ml-2 font-semibold">No. of Options</label>
+                  <label className="md:ml-2 font-semibold">Options</label>
                   <select
-                    className="grow select mt-2 ml-2 select-bordered focus:outline-none"
+                    className="grow select mt-4 ml-2 select-bordered focus:outline-none"
                     autoComplete="off"
                     onChange={(e) => {
                       const updatedQuestions = [...questions];
@@ -126,20 +139,21 @@ const AddQuiz = () => {
                     step={0.1}
                     min={0.5}
                     max={10}
-                    className="grow input input-bordered mt-2 ml-2 w-16 focus:outline-none"
+                    className="grow input input-bordered mt-4 ml-2 w-16 focus:outline-none"
                     value={qn.score}
                     onChange={(e) => {
+                      const validScore = e.target.value.trim() === ""? "": parseFloat(e.target.value);
                       const updatedQuestions = [...questions];
-                      updatedQuestions[index] = { ...updatedQuestions[index], score: e.target.value }
+                      updatedQuestions[index] = { ...updatedQuestions[index], score: validScore }
                       setQuestions(updatedQuestions);
                     }}
                     required={true}
                   />
                 </div>
                 <div className='flex-wrap items-center'>
-                  <label className="md:ml-2 font-semibold">Correct Answer</label>
+                  <label className="md:ml-2 font-semibold">Answer</label>
                   <select
-                    className="grow select mt-2 ml-2 select-bordered focus:outline-none"
+                    className="grow select mt-4 ml-2 select-bordered focus:outline-none"
                     autoComplete="off"
                     onChange={(e) => {
                       const updatedQuestions = [...questions];
@@ -153,6 +167,11 @@ const AddQuiz = () => {
                     <option key={index} value={index+1}>{index+1}</option>
                    ))}
                   </select>
+                </div>
+                <div className='flex-wrap items-center'>
+                  <div className='btn mt-4'  onClick={() => handleDecrement(index)}>
+                    Delete
+                  </div>
                 </div>
               </div>
               <div className='flex flex-col gap-2 mt-2'>
