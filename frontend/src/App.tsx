@@ -13,6 +13,7 @@ import Quizzes from './pages/Quizzes';
 import Quiz from './pages/Quiz';
 import AddStudent from './pages/AddStudent';
 import AddQuiz from './pages/AddQuiz';
+import Dashboard from './pages/Dashboard';
 
 const App: React.FC = () => {
 
@@ -24,6 +25,7 @@ const App: React.FC = () => {
           <Route index element={authUser? <Home/>: <Navigate to='/login'/>}/>
           <Route path='login' element={authUser? <Navigate to='/'/>: <Login/>}/>
           <Route path='signup' element={authUser? <Navigate to='/'/>: <Signup/>}/>
+          <Route path='dashboard' element={authUser ? <Dashboard/>:<Navigate to='/login'/>}/>
           <Route path='feedback' element={authUser? <Feedback/>:<Navigate to='/login'/>}/>
           <Route path='notes'>
             <Route index element={authUser? <Notes/>: <Navigate to='/login'/>}/>

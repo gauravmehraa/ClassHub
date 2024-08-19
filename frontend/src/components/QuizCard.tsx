@@ -7,7 +7,7 @@ import { useAuthContext } from "../context/AuthContext";
 const QuizCard = (props: { data: any }) => {
   const { authUser } = useAuthContext();
   return (
-    <div className="bg-white rounded-lg p-6">
+    <div className="bg-white rounded-lg p-6 min-w-84 max-w-84">
       <div>{props.data.topic}</div>
       <div>Subject: {props.data.subjectID.name}</div>
       <div>Uploaded On: {getDate(props.data.createdAt)}</div>

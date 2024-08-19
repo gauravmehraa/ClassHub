@@ -11,6 +11,8 @@ const Quiz = () => {
   const { quiz } = location.state;
   const { loading, submitQuiz, correctAnswers } = useSubmitQuiz();
 
+  console.log(correctAnswers)
+
   const [data, setData] = useState({
     quizID: quiz._id,
     submittedQuestions: {}
@@ -43,19 +45,31 @@ const Quiz = () => {
                 <div className="form-control" key={index}>
                   <label className="label cursor-pointer gap-2">
                     <span className="label-text">{option}</span>
-                    <input
-                      type="radio"
-                      name={question.question}
-                      value={index+1}
-                      required
-                      disabled={JSON.stringify(correctAnswers) !== "{}" || authUser.role === "Teacher"}
-                      className={`radio checked:bg-red-500 ${(JSON.stringify(correctAnswers) !== "{}" || authUser.role === "Teacher")? "disabled":"" }`}
-                      onChange={(e) => setData({
-                        ...data, submittedQuestions: {
-                          ...data.submittedQuestions,
-                          [question._id]: parseInt(e.target.value)
-                      }})}
-                    />
+                    { authUser.role === "Teacher" && 
+                      <input
+                        type="radio"
+                        name={question.question}
+                        value={index+1}
+                        disabled={true}
+                        checked={question.answer === index+1}
+                        className="radio checked:bg-red-500 disabled"
+                      />
+                    }
+                    { authUser.role === "Student" && 
+                      <input
+                        type="radio"
+                        name={question.question}
+                        value={index+1}
+                        required
+                        disabled={JSON.stringify(correctAnswers) !== "{}"}
+                        className={`radio checked:bg-red-500 ${JSON.stringify(correctAnswers) !== "{}"? "disabled":"" }`}
+                        onChange={(e) => setData({
+                          ...data, submittedQuestions: {
+                            ...data.submittedQuestions,
+                            [question._id]: parseInt(e.target.value)
+                        }})}
+                      />
+                    }
                   </label>
                 </div>
               ))}

@@ -7,11 +7,12 @@ const Home = () => {
 
   return (
     <div className='flex gap-4'>
+      <Link to="dashboard">Dashboard</Link>
       <Link to="students">Students</Link>
       <Link to="feedback">Feedback</Link>
       <Link to="notes">Notes</Link>
       <Link to="quiz">Quizzes</Link>
-      <div onClick={logout}>
+      <div onClick={logout} className='cursor-pointer'>
         { loading ? <span className='loading loading-spinner'></span>: "Logout" }
       </div>
     </div>
