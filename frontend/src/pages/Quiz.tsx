@@ -11,8 +11,6 @@ const Quiz = () => {
   const { quiz } = location.state;
   const { loading, submitQuiz, correctAnswers } = useSubmitQuiz();
 
-  console.log(correctAnswers)
-
   const [data, setData] = useState({
     quizID: quiz._id,
     submittedQuestions: {}

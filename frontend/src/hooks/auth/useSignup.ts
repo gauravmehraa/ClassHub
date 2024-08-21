@@ -57,7 +57,7 @@ const useSignup = () => {
       }
       if(signupData.role === "Teacher"){
         setAuthUser(data);
-        localStorage.setItem("lms-user", JSON.stringify(data));
+        localStorage.setItem("classhub-user", JSON.stringify(data));
       }
     }
     catch (error){

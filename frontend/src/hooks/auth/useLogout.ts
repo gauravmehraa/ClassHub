@@ -21,7 +21,7 @@ const useLogout = () => {
       }
 
       //cache
-      localStorage.removeItem("lms-user");
+      localStorage.removeItem("classhub-user");
 
       //context
       setAuthUser(null);

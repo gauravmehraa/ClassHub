@@ -20,7 +20,7 @@ export const useSettingsContext = () => {
 
 export const SettingsContextProvider: React.FC<SettingsContextProviderProps> = ({ children }) => {
   const [settings, setSettings] = useState(
-    JSON.parse(localStorage.getItem("lms-settings") as string) || null
+    JSON.parse(localStorage.getItem("classhub-settings") as string) || null
   );
   return(
     <SettingsContext.Provider value = {{settings, setSettings}}>

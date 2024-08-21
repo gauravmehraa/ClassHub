@@ -13,8 +13,8 @@ const FeedbackCard = (props: { data: any }) => {
       </div>
       <div className="flex flex-row gap-2">
         <div>{props.data.content}</div>
-        <EditFeedbackModal feedback={props.data}/>
-        <DeleteFeedbackModal feedback={props.data}/>
+        {authUser.role === "Teacher" && <EditFeedbackModal feedback={props.data}/> }
+        {authUser.role === "Teacher" && <DeleteFeedbackModal feedback={props.data}/> }
       </div>
       <div>{getDate(props.data.createdAt)}</div>
     </div>

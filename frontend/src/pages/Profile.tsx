@@ -5,6 +5,7 @@ import FeedbackCard from '../components/FeedbackCard';
 import useGetGrades from '../hooks/quiz/useGetGrades';
 import GradeCard from '../components/GradeCard';
 import AddFeedbackModal from '../components/AddFeedbackModal';
+import EditStudentModal from '../components/EditStudentModal';
 
 const Profile = () => {
   const location = useLocation();
@@ -24,6 +25,8 @@ const Profile = () => {
         <div><b>Email: </b> {student.email}</div>
         <div><b>Contact No: </b> {student.phoneNumber}</div>
       </div>
+
+      <div><EditStudentModal student={{...student, course}}/></div>
 
       <div className='flex flex-col'>
         <div className='text-2xl font-semibold text-center'>Feedbacks</div>

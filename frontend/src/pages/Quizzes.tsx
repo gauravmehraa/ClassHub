@@ -1,14 +1,16 @@
 import { Link } from "react-router-dom";
 import QuizCard from "../components/QuizCard";
 import useGetQuizzes from "../hooks/quiz/useGetQuizzes";
+import { useAuthContext } from "../context/AuthContext";
 
 
 const Quizzes = () => {
   const { loading, quizzes } = useGetQuizzes();
+  const { authUser } = useAuthContext();
   return (
     <div className="flex flex-col text-black w:9/10 sm:w-2/3 p-4 sm:p-8">
       <h1 className='text-3xl text-center font-semibold text-white'>Quizzes</h1>
-      <Link to ="add" className="mx-auto mt-4 btn btn-md bg-white text-black">Add Quiz</Link>
+      { authUser.role === "Teacher" && <Link to ="add" className="mx-auto mt-4 btn btn-md bg-white text-black">Add Quiz</Link> }
     {
       loading ?
       <span className='loading loading-spinner mx-auto text-white'></span>:

@@ -18,7 +18,7 @@ export const useAuthContext = (): AuthContextType => useContext(AuthContext);
 
 export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ children }) => {
   const [authUser, setAuthUser] = useState(
-    JSON.parse(localStorage.getItem("lms-user") || "null")
+    JSON.parse(localStorage.getItem("classhub-user") || "null")
   );
   return(
     <AuthContext.Provider value = {{authUser, setAuthUser}}>

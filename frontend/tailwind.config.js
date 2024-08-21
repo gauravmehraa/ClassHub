@@ -5,8 +5,12 @@ export default {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
+	
   theme: {
     extend: {
+			colors: {
+				'classhub-purple': '#7284fe',
+			},
 			animation: {
 				"fade-out": 'fadeOut 1s ease-in-out',
 				"fade-in": 'fadeIn 1s ease-in-out',
@@ -22,6 +26,9 @@ export default {
 				},
 			},
 		},
+		fontFamily: {
+			"roboto": ['Roboto'],
+		}
   },
   plugins: [
     daisyui,

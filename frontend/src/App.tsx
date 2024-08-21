@@ -1,7 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { useAuthContext } from "./context/AuthContext";
-import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Feedback from './pages/Feedback';
@@ -14,18 +13,19 @@ import Quiz from './pages/Quiz';
 import AddStudent from './pages/AddStudent';
 import AddQuiz from './pages/AddQuiz';
 import Dashboard from './pages/Dashboard';
+import Navbar from './components/Navbar';
 
 const App: React.FC = () => {
 
   const { authUser } = useAuthContext();
   return (
-    <div className='min-h-screen py-2 flex flex-col items-center justify-center'>
+    <div className='min-h-screen max-w-screen flex flex-row items-center font-roboto'>
+      { authUser? <Navbar/>: null}
       <Routes>
         <Route path='/'>
-          <Route index element={authUser? <Home/>: <Navigate to='/login'/>}/>
+          <Route index element={authUser? <Dashboard/>: <Navigate to='/login'/>}/>
           <Route path='login' element={authUser? <Navigate to='/'/>: <Login/>}/>
           <Route path='signup' element={authUser? <Navigate to='/'/>: <Signup/>}/>
-          <Route path='dashboard' element={authUser ? <Dashboard/>:<Navigate to='/login'/>}/>
           <Route path='feedback' element={authUser? <Feedback/>:<Navigate to='/login'/>}/>
           <Route path='notes'>
             <Route index element={authUser? <Notes/>: <Navigate to='/login'/>}/>
@@ -42,7 +42,7 @@ const App: React.FC = () => {
             <Route path='add' element={authUser && authUser.role === "Teacher"? <AddQuiz/>:<Navigate to='/login'/>}/>
           </Route>
         </Route>
-        <Route path='*' element={<Home/>}/>
+        <Route path='*' element={<Dashboard/>}/>
       </Routes>
       <Toaster/>
     </div>
