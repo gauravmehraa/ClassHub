@@ -19,12 +19,11 @@ export const getStudentsByTeacher = async(req: Request, res: Response): Promise<
     ).populate({
       path: "classID",
       select: "classID year program"
-    }).select("-hashedPassword -updatedAt -__v").lean(); // lean for converting to js object (for deleting keys)
+    }).select("-hashedPassword -updatedAt -__v")//.lean(); // lean for converting to js object (for deleting keys)
 
     const formattedStudents: any = {}
     for(let student of students){
       const course = student.classID.year.toString() + " " + student.classID.program.toString();
-      delete student.classID;
       if (!formattedStudents[course]) {
         formattedStudents[course] = [];
       }
@@ -34,6 +33,31 @@ export const getStudentsByTeacher = async(req: Request, res: Response): Promise<
   }
   catch (error) {
     console.log(`[ERROR] - Get Students by Teacher Controller: ${(error as Error).message}`);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+export const editStudent = async(req: Request, res: Response): Promise<void> => {
+  try{
+    const { id: studentID } = req.params;
+    const { name, email, dateOfBirth, address, phoneNumber, gender, classID } = req.body;
+
+    const student = await Student.findByIdAndUpdate(
+      studentID,
+      { name, email, dateOfBirth, address, phoneNumber, gender, classID },
+      { new: true }
+    );
+
+    if(!student){
+      res.status(500).json({ error: "No student to be deleted" });
+      return;
+    }
+
+    await student.save();
+    res.status(200).json(student);
+  }
+  catch (error) {
+    console.log(`[ERROR] - Edit Student Controller: ${(error as Error).message}`);
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
