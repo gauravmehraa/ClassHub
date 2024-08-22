@@ -5,4 +5,5 @@ export interface IFeedback {
   studentID: Types.ObjectId;
   teacherID: Types.ObjectId;
   content: string;
+  rating: Number;
 }

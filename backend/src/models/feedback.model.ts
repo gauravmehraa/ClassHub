@@ -14,6 +14,10 @@ const feedbackSchema = new Schema<IFeedback>({
   },
   content: {
     type: String,
+    required: false,
+  },
+  rating: {
+    type: Number,
     required: true,
   }
 }, { timestamps: true });

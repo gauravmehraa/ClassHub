@@ -31,15 +31,16 @@ export const getFeedback = async(req: Request, res: Response) => {
 export const addFeedback = async(req: Request, res: Response) => {
   try{
     const teacherID = req.user._id;
-    const { studentID, content } = req.body
-    const newFeedback = new Feedback({ studentID, teacherID, content });
+    const { studentID, content, rating } = req.body
+    const newFeedback = new Feedback({ studentID, teacherID, content, rating });
     if(newFeedback){
       await newFeedback.save();
       res.status(201).json({
         _id: newFeedback._id,
         studentID: newFeedback.studentID,
         teacherID: newFeedback.teacherID,
-        content: newFeedback.content
+        content: newFeedback.content,
+        rating: newFeedback.rating
       });
     }
     else{
@@ -56,11 +57,11 @@ export const editFeedback = async(req: Request, res: Response) => {
   try{
     const { id: feedbackID } = req.params;
     const teacherID = req.user._id;
-    const { content } = req.body;
+    const { content, rating } = req.body;
 
     const feedback = await Feedback.findOneAndUpdate(
       { _id: feedbackID, teacherID },
-      { content },
+      { content, rating },
       { new: true }
     );
 

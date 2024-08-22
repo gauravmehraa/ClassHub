@@ -8,13 +8,13 @@ import { generateTeacherToken, generateStudentToken } from "../utils/token";
 
 export const signup = async(req: Request, res: Response) => {
   try{
-    const { role, name, email, password, confirmPassword, qualification, dateOfBirth, address, phoneNumber, gender, classID, secret } = req.body;
+    const { name, email, password, confirmPassword, qualification, secret } = req.body;
 
     if(!process.env.SECRET_PHRASE){
       throw new Error("No secret phrase defined");
     }
 
-    if(role === "Teacher" && secret !== process.env.SECRET_PHRASE){
+    if(secret !== process.env.SECRET_PHRASE){
       res.status(401).json({ error: "Invalid secret phrase" });
       return;
     }
@@ -25,9 +25,7 @@ export const signup = async(req: Request, res: Response) => {
       return;
     }
 
-    let user: ITeacher | IStudent | null;
-    if(role === "Teacher") user = await Teacher.findOne({ email });
-    else user = await Student.findOne({ email });
+    const user: ITeacher | null = await Teacher.findOne({ email });
 
     if(user){
       res.status(400).json({error: "Email is already registered"});
@@ -37,18 +35,15 @@ export const signup = async(req: Request, res: Response) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    let newUser;
-    if(role === "Teacher") newUser = new Teacher({ name, email, hashedPassword, qualification });
-    else newUser = new Student({ name, email, hashedPassword, dateOfBirth, address, phoneNumber, gender, classID });
+    const newUser = new Teacher({ name, email, hashedPassword, qualification });
 
     if(newUser){
-      if(role === "Teacher") generateTeacherToken(newUser._id, res);
-      else generateStudentToken(newUser._id, res);
+      generateTeacherToken(newUser._id, res);
       await newUser.save();
       res.status(201).json({
         name: newUser.name,
         email: newUser.email,
-        role
+        role: "Teacher"
       });
     }
     else{
