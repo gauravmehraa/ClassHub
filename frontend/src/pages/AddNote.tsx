@@ -11,6 +11,8 @@ const AddNote = () => {
   const { addNote, loading } = useAddNote();
   const { subjects } = useGetSubjects();
 
+  const inputClass = 'w-full mt-2 input input-bordered bg-white flex items-center focus:outline-none'
+
   const handleReset: any = async(e: FormEvent) => {
     setTitle("");
     setDescription("");
@@ -33,7 +35,7 @@ const AddNote = () => {
   }
 
   return (
-    <div>
+    <div className="flex flex-col text-black p-8 overflow-auto w-full">
 
       <h3 className="text-2xl text-center">Add Notes</h3>
       <form onSubmit={handleSubmit} onReset={handleReset}>
@@ -44,7 +46,7 @@ const AddNote = () => {
             type='text'
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className='w-full mt-2 input input-bordered flex items-center focus:outline-none'
+            className={inputClass}
             autoComplete='false'
             autoCapitalize='true'
           />
@@ -56,15 +58,15 @@ const AddNote = () => {
             type='text'
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className='w-full mt-2 input input-bordered flex items-center focus:outline-none'
+            className={inputClass}
             autoComplete='false'
           />
         </div>
 
-        <div className="mt-6">
+        <div className="mt-6 flex flex-col">
           <label className="ml-2 font-semibold">Subject</label>
           <select
-            className="grow select select-bordered focus:outline-none ml-2"
+            className="grow select select-bordered bg-white focus:outline-none ml-2"
             value={subjectID}
             autoComplete="off"
             onChange={(e) => setSubjectID(e.target.value)}
@@ -80,7 +82,7 @@ const AddNote = () => {
           <input
             type='file'
             onChange={(e) => setFile(e.target.files![0])}
-            className='w-full mt-2 file-input file-input-bordered flex items-center focus:outline-none'
+            className='w-full mt-2 file-input file-input-bordered file:bg-gray-400 file:border-none file:text-black bg-white flex items-center focus:outline-none'
             accept="application/msword, application/vnd.ms-powerpoint, application/pdf"
           />
         </div>

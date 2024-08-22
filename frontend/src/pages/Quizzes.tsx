@@ -8,7 +8,7 @@ const Quizzes = () => {
   const { loading, quizzes } = useGetQuizzes();
   const { authUser } = useAuthContext();
   return (
-    <div className="flex flex-col text-black w:9/10 sm:w-2/3 p-4 sm:p-8">
+    <div className="flex flex-col text-black p-4 sm:p-8 overflow-auto w-full">
       <h1 className='text-3xl text-center font-semibold text-white'>Quizzes</h1>
       { authUser.role === "Teacher" && <Link to ="add" className="mx-auto mt-4 btn btn-md bg-white text-black">Add Quiz</Link> }
     {

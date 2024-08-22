@@ -13,6 +13,8 @@ const AddQuiz = () => {
   const { addQuiz, loading } = useAddQuiz();
   const { subjects } = useGetSubjects();
 
+  const inputClass = 'w-full mt-2 input input-bordered flex items-center bg-white focus:outline-none';
+
   const handleIncrement: any = () => {
     setCount(count + 1);
     setFadeInIndex(count);
@@ -56,7 +58,7 @@ const AddQuiz = () => {
     setQuestions(updatedQuestions);
   };
   return (
-    <div className='w-2/3'>
+    <div className="flex flex-col text-black p-8 overflow-auto w-full">
 
       <h3 className="text-2xl text-center">Create Quiz</h3>
       <form onSubmit={handleSubmit} onReset={handleReset}>
@@ -67,7 +69,7 @@ const AddQuiz = () => {
             type='text'
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
-            className='w-full mt-2 input input-bordered flex items-center focus:outline-none'
+            className={inputClass}
             autoComplete='false'
             required={true}
           />
@@ -76,9 +78,9 @@ const AddQuiz = () => {
         <div className="mt-6 flex flex-col justify-center">
           <label className="ml-2 font-semibold">Subject</label>
           <select
-            className="grow select mt-2 select-bordered focus:outline-none"
+            className="grow select mt-2 select-bordered bg-white focus:outline-none"
             value={subjectID}
-            autoComplete="off"
+            autoComplete={"off"}
             onChange={(e) => setSubjectID(e.target.value)}
             required={true}
           >
@@ -89,13 +91,13 @@ const AddQuiz = () => {
           </select>
         </div>
 
-        <div className='btn flex min-w-48 max-w-48 mx-auto mt-6 mb-4' onClick={handleIncrement}>Add Question</div>
+        <div className='btn bg-classhub-purple text-black border-none flex min-w-48 max-w-48 mx-auto mt-6 mb-4' onClick={handleIncrement}>Add Question</div>
             
         {
           questions.map((qn: any, index: number) => (
             <div
               key={index}
-              className={`bg-blue-950 rounded-2xl p-4 my-8 ${fadeOutIndex === index ? 'animate-fade-out' : ''} ${fadeInIndex === index ? 'animate-fade-in' : ''}`}>
+              className={`bg-zinc-400 rounded-2xl p-4 my-8 ${fadeOutIndex === index ? 'animate-fade-out' : ''} ${fadeInIndex === index ? 'animate-fade-in' : ''}`}>
               <div className="mt-4">
                 <label className="ml-2 font-semibold">Question {index+1}</label>
                 <input
@@ -106,7 +108,7 @@ const AddQuiz = () => {
                     updatedQuestions[index] = { ...updatedQuestions[index], question: e.target.value };
                     setQuestions(updatedQuestions);
                   }}
-                  className='w-full mt-2 input input-bordered flex items-center focus:outline-none'
+                  className={inputClass}
                   autoComplete='false'
                   required={true}
                 />
@@ -115,7 +117,7 @@ const AddQuiz = () => {
                 <div className='flex-wrap items-center'>
                   <label className="md:ml-2 font-semibold">Options</label>
                   <select
-                    className="grow select mt-4 ml-2 select-bordered focus:outline-none"
+                    className="grow select bg-white mt-4 ml-2 select-bordered focus:outline-none"
                     autoComplete="off"
                     onChange={(e) => {
                       const updatedQuestions = [...questions];
@@ -139,7 +141,7 @@ const AddQuiz = () => {
                     step={0.1}
                     min={0.5}
                     max={10}
-                    className="grow input input-bordered mt-4 ml-2 w-16 focus:outline-none"
+                    className="grow input input-bordered bg-white mt-4 ml-2 w-16 focus:outline-none"
                     value={qn.score}
                     onChange={(e) => {
                       const validScore = e.target.value.trim() === ""? "": parseFloat(e.target.value);
@@ -153,7 +155,7 @@ const AddQuiz = () => {
                 <div className='flex-wrap items-center'>
                   <label className="md:ml-2 font-semibold">Answer</label>
                   <select
-                    className="grow select mt-4 ml-2 select-bordered focus:outline-none"
+                    className="grow select mt-4 ml-2 bg-white select-bordered focus:outline-none"
                     autoComplete="off"
                     onChange={(e) => {
                       const updatedQuestions = [...questions];
@@ -169,9 +171,7 @@ const AddQuiz = () => {
                   </select>
                 </div>
                 <div className='flex-wrap items-center'>
-                  <div className='btn mt-4'  onClick={() => handleDecrement(index)}>
-                    Delete
-                  </div>
+                  <div className='btn mt-4 bg-white text-black border-none' onClick={() => handleDecrement(index)}> Delete </div>
                 </div>
               </div>
               <div className='flex flex-col gap-2 mt-2'>
@@ -180,7 +180,7 @@ const AddQuiz = () => {
                     <input
                       key={optionIndex}
                       value={option}
-                      className={`input input-bordered ${qn.answer === optionIndex+1? "text-green-400": ""}`}
+                      className={`input bg-white input-bordered ${qn.answer === optionIndex+1? "bg-green-400": "bg-red-300"}`}
                       onChange={(e) => handleOptionChange(index, optionIndex, e.target.value)}
                     />
                   ))

@@ -7,7 +7,7 @@ const Notes = () => {
   const { loading, notes } = useGetNotes();
   const { authUser } = useAuthContext();
   return (
-    <div className="flex flex-col text-black w:9/10 sm:w-2/3 p-8">
+    <div className="flex flex-col text-black p-8 overflow-auto w-full">
       {
         loading ?
         <span className='loading loading-spinner mx-auto text-white'></span>:

@@ -3,7 +3,12 @@
 @tailwind utilities;
 
 :root{
-  background-color: rgb(220, 220, 220);
+  background-color: #dcdcdc;
+  /* background-image: url('https://png.pngtree.com/png-vector/20190318/ourlarge/pngtree-school-doodle-seamless-pattern-with-bookpencilglobebagrulerand-study-lamp-drawing-vector-illustration-png-image_858328.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;  */
+  padding: 0;
+  margin: 0;
 }
 
 @font-face {

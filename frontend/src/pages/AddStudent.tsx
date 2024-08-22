@@ -1,13 +1,15 @@
 import React, { FormEvent, useState } from 'react'
-import useSignup from '../hooks/auth/useSignup';
 import { IoEye, IoEyeOff } from 'react-icons/io5';
 import useGetClasses from '../hooks/classes/useGetClasses';
+import useAddStudent from '../hooks/students/useAddStudent';
 
 const AddStudent = () => {
-  const { signup, loading } = useSignup();
+  const { addStudent, loading } = useAddStudent();
   const { classes } = useGetClasses();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const inputClass = 'w-full mt-2 input input-bordered flex items-center bg-white focus:outline-none';
 
   const [data, setData] = useState({
     role: "Student",
@@ -26,7 +28,7 @@ const AddStudent = () => {
 
   const handleSubmit: any = async(e: FormEvent) => {
     e.preventDefault();
-    await signup(data);
+    await addStudent(data);
     setData({
       role: "Student",
       name: '', email: '', password: '', confirmPassword: '', dateOfBirth: '', address: '',
@@ -35,7 +37,7 @@ const AddStudent = () => {
   }
 
   return (
-    <div>
+    <div className="flex flex-col text-black p-8 overflow-auto w-full">
 
       <h3 className="text-2xl text-center">Register Student</h3>
       <form onSubmit={handleSubmit} onReset={handleReset}>
@@ -47,7 +49,7 @@ const AddStudent = () => {
             type='text'
             value={data.name}
             onChange={(e) => setData({...data, name: e.target.value})}
-            className='w-full mt-2 input input-bordered flex items-center focus:outline-none'
+            className={inputClass}
             autoComplete='false'
             autoCapitalize='true'
             required={true}
@@ -61,7 +63,7 @@ const AddStudent = () => {
             type='email'
             value={data.email}
             onChange={(e) => setData({...data, email: e.target.value})}
-            className='w-full mt-2 input input-bordered flex items-center focus:outline-none'
+            className={inputClass}
             autoComplete='false'
             required={true}
           />
@@ -70,7 +72,7 @@ const AddStudent = () => {
         {/* Password */}
         <div className="mt-4">
           <label className="ml-2 font-semibold">Password</label>
-          <div className="input input-bordered flex items-center gap-2 my-4 focus:outline-none">
+          <div className={inputClass}>
             <input
               type={showPassword? "text": "password"}
               className="grow"
@@ -86,7 +88,7 @@ const AddStudent = () => {
         {/* Confirm Password */}
         <div className="mt-4">
           <label className="ml-2 font-semibold">Confirm Password</label>
-          <div className="input input-bordered flex items-center gap-2 my-4 focus:outline-none">
+          <div className={inputClass}>
             <input
               type={showConfirmPassword? "text": "password"}
               className="grow"
@@ -105,7 +107,7 @@ const AddStudent = () => {
           <input
             type='date'
             onChange={(e) => setData({...data, dateOfBirth: new Date(e.target.value).toISOString()})}
-            className='w-full mt-2 input input-bordered flex items-center focus:outline-none'
+            className={inputClass}
             autoComplete='false'
             autoCapitalize='true'
             required={true}
@@ -117,7 +119,7 @@ const AddStudent = () => {
           <label className="ml-2 font-semibold">Address</label>
           <textarea
             rows={3}
-            className='w-full mt-2 textarea textarea-bordered flex items-center focus:outline-none'
+            className='w-full mt-2 textarea textarea-bordered bg-white flex items-center focus:outline-none'
             value={data.address}
             onChange={(e) => setData({...data, address: e.target.value})}
             autoComplete="false"
@@ -133,7 +135,7 @@ const AddStudent = () => {
             type='tel'
             value={data.phoneNumber}
             onChange={(e) => setData({...data, phoneNumber: e.target.value})}
-            className='w-full mt-2 input input-bordered flex items-center focus:outline-none'
+            className={inputClass}
             autoComplete='false'
             pattern="[0-9]{10}"
             minLength={10}
@@ -145,7 +147,7 @@ const AddStudent = () => {
         {/* Phone Number */}
         <div className="mt-4">
           <label className="ml-2 font-semibold">Gender</label>
-          <label className="w-full mt-2 grow swap input input-bordered">
+          <label className="w-full mt-2 grow swap input bg-white input-bordered">
             <input type="checkbox" onClick={()=>setData({...data, gender: data.gender === 'Female'? 'Male': 'Female'})}/>
             <div className="swap-off">Male</div>
             <div className="swap-on">Female</div>
@@ -153,17 +155,17 @@ const AddStudent = () => {
         </div>
 
         {/* Class */}
-        <div className="mt-4">
+        <div className="mt-4 flex flex-col">
           <label className="ml-2 font-semibold">Class</label>
           <select
-            className="grow select mt-2 ml-2 select-bordered focus:outline-none"
+            className="grow select max-w-sm sm:max-w-auto mt-2 ml-2 select-bordered truncate bg-white focus:outline-none placeholder:text-black"
             autoComplete="off"
             onChange={(e) => e.target.value === ""? null: setData({...data, classID: e.target.value})}
             required={true}
           >
             <option value="" disabled={data.classID !== ""}>Select Class</option>
             { typeof(classes) !== "undefined" && classes.map((currentClass: any) => (
-              <option key={currentClass._id} value={currentClass._id}>{currentClass.year} {currentClass.program}</option>
+              <option key={currentClass._id} className='truncate' value={currentClass._id}>{currentClass.year} {currentClass.program}</option>
             ))}
           </select>
         </div>

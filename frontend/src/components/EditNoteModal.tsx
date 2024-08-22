@@ -10,6 +10,8 @@ const EditNoteModal = (props: { subjectname: string, link: any }) => {
 
   const { editNote, loading } = useEditNote();
 
+  const inputClass = 'w-full mt-2 input input-bordered bg-white flex items-center focus:outline-none'
+
   const handleCancel: any = async(e: MouseEvent) => {
     setTitle(props.link.title);
     setDescription(props.link.description || "");
@@ -32,8 +34,8 @@ const EditNoteModal = (props: { subjectname: string, link: any }) => {
       onClick={()=>(document.getElementById(`note_edit_${props.link._id}`) as HTMLDialogElement).showModal()}
       className='text-black h-5 w-5 cursor-pointer hover:text-red-400'
     />
-    <dialog id={`note_edit_${props.link._id}`} className="modal text-white">
-      <div className="modal-box w-11/12 max-w-xl font-normal">
+    <dialog id={`note_edit_${props.link._id}`} className="modal">
+      <div className="modal-box w-11/12 max-w-xl font-normal bg-white">
         <h3 className="text-2xl">Edit Note</h3>
 
         <div className="mt-6">
@@ -42,7 +44,7 @@ const EditNoteModal = (props: { subjectname: string, link: any }) => {
             type='text'
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className='w-full mt-2 input input-bordered flex items-center focus:outline-none'
+            className={inputClass}
             autoComplete='false'
             autoCapitalize='true'
           />
@@ -54,7 +56,7 @@ const EditNoteModal = (props: { subjectname: string, link: any }) => {
             type='text'
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className='w-full mt-2 input input-bordered flex items-center focus:outline-none'
+            className={inputClass}
             autoComplete='false'
           />
         </div>
@@ -65,7 +67,7 @@ const EditNoteModal = (props: { subjectname: string, link: any }) => {
             type='text'
             value={props.subjectname}
             disabled
-            className='w-full mt-2 input input-bordered flex items-center focus:outline-none'
+            className={`${inputClass} disabled:bg-gray-300 disabled:text-black disabled:border-none`}
             autoComplete='false'
           />
         </div>
@@ -75,7 +77,7 @@ const EditNoteModal = (props: { subjectname: string, link: any }) => {
           <input
             type='file'
             onChange={(e) => setFile(e.target.files![0])}
-            className='w-full mt-2 file-input file-input-bordered flex items-center focus:outline-none'
+            className='w-full mt-2 file-input file-input-bordered file:bg-gray-400 file:border-none file:text-black bg-white flex items-center focus:outline-none'
             accept="application/msword, application/vnd.ms-powerpoint, application/pdf"
           />
         </div>        

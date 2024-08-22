@@ -38,7 +38,7 @@ const Profile = () => {
             { filteredFeedbacks.length === 0?
               <div> No feedback to show </div>:
               filteredFeedbacks.map((feedback: any, index: number) => (
-                <FeedbackCard key={feedback._id} data={feedback}/>
+                <FeedbackCard key={feedback._id} data={feedback} showInfo={false}/>
               ))
             }
           </div>

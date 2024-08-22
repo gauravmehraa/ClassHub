@@ -20,7 +20,7 @@ const Login = () => {
   }
 
   return (
-    <div className=' flex flex-col items-center sm:items-start sm:flex-row flex-wrap mx-auto w-10/12 sm:w-8/12 py-8 my-4 text-black bg-white rounded-2xl text-center'>
+    <div className=' flex flex-col items-center md:items-start md:flex-row flex-wrap mx-auto w-11/12 md:w-8/12 py-8 my-4 text-black bg-white rounded-2xl text-center'>
       <div className='w-full h-full md:w-6/12 flex justify-center items-center my-auto'>
         <img
           src={'https://i.pinimg.com/564x/cf/66/33/cf66334166ddd4c120148dc07c492449.jpg'}

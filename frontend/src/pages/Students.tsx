@@ -5,8 +5,8 @@ import useGetStudentsByTeacher from '../hooks/students/useGetStudents';
 const Students = () => {
   const { loading, students } = useGetStudentsByTeacher();
   return (
-    <div className="flex flex-col text-black w:9/10 sm:w-2/3 p-8">
-      <h1 className='text-3xl text-center font-semibold'>Students Dashboard</h1>
+    <div className="flex flex-col text-black p-8 overflow-auto w-full">
+      <h1 className='text-3xl text-center font-semibold'>Students</h1>
       <Link to ="add" className="mx-auto mt-4 btn btn-md bg-white text-black">Add Student</Link>
       {
         loading ?

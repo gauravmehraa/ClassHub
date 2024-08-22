@@ -10,7 +10,12 @@ export default {
     extend: {
 			colors: {
 				'classhub-purple': '#7284fe',
+				'classhub-gray': '##dcdcdc',
+				'classhub-lavender': '#eef2fe',
 			},
+			backdropBlur: {
+        xs: '3px',
+      },
 			animation: {
 				"fade-out": 'fadeOut 1s ease-in-out',
 				"fade-in": 'fadeIn 1s ease-in-out',
