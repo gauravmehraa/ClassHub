@@ -7,6 +7,8 @@ const AddFeedbackModal = (props: { student: any }) => {
   const [rating, setRating] = useState(0.0);
   const { loading, addFeedback } = useAddFeedback();
 
+  const inputClass = 'w-full mt-2 input input-bordered bg-white flex items-center focus:outline-none'
+
   const handleCancel: any = async(e: MouseEvent) => {
     setContent("");
     setRating(0.0);
@@ -22,10 +24,10 @@ const AddFeedbackModal = (props: { student: any }) => {
     <div className="flex items-center">
       <button
         onClick={()=>(document.getElementById("feedback_add") as HTMLDialogElement).showModal()}
-        className="mx-auto mt-4 btn btn-md bg-white text-black"
+        className='btn btn-md bg-classhub-purple text-white border-none cursor-pointer hover:bg-white hover:text-black mx-auto'
       >Give Feedback</button>
-      <dialog id="feedback_add" className="modal text-white">
-        <div className="modal-box w-11/12 max-w-xl font-normal">
+      <dialog id="feedback_add" className="modal text-black">
+        <div className="modal-box w-11/12 max-w-xl font-normal bg-white">
           <h3 className="text-2xl">Give Feedback</h3>
 
           <div className="mt-6">
@@ -34,7 +36,7 @@ const AddFeedbackModal = (props: { student: any }) => {
               type='text'
               value={props.student.name}
               disabled
-              className='w-full mt-2 input input-bordered flex items-center focus:outline-none'
+              className={`${inputClass} disabled:bg-gray-300 disabled:text-black disabled:border-none`}
               autoComplete='false'
             />
           </div>
@@ -69,7 +71,7 @@ const AddFeedbackModal = (props: { student: any }) => {
             <label className="ml-2 font-semibold">Feedback</label>
             <textarea
               rows={3}
-              className='textarea textarea-bordered w-full mt-2 flex items-center focus:outline-none'
+              className='textarea textarea-bordered resize-none w-full bg-white mt-2 flex items-center focus:outline-none'
               value={content}
               onChange={(e) => setContent(e.target.value)}
               autoComplete="false"

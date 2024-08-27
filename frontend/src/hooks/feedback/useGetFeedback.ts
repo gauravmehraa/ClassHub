@@ -5,7 +5,6 @@ const useGetFeedback = () => {
   const [loading, setLoading] = useState(false);
   const [feedbacks, setFeedbacks] = useState([] as any);
   
-  
   useEffect(() => {
     const getFeedback = async() => {
       setLoading(true);
@@ -15,6 +14,7 @@ const useGetFeedback = () => {
         if(data.error){
           throw new Error(data.error);
         }
+        data.sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
         setFeedbacks(data);
       }
       catch (error){

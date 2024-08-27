@@ -14,12 +14,13 @@ import AddStudent from './pages/AddStudent';
 import AddQuiz from './pages/AddQuiz';
 import Dashboard from './pages/Dashboard';
 import Navbar from './components/Navbar';
+import Classes from './pages/Classes';
 
 const App: React.FC = () => {
 
   const { authUser } = useAuthContext();
   return (
-    <div className='min-h-screen max-h-screen max-w-screen flex md:flex-row flex-col  font-roboto text-black backdrop-blur-xs'>
+    <div className='min-h-screen max-h-screen max-w-screen flex md:flex-row flex-col font-roboto text-black backdrop-blur-xs'>
       { authUser? <Navbar/>: null}
       <Routes>
         <Route path='/'>
@@ -31,6 +32,7 @@ const App: React.FC = () => {
             <Route index element={authUser? <Notes/>: <Navigate to='/login'/>}/>
             <Route path='add' element={authUser && authUser.role === "Teacher"? <AddNote/>:<Navigate to='/login'/>}/>
           </Route>
+          <Route path='classes' element={authUser && authUser.role === "Teacher"? <Classes/>:<Navigate to='/login'/>}/>
           <Route path='students'>
             <Route index element={authUser && authUser.role === "Teacher"? <Students/>: <Navigate to='/login'/>}/>
             <Route path='profile' element={authUser && authUser.role === "Teacher"? <Profile/>:<Navigate to='/login'/>}/>

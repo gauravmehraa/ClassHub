@@ -42,7 +42,7 @@ const EditStudentModal = (props: { student: any }) => {
     <div className="flex items-center">
     <div
       onClick={()=>(document.getElementById(`student_edit_${props.student._id}`) as HTMLDialogElement).showModal()}
-      className='btn btn-md bg-white text-black cursor-pointer hover:text-red-400'
+      className='btn btn-md bg-classhub-purple text-white border-none cursor-pointer hover:bg-white hover:text-black mx-auto'
     >Edit Student</div>
     <dialog id={`student_edit_${props.student._id}`} className="modal focus:outline-none">
       <div className="modal-box w-11/12 max-w-xl font-normal bg-white">
@@ -127,7 +127,7 @@ const EditStudentModal = (props: { student: any }) => {
           >
             <option value="" disabled={data.classID !== ""}>Select Class</option>
             { typeof(classes) !== "undefined" && classes.map((currentClass: any) => (
-              <option key={currentClass._id} value={currentClass._id}>{currentClass.year} {currentClass.program}</option>
+              <option key={currentClass._id} value={currentClass._id} selected={currentClass._id === props.student.classID._id}>{currentClass.year} {currentClass.program}</option>
             ))}
           </select>
         </div>
