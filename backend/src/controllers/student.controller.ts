@@ -21,7 +21,7 @@ export const getStudentsByTeacher = async(req: Request, res: Response): Promise<
     ).populate({
       path: "classID",
       select: "classID year program"
-    }).select("-hashedPassword -updatedAt -__v")//.lean(); // lean for converting to js object (for deleting keys)
+    }).select("-hashedPassword -updatedAt -__v");
 
     const formattedStudents: any = {}
     for(let student of students){

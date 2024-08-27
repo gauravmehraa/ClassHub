@@ -15,7 +15,7 @@ export const getClasses = async(req: Request, res: Response) => {
 
 export const addClass = async(req: Request, res: Response) => {
   try{
-    const { year, program, seats, subjects } = req.body;
+    const { year, program, seats } = req.body;
 
     const existingClass: IClass[] = await Class.find({
       year: { $eq: year },
@@ -27,7 +27,7 @@ export const addClass = async(req: Request, res: Response) => {
       return;
     }
 
-    const newClass = new Class({ year, program, seats, subjects });
+    const newClass = new Class({ year, program, seats, subjects: [] });
     if(newClass){
       await newClass.save();
       res.status(201).json({
@@ -70,27 +70,6 @@ export const editClass = async(req: Request, res: Response) => {
   }
   catch (error) {
     console.log(`[ERROR] - Edit Class Controller: ${(error as Error).message}`);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-}
-
-export const deleteClass = async(req: Request, res: Response) => {
-  try{
-    const { id: classID } = req.params;
-
-    const existingClass = await Class.findById(classID);
-
-    if(!existingClass){
-      res.status(500).json({ error: "No class to be deleted" });
-      return;
-    }
-
-    await Class.findByIdAndDelete(classID);
-    res.status(200).json({ message: "Class successfully deleted" });
-
-  }
-  catch (error) {
-    console.log(`[ERROR] - Delete Class Controller: ${(error as Error).message}`);
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
