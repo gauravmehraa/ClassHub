@@ -16,6 +16,10 @@ const quizSchema = new Schema<IQuiz>({
     ref: "Question",
     required: true,
     default: []
+  },
+  score: {
+    type: Number,
+    required: false,
   }
 }, { timestamps: true });
 

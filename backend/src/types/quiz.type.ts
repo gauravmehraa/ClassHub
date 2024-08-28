@@ -5,4 +5,5 @@ export interface IQuiz {
   topic: string;
   subjectID: Types.ObjectId;
   questions: Types.ObjectId[];
+  score: number;
 }

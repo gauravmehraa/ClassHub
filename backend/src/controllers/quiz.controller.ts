@@ -7,6 +7,7 @@ import { ISubject } from "../types/subject.type";
 import { IQuiz } from "../types/quiz.type";
 import Class from "../models/class.model";
 import Grade from "../models/grade.model";
+import { IQuestion } from "../types/question.type";
 
 export const getQuizzesByTeacher = async(req: Request, res: Response) => {
   try{
@@ -78,6 +79,8 @@ export const addQuiz = async(req: Request, res: Response) => {
       return;
     }
 
+    let score = 0;
+    questions.forEach((question: IQuestion) => score += question.score );
     const insertedQuestions = await Question.insertMany(questions);
     
     if(!insertedQuestions){
@@ -85,7 +88,7 @@ export const addQuiz = async(req: Request, res: Response) => {
     }
     
     const questionIDs: Types.ObjectId[] = insertedQuestions.map(question => { return question._id });
-    const quiz = new Quiz({ topic, subjectID, questions: questionIDs });
+    const quiz = new Quiz({ topic, subjectID, questions: questionIDs, score });
 
     if(quiz){
       await quiz.save();
