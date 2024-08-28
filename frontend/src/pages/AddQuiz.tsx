@@ -180,7 +180,7 @@ const AddQuiz = () => {
                     <input
                       key={optionIndex}
                       value={option}
-                      className={`input bg-white input-bordered ${qn.answer === optionIndex+1? "bg-green-400": "bg-red-300"}`}
+                      className={`input input-bordered ${qn.answer === optionIndex+1? "bg-green-400": "bg-red-300"}`}
                       onChange={(e) => handleOptionChange(index, optionIndex, e.target.value)}
                     />
                   ))

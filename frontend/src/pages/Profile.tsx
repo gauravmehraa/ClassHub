@@ -1,5 +1,6 @@
 import { useLocation } from 'react-router-dom'
-import { getDate } from '../utils/date';
+import { Chart } from "react-google-charts";
+import { getDate, getDateFormatted } from '../utils/date';
 import useGetFeedback from '../hooks/feedback/useGetFeedback';
 import FeedbackCard from '../components/FeedbackCard';
 import useGetGrades from '../hooks/quiz/useGetGrades';
@@ -9,6 +10,8 @@ import EditStudentModal from '../components/EditStudentModal';
 import useGetSubjects from '../hooks/subjects/useGetSubjects';
 import { MdOutlineMail, MdOutlinePhone, MdOutlineHome, MdOutlineMale, MdOutlineFemale } from "react-icons/md";
 import { LiaBirthdayCakeSolid } from "react-icons/lia";
+import { MdOutlineSearchOff } from "react-icons/md";
+import { TbGraphOff } from "react-icons/tb";
 
 const Profile = () => {
   const location = useLocation();
@@ -17,6 +20,29 @@ const Profile = () => {
   const { loading: subjectsLoading, subjects } = useGetSubjects();
   const { loading: gradesLoading, grades } = useGetGrades(student._id);
   const filteredFeedbacks = feedbacks.filter((feedback: any)=> feedback.studentID._id.toString() === student._id.toString());
+
+
+  const gradeData: any = [];
+  grades.forEach((grade: any) => {
+    const percentage = parseFloat(((grade.score / grade.quizID.score) * 100).toFixed(2));
+    gradeData.unshift([ getDateFormatted(grade.createdAt), percentage ])
+  });
+  gradeData.unshift(["Year", "Percentage"]);
+
+  const feedbackData: any = [];
+  filteredFeedbacks.forEach((feedback: any) => {
+    const percentage = feedback.rating;
+    feedbackData.unshift(([ getDateFormatted(feedback.createdAt), percentage ]));
+  });
+  feedbackData.unshift(["Year", "Feedback"]);
+
+  const options = {
+    title: "",
+    hAxis: { title: "", titleTextStyle: { color: "#333" } },
+    vAxis: { minValue: 0, maxValue: 5 },
+    chartArea: { width: "60%", height: "60%" },
+    colors: ['#428af5']
+  };
 
   return (
     <div className="flex flex-col text-black py-4 sm:py-8 overflow-auto max-h-screen w-full">
@@ -49,43 +75,66 @@ const Profile = () => {
         </div>
       </div>
 
-      <EditStudentModal student={{...student, course}}/>
-
-      <div className='w-full flex flex-row flex-wrap mt-8'>
-        <div className='w-full flex flex-col'>
-          <div className='text-2xl font-semibold text-center my-4'>Feedbacks</div>
-          <AddFeedbackModal student={student}/>
-          {
-            feedbackLoading ?
-            <span className='loading loading-spinner mx-auto my-12 text-white'></span>:
-            <div className="flex flex-row flex-wrap my-2 sm:my-8 justify-center text-center max-h-96 overflow-auto">
-              { filteredFeedbacks.length === 0?
-                <div> No feedback to show </div>:
-                filteredFeedbacks.map((feedback: any, index: number) => (
-                  <FeedbackCard key={feedback._id} data={feedback} showInfo={false} index={index}/>
-                ))
-              }
-            </div>
-          }
+      <div className='flex flex-row flex-wrap gap-4 justify-center'>
+        <EditStudentModal student={{...student, course}}/>
+        <AddFeedbackModal student={student}/>
+      </div>
+      <div className='flex flex-row flex-wrap'>
+        <div className='flex flex-col px-4 mt-8 w-full items-center gap-8 md:w-1/2 '>
+          <Section data={grades} dataLoading={gradesLoading} title={"Grades"}>
+            { grades.length === 0?
+              <div className='font-semibold text-2xl flex gap-2 items-center my-auto mx-auto'> <MdOutlineSearchOff className='text-classhub-purple w-8 h-8'/> No grades found </div>:
+              grades.map((grade: any, index: number) => (
+                <GradeCard key={grade._id} data={grade} index={index}/>
+              ))
+            }
+          </Section>
+          <div className={`flex flex-col min-h-96  w-full md:w-11/12 ${true? "bg-gray-200": "bg-gray-100"}`}>
+            <div className='text-2xl text-center py-4 text-white bg-slate-600'>Academics</div>
+            { grades.length <= 1?
+            <div className='font-semibold text-2xl flex gap-2 items-center my-auto mx-auto'> <TbGraphOff className='text-classhub-purple w-8 h-8'/> Insufficient Data </div>
+            :<Chart chartType="AreaChart" width="100%" height="384px" data={gradeData} options={options} />
+            }
+          </div>
         </div>
-        <div className='w-full flex flex-col'>
-          <div className='text-2xl font-semibold justify-center text-center'>Grades</div>
-          {
-            gradesLoading ?
-            <span className='loading loading-spinner mx-auto my-12 text-white'></span>:
-            <div className="flex flex-row flex-wrap my-2 sm:my-8 justify-center text-center h-96 overflow-auto">
-              { grades.length === 0?
-                <div> No grades to show </div>:
-                grades.map((grade: any, index: number) => (
-                  <GradeCard key={grade._id} data={grade}/>
-                ))
-              }
-            </div>
-          }
+        <div className='flex flex-col px-4 mt-8 w-full items-center gap-8 md:w-1/2 '>
+          <Section data={filteredFeedbacks} dataLoading={feedbackLoading} title={"Feedbacks"}>
+            { filteredFeedbacks.length === 0?
+              <div className='font-semibold text-2xl flex gap-2 items-center my-auto mx-auto'> <MdOutlineSearchOff className='text-classhub-purple w-8 h-8'/> No feedback given </div>:
+              filteredFeedbacks.map((feedback: any, index: number) => (
+                <FeedbackCard key={feedback._id} data={feedback} showInfo={false} index={index}/>
+              ))
+            }
+          </Section>
+          <div className={`flex flex-col min-h-96  w-full md:w-11/12 ${true? "bg-gray-200": "bg-gray-100"}`}>
+            <div className='text-2xl text-center py-4 text-white bg-slate-600'>Performance</div>
+            { filteredFeedbacks.length <= 1?
+            <div className='font-semibold text-2xl flex gap-2 items-center my-auto mx-auto'> <TbGraphOff className='text-classhub-purple w-8 h-8'/> Insufficient Data </div>
+            :<Chart chartType="AreaChart" width="100%" height="384px" data={feedbackData} options={options} />
+            }
+          </div>
         </div>
       </div>
     </div>
   )
 }
+
+const Section = (props: { data: any, dataLoading: boolean, title: string, children: React.ReactNode }) => {
+  return (
+    <div className={`flex flex-col min-h-96 max-h-96 w-full md:w-11/12 ${props.data.length % 2 === 0? "bg-gray-200": "bg-gray-100"}`}>
+      <div className='text-2xl text-center py-4 text-white bg-slate-600'>{props.title}</div>
+      <div className='w-full h-full flex flex-col overflow-auto'>
+        {
+          props.dataLoading ?
+          <span className='loading loading-spinner mx-auto my-12 text-classhub-purple'></span>:
+          <div className={`flex flex-row flex-wrap justify-center ${props.data.length === 0 && 'h-full'} text-center max-h-96 overflow-auto`}>
+            { props.children }
+          </div>
+        }
+      </div>
+    </div>
+  );
+}
+
 
 export default Profile

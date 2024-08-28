@@ -28,7 +28,7 @@ const Navbar = () => {
     <nav className='max-h-screen min-h-screen border-r-0 border-slate-400 min-w-72 max-w-72 bg-white md:flex flex-col text-black font-roboto hidden'> 
       <img 
         src={'https://www.lms.org/files/assets/logo.png'}
-        className='w-6/12 mx-auto my-4'
+        className='w-6/12 mx-auto h-fit mt-auto'
         alt='ClassHub Logo'
       />
       <div className='mt-auto flex flex-col items-center gap-4 pb-6'>
@@ -54,11 +54,8 @@ const Navbar = () => {
         <NavLink to="quiz" className={({ isActive }) => isActive ? `${buttonClass} bg-classhub-purple text-white glass` : buttonClass}>
           <PiExam className='w-6 h-6'/> Quizzes
         </NavLink>
-        <NavLink to="help" className={({ isActive }) => isActive ? `${buttonClass} bg-classhub-purple text-white glass` : buttonClass}>
-          <MdHelpOutline className='w-6 h-6'/> Help
-        </NavLink>
       </div>
-      <div className='mt-auto flex flex-col items-center gap-6 my-auto font-semibold'>
+      <div className='mt-auto flex flex-col items-center gap-6 pb-6 font-semibold'>
         <NavLink to="help" className='flex flex-row items-center gap-3'>
           <TbSettings className='w-6 h-6'/> Settings
         </NavLink>
@@ -96,7 +93,7 @@ const Navbar = () => {
           <ul className="menu bg-white min-h-full w-80 p-4 gap-2">
             <img 
               src={'https://www.lms.org/files/assets/logo.png'}
-              className='w-6/12 mx-auto my-6'
+              className='w-6/12 mx-auto my-auto'
               alt='ClassHub Logo'
             />
             <li onClick={handleClose}>
@@ -131,11 +128,6 @@ const Navbar = () => {
             <li onClick={handleClose}>
               <NavLink to="quiz" className={({ isActive }) => isActive ? `${buttonClass} bg-classhub-purple text-white glass` : buttonClass}>
                 <PiExam className='w-6 h-6'/> Quizzes
-              </NavLink>
-            </li>
-            <li onClick={handleClose}>
-              <NavLink to="help" className={({ isActive }) => isActive ? `${buttonClass} bg-classhub-purple text-white glass` : buttonClass}>
-                <MdHelpOutline className='w-6 h-6'/> Help
               </NavLink>
             </li>
             <div className='mt-auto flex flex-col items-center gap-6 pb-8 font-semibold'>

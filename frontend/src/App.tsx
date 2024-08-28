@@ -20,7 +20,7 @@ const App: React.FC = () => {
 
   const { authUser } = useAuthContext();
   return (
-    <div className='min-h-screen max-h-screen max-w-screen flex md:flex-row flex-col font-roboto text-black backdrop-blur-xs'>
+    <div className='min-h-screen max-h-screen max-w-screen flex md:flex-row flex-col font-inter text-black backdrop-blur-xs'>
       { authUser? <Navbar/>: null}
       <Routes>
         <Route path='/'>

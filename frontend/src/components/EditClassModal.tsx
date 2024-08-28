@@ -66,9 +66,9 @@ const EditClassModal = (props: { currentClass: any }) => {
               step={1}
               min={1}
               max={120}
-              className={inputClass}
+              className={`${inputClass} disabled:bg-gray-300 disabled:text-black disabled:border-none`}
               value={seats}
-              onChange={(e) => setSeats(e.target.value.trim() === ""? 1: parseInt(e.target.value))}
+              disabled
               required={true}
             />
           </div>

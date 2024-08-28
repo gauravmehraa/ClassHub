@@ -8,7 +8,7 @@ const Feedback = () => {
 
   const [page, setPage] = useState(1);
 
-  const itemsPerPage = 4;
+  const itemsPerPage = 6;
   const pages = Math.ceil(feedbacks.length / itemsPerPage);
 
   const start = (page - 1) * itemsPerPage;

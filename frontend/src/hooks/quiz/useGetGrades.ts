@@ -6,7 +6,7 @@ const useGetGrades = (studentID: any) => {
   const [grades, setGrades] = useState([] as any);
 
   useEffect(() => {
-    const getFeedback = async() => {
+    const getGrades = async() => {
       setLoading(true);
       try{
         const response: Response = await fetch(`/api/grades/${studentID}`);
@@ -14,6 +14,7 @@ const useGetGrades = (studentID: any) => {
         if(data.error){
           throw new Error(data.error);
         }
+        data.sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
         setGrades(data);
       }
       catch (error){
@@ -23,7 +24,7 @@ const useGetGrades = (studentID: any) => {
         setLoading(false);
       }
     }
-    getFeedback();
+    getGrades();
   }, []);
   return { loading, grades };
 }
