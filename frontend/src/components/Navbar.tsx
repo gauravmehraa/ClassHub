@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { useAuthContext } from '../context/AuthContext'
 import useLogout from '../hooks/auth/useLogout';
 import { sleep } from '../utils/sleep';
@@ -8,13 +8,27 @@ import { TbBooks } from "react-icons/tb";
 import { VscFeedback } from "react-icons/vsc";
 import { PiStudent, PiExam } from "react-icons/pi";
 import { FaChalkboardTeacher } from "react-icons/fa";
-import { MdHelpOutline } from "react-icons/md";
 import { BiLogOut } from "react-icons/bi";
 import { TbSettings } from "react-icons/tb";
+import images from "../assets/images";
 
 const Navbar = () => {
   const { authUser } = useAuthContext();
   const { loading, logout } = useLogout();
+  const location = useLocation();
+
+  const routes: any = {
+    '/dashboard': 'Dashboard',
+    '/students': 'Students',
+    '/students/add': 'Register Student',
+    '/students/profile' : 'View Profile',
+    '/feedback': 'Feedbacks',
+    '/notes' : 'Notes',
+    '/notes/add' : 'Add Note',
+    '/classes' : 'Classes',
+    '/quiz' : 'Quizzes',
+    '/quiz/view' : 'Attempting Quiz',
+  }
 
   const buttonClass = "w-11/12 justify-left items-center flex gap-4 px-6 py-3 rounded-md focus:outline-none"
 
@@ -27,8 +41,8 @@ const Navbar = () => {
     <>
     <nav className='max-h-screen min-h-screen border-r-0 border-slate-400 min-w-72 max-w-72 bg-white md:flex flex-col text-black font-roboto hidden'> 
       <img 
-        src={'https://www.lms.org/files/assets/logo.png'}
-        className='w-6/12 mx-auto h-fit mt-auto'
+        src={images.logo}
+        className='w-8/12 mx-auto h-fit mt-auto'
         alt='ClassHub Logo'
       />
       <div className='mt-auto flex flex-col items-center gap-4 pb-6'>
@@ -71,11 +85,11 @@ const Navbar = () => {
     <nav className='max-w-screen min-w-screen min-h-20 max-h-20 bg-white md:hidden flex-row font-roboto flex z-20'> 
       <div className="flex-none lg:hidden flex items-center">
         <label htmlFor="my-drawer-3" aria-label="open sidebar" className="btn btn-square btn-ghost">
-          <svg
+            <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            className="inline-block h-6 w-6 stroke-current"
+            className="inline-block h-6 w-6 stroke-current ml-3"
           >
             <path
               strokeLinecap="round"
@@ -86,16 +100,17 @@ const Navbar = () => {
         </label>
       </div>
       
-      <div className="drawer">
+      <div className="drawer justify-center">
         <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
+        <div className='absolute w-full h-full flex justify-center items-center pr-12 text-black font-roboto text-3xl font-regular'>{routes[location.pathname]}</div>
         <div className="drawer-side">
           <label htmlFor="my-drawer-3" aria-label="close sidebar" className="drawer-overlay"></label>
           <ul className="menu bg-white min-h-full w-80 p-4 gap-2">
-            <img 
-              src={'https://www.lms.org/files/assets/logo.png'}
-              className='w-6/12 mx-auto my-auto'
-              alt='ClassHub Logo'
-            />
+          <img 
+            src={images.logo}
+            className='w-7/12 mx-auto my-auto'
+            alt='ClassHub Logo'
+          />
             <li onClick={handleClose}>
               <NavLink to="dashboard" className={({ isActive }) => isActive ? `${buttonClass} bg-classhub-purple text-white glass` : buttonClass}>
                 <GoGraph className='w-6 h-6'/> Dashboard

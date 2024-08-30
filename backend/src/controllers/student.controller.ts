@@ -22,7 +22,6 @@ export const getStudentsByTeacher = async(req: Request, res: Response): Promise<
       path: "classID",
       select: "classID year program"
     }).select("-hashedPassword -updatedAt -__v");
-
     const formattedStudents: any = {}
     for(let student of students){
       const course = student.classID.year.toString() + " " + student.classID.program.toString();

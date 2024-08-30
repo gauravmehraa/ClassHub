@@ -39,7 +39,7 @@ const AddStudent = () => {
   return (
     <div className="flex flex-col text-black p-8 overflow-auto w-full">
 
-      <h3 className="text-2xl text-center">Register Student</h3>
+      <h3 className="hidden md:block text-2xl text-center">Register Student</h3>
       <form onSubmit={handleSubmit} onReset={handleReset}>
         
         {/* Name */}

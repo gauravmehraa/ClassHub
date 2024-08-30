@@ -11,6 +11,7 @@ import subjectRoutes from "./routes/subject.routes";
 import quizRoutes from "./routes/quiz.routes";
 import gradeRoutes from "./routes/grades.routes";
 import feedbackRoutes from "./routes/feedback.routes";
+import statsRoutes from "./routes/stats.routes";
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.use('/api/notes', notesRoutes);
 app.use('/api/quiz', quizRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/grades', gradeRoutes);
+app.use('/api/stats', statsRoutes);
 
 app.listen(PORT, () => {
   connectToDB();

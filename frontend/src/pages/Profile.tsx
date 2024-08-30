@@ -8,10 +8,11 @@ import GradeCard from '../components/GradeCard';
 import AddFeedbackModal from '../components/AddFeedbackModal';
 import EditStudentModal from '../components/EditStudentModal';
 import useGetSubjects from '../hooks/subjects/useGetSubjects';
-import { MdOutlineMail, MdOutlinePhone, MdOutlineHome, MdOutlineMale, MdOutlineFemale } from "react-icons/md";
+import { MdOutlineMail, MdOutlinePhone, MdOutlineHome, MdOutlineMale, MdOutlineFemale, MdArrowBackIos } from "react-icons/md";
 import { LiaBirthdayCakeSolid } from "react-icons/lia";
 import { MdOutlineSearchOff } from "react-icons/md";
 import { TbGraphOff } from "react-icons/tb";
+import { Link } from 'react-router-dom';
 
 const Profile = () => {
   const location = useLocation();
@@ -46,7 +47,7 @@ const Profile = () => {
 
   return (
     <div className="flex flex-col text-black py-4 sm:py-8 overflow-auto max-h-screen w-full">
-
+      <Link to="../" className='mr-auto ml-8 mt-4'><MdArrowBackIos className='w-6 h-6 hover:text-classhub-purple'/></Link>
       <div className='flex flex-col justify-center items-center gap-4 flex-wrap px-2 sm:px-8 mt-6'>
         <img src={`https://avatar.iran.liara.run/public/${student.gender === 'Male'? 'boy': 'girl'}?username=${student.email}`} alt="User" className="rounded-full w-24 h-24 border-classhub-purple border-2" />
         <div className='text-2xl font-semibold '>{student.name}</div>

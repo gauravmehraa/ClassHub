@@ -13,10 +13,10 @@ const DeleteNoteModal = (props: { subjectname: string, link: any }) => {
       onClick={()=>(document.getElementById(`note_delete_${props.link._id}`) as HTMLDialogElement).showModal()}
       className='text-black h-4 w-4 cursor-pointer hover:text-red-400'
     />
-    <dialog id={`note_delete_${props.link._id}`} className="modal text-white">
-      <div className="modal-box w-11/12 max-w-xl font-normal">
+    <dialog id={`note_delete_${props.link._id}`} className="modal">
+      <div className="modal-box w-11/12 max-w-xl font-normal bg-slate-200">
         <h3 className="text-xl">Delete
-          <span className="text-xl"> {props.link.title}</span>?
+          <span className="text-xl"><b> {props.link.title}</b></span>?
         </h3>
         <p className="py-4 text-lg">Notes cannot be recovered after deletion.</p>
         <div className="modal-action">

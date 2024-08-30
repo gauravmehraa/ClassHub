@@ -1,6 +1,6 @@
 
 export const generateFilename = (name: string, originalFilename: string) => {
-  const formattedName = name.toLowerCase().replace(/\s+/g, '-');
+  const formattedName = encodeS3URI(name.toLowerCase().replace(/\s+/g, '-'));
   const now = new Date();
   const hours = String(now.getHours()).padStart(2, '0');
   const minutes = String(now.getMinutes()).padStart(2, '0');
@@ -14,6 +14,31 @@ export const generateFilename = (name: string, originalFilename: string) => {
   const fileName = `${formattedName}-${dateString}-${timeString}.${extension}`;
   return fileName;
 }
+
+export const encodeS3URI = (filename: string) => {
+  const encodings: any = {
+    '\+': "%2B",
+    '\!': "%21",
+    '\"': "%22",
+    '\#': "%2523",
+    '\$': "%24",
+    '\&': "%26",
+    '\'': "%27",
+    '\(': "%28",
+    '\)': "%29",
+    '\*': "%2A",
+    '\,': "%2C",
+    '\:': "%3A",
+    '\;': "%3B",
+    '\=': "%3D",
+    '\?': "%3F",
+    '\@': "%40",
+  };
+  return encodeURI(filename).replace(
+    /(\+|!|"|#|\$|&|'|\(|\)|\*|\+|,|:|;|=|\?|@)/img,
+    function(match) { return encodings[match]; });
+}
+
 
 export const extractFilename = (url: String) => {
   const filename = url.split('/');

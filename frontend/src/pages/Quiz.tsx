@@ -22,52 +22,53 @@ const Quiz = () => {
   }
   
   return (
-    <div className='text-white'>
-      <div className='text-3xl font-bold mb-8 text-center'>{quiz.topic}</div>
+    <div className="flex flex-col text-black px-6 sm:px-4 py-4 sm:py-8 overflow-auto max-h-screen w-full">
+      <div className='text-3xl font-bold mt-8 text-center underline underline-offset-8'>{quiz.topic}</div>
       {
         JSON.stringify(correctAnswers) !== "{}" &&
-        <div className='text-xl font-bold mb-8 text-center'>Grade Obtained: {correctAnswers.grade}</div>
+        <div className='text-xl font-bold mt-8 text-center'>Grade Obtained: {correctAnswers.grade}</div>
       }
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className='flex flex-col items-center'>
       {
         quiz.questions.map((question: any, index: number) => (
-          <div key={question._id} className="mt-4">
-            <div className='flex items-center gap-3'>
-              {index+1}. {question.question}
+          <div key={question._id} className="mt-8">
+            <div className='flex text-center items-center gap-3 px-4 sm:px-8 text-xl mx-auto'>
+              <b>{index+1}. {question.question} { authUser.role === "Teacher" && `[${question.score} marks]`}</b>
               { JSON.stringify(correctAnswers) !== "{}" &&
                 (correctAnswers.results[question._id]? <FaCheck className='text-green-400'/>: <IoClose className='h-6 w-6 text-red-500'/>)
               }
             </div>
-            <div className={`flex flex-row flex-wrap gap-4 ${authUser.role === "Teacher"? "tooltip":""}`} data-tip="Teachers cannot answer">
+            <div className={`flex flex-col items-left mx-auto w-screen sm:w-96 flex-wrap px-4 gap-4 sm:px-8 ${authUser.role === "Teacher"? "tooltip":""}`} data-tip="Teachers cannot answer">
               { question.options.map((option: any, index: number) => (
                 <div className="form-control" key={index}>
-                  <label className="label cursor-pointer gap-2">
-                    <span className="label-text">{option}</span>
+                  <label className="flex label text-left cursor-pointer w-fit gap-4">
                     { authUser.role === "Teacher" && 
                       <input
-                        type="radio"
-                        name={question.question}
-                        value={index+1}
-                        disabled={true}
-                        checked={question.answer === index+1}
-                        className="radio checked:bg-red-500 disabled"
+                      type="radio"
+                      name={question.question}
+                      value={index+1}
+                      disabled={true}
+                      readOnly
+                      checked={question.answer === index+1}
+                      className="radio input-bordered checked:bg-green-400 disabled border-black border-2"
                       />
                     }
                     { authUser.role === "Student" && 
                       <input
-                        type="radio"
-                        name={question.question}
-                        value={index+1}
-                        required
-                        disabled={JSON.stringify(correctAnswers) !== "{}"}
-                        className={`radio checked:bg-red-500 ${JSON.stringify(correctAnswers) !== "{}"? "disabled":"" }`}
-                        onChange={(e) => setData({
-                          ...data, submittedQuestions: {
-                            ...data.submittedQuestions,
-                            [question._id]: parseInt(e.target.value)
+                      type="radio"
+                      name={question.question}
+                      value={index+1}
+                      required
+                      disabled={JSON.stringify(correctAnswers) !== "{}"}
+                      className={`radio bg-white checked:bg-red-500 border-classhub-purple ${JSON.stringify(correctAnswers) !== "{}"? "disabled":"" }`}
+                      onChange={(e) => setData({
+                        ...data, submittedQuestions: {
+                          ...data.submittedQuestions,
+                          [question._id]: parseInt(e.target.value)
                         }})}
-                      />
-                    }
+                        />
+                      }
+                      <span className="label-text text-black text-lg">{option}</span>
                   </label>
                 </div>
               ))}

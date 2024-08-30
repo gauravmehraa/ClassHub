@@ -17,8 +17,8 @@ const DeleteQuizModal = (props: { quiz: any }) => {
       onClick={()=>(document.getElementById(`quiz_delete_${props.quiz._id}`) as HTMLDialogElement).showModal()}
       className='btn mt-2 cursor-pointer'
     > Delete </button>
-    <dialog id={`quiz_delete_${props.quiz._id}`} className="modal text-white">
-      <div className="modal-box w-11/12 max-w-xl font-normal">
+    <dialog id={`quiz_delete_${props.quiz._id}`} className="modal">
+    <div className="modal-box w-11/12 max-w-xl font-normal bg-slate-200">
         <h3 className="text-xl">Delete
           <span className="text-xl"> <b>{props.quiz.topic}</b></span>?
         </h3>

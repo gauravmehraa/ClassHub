@@ -10,7 +10,7 @@ export default {
     extend: {
 			colors: {
 				'classhub-purple': '#7284fe',
-				'classhub-gray': '##dcdcdc',
+				'classhub-gray': '#dcdcdc',
 				'classhub-lavender': '#eef2fe',
 			},
 			backdropBlur: {

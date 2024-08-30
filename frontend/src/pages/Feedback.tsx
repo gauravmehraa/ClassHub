@@ -2,8 +2,10 @@ import { useState } from "react";
 import FeedbackCard from "../components/FeedbackCard";
 import useGetFeedback from "../hooks/feedback/useGetFeedback";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
+import { useAuthContext } from "../context/AuthContext";
 
 const Feedback = () => {
+  const { authUser} = useAuthContext();
   const { loading, feedbacks } = useGetFeedback();
 
   const [page, setPage] = useState(1);
@@ -24,8 +26,8 @@ const Feedback = () => {
 
   return (
     <div className="flex flex-col text-black py-4 sm:py-8 overflow-auto max-h-screen w-full">
-      <div className="text-3xl text-center font-semibold py-4">Feedbacks</div>
-      <div className="text-xl text-center py-2 w-11/12 sm:w-1/2 mx-auto">Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis qui tenetur culpa, mollitia ut?</div>
+      <div className="hidden md:block text-3xl text-center font-semibold py-4">Feedbacks</div>
+      <div className="text-xl text-center py-2 w-11/12 sm:w-1/2 mx-auto">{ authUser.role === "Teacher"? "Take a look at the feedbacks you've given for your students.": "Take a look at the feedbacks given by your teachers." }</div>
     {
       loading ?
       <span className='loading loading-spinner mx-auto text-white'></span>:

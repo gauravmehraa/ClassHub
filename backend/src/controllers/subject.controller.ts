@@ -16,7 +16,7 @@ export const getSubjects = async(req: Request, res: Response) => {
 
 export const addSubject = async(req: Request, res: Response) => {
   try{
-    const { id: teacherID } = req.user._id;
+    const { id: teacherID } = req.user;
     const { name } = req.body;
 
     const existingSubject: ISubject[] = await Subject.find({ name: { $eq: name } });
@@ -94,20 +94,16 @@ export const deleteSubject = async(req: Request, res: Response) => {
 
 export const allocateSubject = async(req: Request, res: Response) => {
   try{
-    const { id: classID } = req.params;
-    const { subjects } = req.body;
+    const { classID, subjectID } = req.body;
 
-    const updatedClass = await Class.findByIdAndUpdate(
-      classID,
-      { subjects },
-      { new: true }
-    );
-
+    const updatedClass = await Class.findById(classID);
+    
     if(!updatedClass){
       res.status(500).json({ error: "No class to be allocated" });
       return;
     }
 
+    updatedClass.subjects.push(subjectID);
     await updatedClass.save();
     res.status(200).json(updatedClass);
   }

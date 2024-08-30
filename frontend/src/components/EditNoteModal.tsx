@@ -35,7 +35,7 @@ const EditNoteModal = (props: { subjectname: string, link: any }) => {
       className='text-black h-5 w-5 cursor-pointer hover:text-red-400'
     />
     <dialog id={`note_edit_${props.link._id}`} className="modal">
-      <div className="modal-box w-11/12 max-w-xl font-normal bg-white">
+      <div className="modal-box w-11/12 max-w-xl font-normal bg-slate-200">
         <h3 className="text-2xl">Edit Note</h3>
 
         <div className="mt-6">
@@ -47,6 +47,7 @@ const EditNoteModal = (props: { subjectname: string, link: any }) => {
             className={inputClass}
             autoComplete='false'
             autoCapitalize='true'
+            autoFocus={false}
           />
         </div>
 
@@ -58,6 +59,7 @@ const EditNoteModal = (props: { subjectname: string, link: any }) => {
             onChange={(e) => setDescription(e.target.value)}
             className={inputClass}
             autoComplete='false'
+            autoFocus={false}
           />
         </div>
 
@@ -69,6 +71,7 @@ const EditNoteModal = (props: { subjectname: string, link: any }) => {
             disabled
             className={`${inputClass} disabled:bg-gray-300 disabled:text-black disabled:border-none`}
             autoComplete='false'
+            autoFocus={false}
           />
         </div>
 
@@ -79,6 +82,7 @@ const EditNoteModal = (props: { subjectname: string, link: any }) => {
             onChange={(e) => setFile(e.target.files![0])}
             className='w-full mt-2 file-input file-input-bordered file:bg-gray-400 file:border-none file:text-black bg-white flex items-center focus:outline-none'
             accept="application/msword, application/vnd.ms-powerpoint, application/pdf"
+            autoFocus={false}
           />
         </div>        
 

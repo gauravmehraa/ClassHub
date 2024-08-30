@@ -9,7 +9,7 @@ const Classes = () => {
 
   const [page, setPage] = useState(1);
 
-  const itemsPerPage = 4;
+  const itemsPerPage = 8;
   const pages = Math.ceil(classes.length / itemsPerPage);
 
   const start = (page - 1) * itemsPerPage;
@@ -25,7 +25,7 @@ const Classes = () => {
 
   return (
     <div className="flex flex-col text-black py-4 sm:py-8 overflow-auto max-h-screen w-full">
-      <div className="text-3xl text-center font-semibold py-4">Classes</div>
+      <div className="hidden md:block text-3xl text-center font-semibold py-4">Classes</div>
       <AddClassModal/>
     {
       loading ?

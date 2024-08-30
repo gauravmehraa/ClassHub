@@ -26,7 +26,7 @@ const EditClassModal = (props: { currentClass: any }) => {
     window.location.reload();
   }
   return (
-    <div className="flex items-center ml-auto">
+    <div className="flex items-center ml-4">
       <MdModeEdit
         onClick={()=>(document.getElementById(`class_edit_${props.currentClass._id}`) as HTMLDialogElement).showModal()}
         className='text-black h-6 w-6 cursor-pointer hover:text-red-400'

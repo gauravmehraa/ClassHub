@@ -27,11 +27,11 @@ const useAddStudent = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestData)
       });
-
       const data = await response.json();
       if(data.error){
         throw new Error(data.error);
       }
+      toast.success("Student successfully registered.")
     }
     catch (error){
       toast.error((error as Error).message);

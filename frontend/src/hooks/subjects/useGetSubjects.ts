@@ -14,7 +14,8 @@ const useGetSubjects = () => {
         if(data.error){
           throw new Error(data.error);
         }
-        setSubjects(data);
+        const sorted = data.sort((a: any, b: any) => a.name.localeCompare(b.name));
+        setSubjects(sorted);
       }
       catch (error){
         toast.error((error as Error).message);

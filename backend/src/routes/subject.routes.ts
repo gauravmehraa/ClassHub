@@ -4,7 +4,7 @@ import { addSubject, getSubjects, editSubject, deleteSubject, allocateSubject } 
 
 const router: Router = Router();
 
-router.get("/", verifyUser, getSubjects);
+router.get("/", verifyTeacher, getSubjects);
 
 router.post("/add", verifyTeacher, addSubject);
 
@@ -12,6 +12,6 @@ router.patch("/edit/:id", verifyTeacher, editSubject);
 
 router.delete("/delete/:id", verifyTeacher, deleteSubject);
 
-router.post("/allocate/:id", verifyTeacher, allocateSubject);
+router.post("/allocate", verifyTeacher, allocateSubject);
 
 export default router;
