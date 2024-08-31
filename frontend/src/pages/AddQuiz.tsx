@@ -91,13 +91,12 @@ const AddQuiz = () => {
           </select>
         </div>
 
-        <div className='btn bg-classhub-purple text-black border-none flex min-w-48 max-w-48 mx-auto mt-6 mb-4' onClick={handleIncrement}>Add Question</div>
             
         {
           questions.map((qn: any, index: number) => (
             <div
               key={index}
-              className={`bg-zinc-400 rounded-2xl p-4 my-8 ${fadeOutIndex === index ? 'animate-fade-out' : ''} ${fadeInIndex === index ? 'animate-fade-in' : ''}`}>
+              className={`bg-slate-200 rounded-2xl p-4 my-8 ${fadeOutIndex === index ? 'animate-fade-out' : ''} ${fadeInIndex === index ? 'animate-fade-in' : ''}`}>
               <div className="mt-4">
                 <label className="ml-2 font-semibold">Question {index+1}</label>
                 <input
@@ -189,6 +188,8 @@ const AddQuiz = () => {
             </div>
           ))
         }
+        
+        <div className='btn bg-classhub-purple text-black border-none flex min-w-48 max-w-48 mx-auto mt-6 mb-4' onClick={handleIncrement}>Add Question</div>
         
         <div className='mt-6 flex justify-end'>
           <button type='reset' className="btn m-2 btn-info"> Reset </button>

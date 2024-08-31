@@ -24,9 +24,10 @@ const App: React.FC = () => {
       { authUser? <Navbar/>: null}
       <Routes>
         <Route path='/'>
-          <Route index element={authUser? <Dashboard/>: <Navigate to='/login'/>}/>
-          <Route path='login' element={authUser? <Navigate to='/'/>: <Login/>}/>
-          <Route path='signup' element={authUser? <Navigate to='/'/>: <Signup/>}/>
+          <Route path ='' element={authUser? <Dashboard/>: <Navigate to='/login'/>}/>
+          <Route path ='dashboard' element={authUser? <Dashboard/>: <Navigate to='/login'/>}/>
+          <Route path='login' element={authUser? <Navigate to='/dashboard'/>: <Login/>}/>
+          <Route path='signup' element={authUser? <Navigate to='/dashboard'/>: <Signup/>}/>
           <Route path='feedback' element={authUser? <Feedback/>:<Navigate to='/login'/>}/>
           <Route path='notes'>
             <Route index element={authUser? <Notes/>: <Navigate to='/login'/>}/>
