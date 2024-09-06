@@ -12,12 +12,13 @@ import quizRoutes from "./routes/quiz.routes";
 import gradeRoutes from "./routes/grades.routes";
 import feedbackRoutes from "./routes/feedback.routes";
 import statsRoutes from "./routes/stats.routes";
+import lecturesRoutes from "./routes/lecture.routes";
+
+import { app, server } from "./sockets/socket"
 
 dotenv.config();
 
 const PORT: string = process.env.PORT || "8080";
-
-const app: Express = express();
 
 app.use(express.json());
 app.use(cookieParser());
@@ -31,8 +32,9 @@ app.use('/api/quiz', quizRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/grades', gradeRoutes);
 app.use('/api/stats', statsRoutes);
+app.use('/api/lectures', lecturesRoutes);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   connectToDB();
   console.log(`[START] - Server running on Port ${PORT}`);
 })
