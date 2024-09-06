@@ -189,7 +189,7 @@ const AddQuiz = () => {
           ))
         }
         
-        <div className='btn bg-classhub-purple text-black border-none flex min-w-48 max-w-48 mx-auto mt-6 mb-4' onClick={handleIncrement}>Add Question</div>
+        <div className='btn bg-primary text-black border-none flex min-w-48 max-w-48 mx-auto mt-6 mb-4' onClick={handleIncrement}>Add Question</div>
         
         <div className='mt-6 flex justify-end'>
           <button type='reset' className="btn m-2 btn-info"> Reset </button>

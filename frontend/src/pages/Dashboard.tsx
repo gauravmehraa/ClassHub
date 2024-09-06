@@ -34,7 +34,7 @@ const Dashboard = () => {
     <div className="flex flex-col text-black py-4 sm:py-8 overflow-auto max-h-screen w-full">
       { authUser && authUser.role === "Teacher"?
       (JSON.stringify(averageGrades) === "{}" ?
-      <div className='font-semibold text-2xl flex gap-2 items-center my-auto mx-auto'> <TbGraphOff className='text-classhub-purple w-8 h-8'/> No statistics </div>:
+      <div className='font-semibold text-2xl flex gap-2 items-center my-auto mx-auto'> <TbGraphOff className='text-primary w-8 h-8'/> No statistics </div>:
       <div className='mx-6 rounded-lg bg-white p-8'>
         <Chart chartType="Bar" width="100%" height="400px" data={gradeData} options={options} />
       </div>): null

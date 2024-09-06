@@ -9,7 +9,7 @@ export default {
   theme: {
     extend: {
 			colors: {
-				'classhub-purple': '#7284fe',
+				'primary': '#7284FE',
 				'classhub-gray': '#dcdcdc',
 				'classhub-lavender': '#eef2fe',
 			},

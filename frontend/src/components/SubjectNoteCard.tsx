@@ -12,7 +12,7 @@ const SubjectNoteCard = (props: { name: string, links: [] }) => {
           <a
             href={link.url}
             target='blank'
-            className='cursor-pointer font-semibold text-lg hover:text-classhub-purple transition-all'
+            className='cursor-pointer font-semibold text-lg hover:text-primary transition-all'
           >{link.title}</a>
           { link.description && 
           <div>({link.description})</div>

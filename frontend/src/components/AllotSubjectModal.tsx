@@ -32,7 +32,7 @@ const AllotSubjectModal = (props: { currentClass: any }) => {
     <div className="flex items-center text-black">
     <div
       onClick={()=>(document.getElementById(`allot_subject_${props.currentClass._id}`) as HTMLDialogElement).showModal()}
-      className='btn btn-sm bg-classhub-purple text-white border-none'
+      className='btn btn-sm bg-primary text-white border-none'
     >Allocate</div>
     <dialog id={`allot_subject_${props.currentClass._id}`} className="modal">
       <div className="modal-box w-11/12 max-w-xl font-normal bg-slate-200">
@@ -53,7 +53,7 @@ const AllotSubjectModal = (props: { currentClass: any }) => {
             ))}
           </select>:
           <div className="flex flex-row justify-center gap-2 items-center font-semibold">
-            <MdOutlineSearchOff className='text-classhub-purple w-8 h-8'/>
+            <MdOutlineSearchOff className='text-primary w-8 h-8'/>
             <div>No subject available</div>
           </div>
         }
@@ -61,7 +61,7 @@ const AllotSubjectModal = (props: { currentClass: any }) => {
         <div className="modal-action">
           <form method="dialog">
             <button className="btn m-2 focus:outline-none border-none bg-red-600  text-white" onClick={handleCancel}>Close</button>
-            <button className="btn m-2 focus:outline-none border-none  bg-classhub-purple text-white" type='submit' onClick={handleSubmit}>
+            <button className="btn m-2 focus:outline-none border-none  bg-primary text-white" type='submit' onClick={handleSubmit}>
               { allotLoading ? <span className='loading loading-spinner'></span> : "Allot" }
             </button>
           </form>

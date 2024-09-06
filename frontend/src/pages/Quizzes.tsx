@@ -10,7 +10,7 @@ const Quizzes = () => {
   return (
     <div className="flex flex-col text-black p-4 sm:p-8 overflow-auto w-full">
       <h1 className='hidden md:block text-3xl text-center font-semibold'>Quizzes</h1>
-      { authUser.role === "Teacher" && <Link to ="add" className="mx-auto mt-4 btn btn-md border-none bg-classhub-purple text-white hover:bg-white hover:text-black">Add Quiz</Link> }
+      { authUser.role === "Teacher" && <Link to ="add" className="mx-auto mt-4 btn btn-md border-none bg-primary text-white hover:bg-white hover:text-black">Add Quiz</Link> }
     {
       loading ?
       <span className='loading loading-spinner mx-auto text-white'></span>:

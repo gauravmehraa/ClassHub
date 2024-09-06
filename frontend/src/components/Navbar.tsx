@@ -46,26 +46,26 @@ const Navbar = () => {
         alt='ClassHub Logo'
       />
       <div className='mt-auto flex flex-col items-center gap-4 pb-6'>
-        <NavLink to="dashboard" className={({ isActive }) => isActive ? `${buttonClass} bg-classhub-purple text-white glass` : buttonClass}>
+        <NavLink to="dashboard" className={({ isActive }) => isActive ? `${buttonClass} bg-primary text-white glass` : buttonClass}>
           <GoGraph className='w-6 h-6'/> Dashboard
         </NavLink>
         {authUser.role === "Teacher" &&
-        <NavLink to="students" className={({ isActive }) => isActive ? `${buttonClass} bg-classhub-purple text-white glass` : buttonClass}>
+        <NavLink to="students" className={({ isActive }) => isActive ? `${buttonClass} bg-primary text-white glass` : buttonClass}>
           <PiStudent className='w-6 h-6'/> Students
         </NavLink>
         }
-        <NavLink to="feedback" className={({ isActive }) => isActive ? `${buttonClass} bg-classhub-purple text-white glass` : buttonClass}>
+        <NavLink to="feedback" className={({ isActive }) => isActive ? `${buttonClass} bg-primary text-white glass` : buttonClass}>
           <VscFeedback className='w-6 h-6'/> Feedback
         </NavLink>
-        <NavLink to="notes" className={({ isActive }) => isActive ? `${buttonClass} bg-classhub-purple text-white glass` : buttonClass}>
+        <NavLink to="notes" className={({ isActive }) => isActive ? `${buttonClass} bg-primary text-white glass` : buttonClass}>
           <TbBooks className='w-6 h-6'/> Notes
         </NavLink>
         {authUser.role === "Teacher" &&
-        <NavLink to="classes" className={({ isActive }) => isActive ? `${buttonClass} bg-classhub-purple text-white glass` : buttonClass}>
+        <NavLink to="classes" className={({ isActive }) => isActive ? `${buttonClass} bg-primary text-white glass` : buttonClass}>
           <FaChalkboardTeacher className='w-6 h-6'/> Classes
         </NavLink>
         }
-        <NavLink to="quiz" className={({ isActive }) => isActive ? `${buttonClass} bg-classhub-purple text-white glass` : buttonClass}>
+        <NavLink to="quiz" className={({ isActive }) => isActive ? `${buttonClass} bg-primary text-white glass` : buttonClass}>
           <PiExam className='w-6 h-6'/> Quizzes
         </NavLink>
       </div>
@@ -112,36 +112,36 @@ const Navbar = () => {
             alt='ClassHub Logo'
           />
             <li onClick={handleClose}>
-              <NavLink to="dashboard" className={({ isActive }) => isActive ? `${buttonClass} bg-classhub-purple text-white glass` : buttonClass}>
+              <NavLink to="dashboard" className={({ isActive }) => isActive ? `${buttonClass} bg-primary text-white glass` : buttonClass}>
                 <GoGraph className='w-6 h-6'/> Dashboard
               </NavLink>
             </li>
             {authUser.role === "Teacher" &&
             <li onClick={handleClose}>
-              <NavLink to="students" className={({ isActive }) => isActive ? `${buttonClass} bg-classhub-purple text-white glass` : buttonClass}>
+              <NavLink to="students" className={({ isActive }) => isActive ? `${buttonClass} bg-primary text-white glass` : buttonClass}>
                 <PiStudent className='w-6 h-6'/> Students
               </NavLink>
             </li>
             }
             <li onClick={handleClose}>
-              <NavLink to="feedback" className={({ isActive }) => isActive ? `${buttonClass} bg-classhub-purple text-white glass` : buttonClass}>
+              <NavLink to="feedback" className={({ isActive }) => isActive ? `${buttonClass} bg-primary text-white glass` : buttonClass}>
                 <VscFeedback className='w-6 h-6'/> Feedback
               </NavLink>
             </li>
             <li onClick={handleClose}>
-              <NavLink to="notes" className={({ isActive }) => isActive ? `${buttonClass} bg-classhub-purple text-white glass` : buttonClass}>
+              <NavLink to="notes" className={({ isActive }) => isActive ? `${buttonClass} bg-primary text-white glass` : buttonClass}>
                 <TbBooks className='w-6 h-6'/> Notes
               </NavLink>
             </li>
             {authUser.role === "Teacher" &&
             <li onClick={handleClose}>
-            <NavLink to="classes" className={({ isActive }) => isActive ? `${buttonClass} bg-classhub-purple text-white glass` : buttonClass}>
+            <NavLink to="classes" className={({ isActive }) => isActive ? `${buttonClass} bg-primary text-white glass` : buttonClass}>
               <FaChalkboardTeacher className='w-6 h-6'/> Classes
             </NavLink>
             </li>
             }
             <li onClick={handleClose}>
-              <NavLink to="quiz" className={({ isActive }) => isActive ? `${buttonClass} bg-classhub-purple text-white glass` : buttonClass}>
+              <NavLink to="quiz" className={({ isActive }) => isActive ? `${buttonClass} bg-primary text-white glass` : buttonClass}>
                 <PiExam className='w-6 h-6'/> Quizzes
               </NavLink>
             </li>

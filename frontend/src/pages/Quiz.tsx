@@ -60,7 +60,7 @@ const Quiz = () => {
                       value={index+1}
                       required
                       disabled={JSON.stringify(correctAnswers) !== "{}"}
-                      className={`radio bg-white checked:bg-red-500 border-classhub-purple ${JSON.stringify(correctAnswers) !== "{}"? "disabled":"" }`}
+                      className={`radio bg-white checked:bg-red-500 border-primary ${JSON.stringify(correctAnswers) !== "{}"? "disabled":"" }`}
                       onChange={(e) => setData({
                         ...data, submittedQuestions: {
                           ...data.submittedQuestions,

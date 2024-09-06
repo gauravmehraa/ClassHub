@@ -36,9 +36,9 @@ const Feedback = () => {
           <div className="mx-auto"> No feedback to show </div>:
           <>
             <div className="join mb-4">
-              <button onClick={previousPage} className="join-item btn bg-white border-none text-black hover:bg-classhub-purple hover:text-white"><GrFormPrevious className="w-4 h-4"/></button>
-              <button className="join-item btn border-none text-lg disabled:text-classhub-purple disabled:bg-white" disabled>{page}</button>
-              <button onClick={nextPage} className="join-item btn bg-white border-none text-black hover:bg-classhub-purple hover:text-white"><GrFormNext className="w-4 h-4"/></button>
+              <button onClick={previousPage} className="join-item btn bg-white border-none text-black hover:bg-primary hover:text-white"><GrFormPrevious className="w-4 h-4"/></button>
+              <button className="join-item btn border-none text-lg disabled:text-primary disabled:bg-white" disabled>{page}</button>
+              <button onClick={nextPage} className="join-item btn bg-white border-none text-black hover:bg-primary hover:text-white"><GrFormNext className="w-4 h-4"/></button>
             </div>
 
             {currentPage.map((feedback: { _id: React.Key | null | undefined; }, index: number) => (

@@ -129,15 +129,15 @@ const Signup = () => {
             />
           </div>
 
-          <button type="submit" className="btn bg-classhub-purple border-none text-white block mx-auto my-4" disabled={loading}>
-            { loading ? <span className='loading loading-spinner bg-classhub-purple'></span>: "Register" }
+          <button type="submit" className="btn bg-primary border-none text-white block mx-auto my-4" disabled={loading}>
+            { loading ? <span className='loading loading-spinner bg-primary'></span>: "Register" }
           </button>
 
         </form>
 
         <div className="mt-2 mb-4 text-sm text-black">
           Already have an Account?
-          <Link to="/login" className='hover:underline text-classhub-purple'> Login</Link>
+          <Link to="/login" className='hover:underline text-primary'> Login</Link>
         </div>
 
       </div>

@@ -24,7 +24,7 @@ const AddFeedbackModal = (props: { student: any }) => {
     <div className="flex items-center">
       <button
         onClick={()=>(document.getElementById("feedback_add") as HTMLDialogElement).showModal()}
-        className='btn btn-md bg-classhub-purple text-white border-none cursor-pointer hover:bg-white hover:text-black'
+        className='btn btn-md bg-primary text-white border-none cursor-pointer hover:bg-white hover:text-black'
       >Give Feedback</button>
       <dialog id="feedback_add" className="modal text-black">
         <div className="modal-box w-11/12 max-w-xl font-normal bg-white">

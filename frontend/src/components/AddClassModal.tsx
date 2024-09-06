@@ -26,7 +26,7 @@ const AddClassModal = () => {
     <div className="flex items-center">
       <button
         onClick={()=>(document.getElementById("class_add") as HTMLDialogElement).showModal()}
-        className="mx-auto mt-4 btn btn-md bg-classhub-purple text-white border-none"
+        className="mx-auto mt-4 btn btn-md bg-primary text-white border-none"
       >Add Class</button>
       <dialog id="class_add" className="modal">
       <div className="modal-box w-11/12 max-w-xl font-normal bg-slate-200">

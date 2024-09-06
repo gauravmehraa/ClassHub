@@ -29,7 +29,7 @@ const DeleteFeedbackModal = (props: { feedback: any }) => {
         <p className="pt-4 text-md font-semibold">Feedbacks cannot be recovered after deletion.</p>
         <div className="modal-action">
           <form method="dialog">
-            <button className="btn m-2 focus:outline-none border-none bg-classhub-purple text-black">Close</button>
+            <button className="btn m-2 focus:outline-none border-none bg-primary text-black">Close</button>
             <button className="btn m-2 focus:outline-none border-none bg-red-600 text-black" type='submit' onClick={handleSubmit}>
               { loading ? <span className='loading loading-spinner'></span> : "Delete" }
             </button>
