@@ -7,7 +7,7 @@ import useGetGrades from '../hooks/quiz/useGetGrades';
 import GradeCard from '../components/GradeCard';
 import AddFeedbackModal from '../components/AddFeedbackModal';
 import EditStudentModal from '../components/EditStudentModal';
-import useGetSubjects from '../hooks/subjects/useGetSubjects';
+import useGetAllSubjects from '../hooks/subjects/useGetAllSubjects';
 import { MdOutlineMail, MdOutlinePhone, MdOutlineHome, MdOutlineMale, MdOutlineFemale, MdArrowBackIos } from "react-icons/md";
 import { LiaBirthdayCakeSolid } from "react-icons/lia";
 import { MdOutlineSearchOff } from "react-icons/md";
@@ -18,7 +18,7 @@ const Profile = () => {
   const location = useLocation();
   const { student, course } = location.state;
   const { loading: feedbackLoading, feedbacks } = useGetFeedback();
-  const { loading: subjectsLoading, subjects } = useGetSubjects();
+  const { loading: subjectsLoading, allSubjects } = useGetAllSubjects();
   const { loading: gradesLoading, grades } = useGetGrades(student._id);
   const filteredFeedbacks = feedbacks.filter((feedback: any)=> feedback.studentID._id.toString() === student._id.toString());
 

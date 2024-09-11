@@ -37,5 +37,5 @@ class PeerService {
     }
   }
 }
-
-export default new PeerService();
+const p2p = new PeerService();
+export default p2p;

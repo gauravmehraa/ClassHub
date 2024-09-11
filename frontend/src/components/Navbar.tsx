@@ -10,6 +10,7 @@ import { PiStudent, PiExam } from "react-icons/pi";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { BiLogOut } from "react-icons/bi";
 import { TbSettings } from "react-icons/tb";
+import { SiGoogleclassroom } from "react-icons/si";
 import images from "../assets/images";
 
 const Navbar = () => {
@@ -28,6 +29,7 @@ const Navbar = () => {
     '/classes' : 'Classes',
     '/quiz' : 'Quizzes',
     '/quiz/view' : 'Attempting Quiz',
+    '/lecture' : 'Lobby',
   }
 
   const buttonClass = "w-11/12 justify-left items-center flex gap-4 px-6 py-3 rounded-md focus:outline-none"
@@ -59,6 +61,9 @@ const Navbar = () => {
         </NavLink>
         <NavLink to="notes" className={({ isActive }) => isActive ? `${buttonClass} bg-primary text-white glass` : buttonClass}>
           <TbBooks className='w-6 h-6'/> Notes
+        </NavLink>
+        <NavLink to="lecture" className={({ isActive }) => isActive ? `${buttonClass} bg-primary text-white glass` : buttonClass}>
+          <SiGoogleclassroom className='w-6 h-6'/> Lectures
         </NavLink>
         {authUser.role === "Teacher" &&
         <NavLink to="classes" className={({ isActive }) => isActive ? `${buttonClass} bg-primary text-white glass` : buttonClass}>
@@ -132,6 +137,11 @@ const Navbar = () => {
               <NavLink to="notes" className={({ isActive }) => isActive ? `${buttonClass} bg-primary text-white glass` : buttonClass}>
                 <TbBooks className='w-6 h-6'/> Notes
               </NavLink>
+            </li>
+            <li onClick={handleClose}>
+            <NavLink to="lecture" className={({ isActive }) => isActive ? `${buttonClass} bg-primary text-white glass` : buttonClass}>
+              <SiGoogleclassroom className='w-6 h-6'/> Lectures
+            </NavLink>
             </li>
             {authUser.role === "Teacher" &&
             <li onClick={handleClose}>

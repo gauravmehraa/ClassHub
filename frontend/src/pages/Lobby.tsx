@@ -2,13 +2,16 @@ import React, { useState, useCallback, useEffect, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSocketContext } from "../context/SocketContext";
 import { useAuthContext } from "../context/AuthContext";
+import useGetSubjects from "../hooks/subjects/useGetSubjects";
 
 const LobbyScreen: React.FC = () => {
-  const [room, setRoom] = useState<string>("");
-
   const { authUser } = useAuthContext();
   const socket = useSocketContext();
+
   const navigate = useNavigate();
+  const { subjects } = useGetSubjects();
+
+  const [room, setRoom] = useState<string>("");
 
   const handleSubmitForm = useCallback(
     (e: FormEvent<HTMLFormElement>) => {
@@ -23,7 +26,7 @@ const LobbyScreen: React.FC = () => {
   const handleJoinRoom = useCallback(
     (data: { email: string; room: string }) => {
       const { room } = data;
-      navigate(`/room/${room}`);
+      navigate(`/lecture/${room}`);
     },
     [navigate]
   );
@@ -38,19 +41,27 @@ const LobbyScreen: React.FC = () => {
   }, [socket, handleJoinRoom]);
 
   return (
-    <div>
-      <h1>Lobby</h1>
+    <div className="flex flex-col text-black py-4 sm:py-8 overflow-auto max-h-screen w-full">
+      <div className="hidden md:block text-3xl text-center font-semibold py-4">Lobby</div>
       <form onSubmit={handleSubmitForm}>
-        <label htmlFor="room">Room Number</label>
-        <input
-          type="text"
-          id="room"
-          className="input bg-white"
-          value={room}
-          onChange={(e) => setRoom(e.target.value)}
-        />
-        <br />
-        <button type="submit">Join</button>
+        <div className="mt-6 flex flex-col">
+          <label className="ml-2 font-semibold">Subject</label>
+          <select
+            className="grow select select-bordered bg-white focus:outline-none ml-2"
+            value={room}
+            autoComplete="off"
+            onChange={(e) => setRoom(e.target.value)}
+          >
+            <option value="" disabled={room !== ""}>Select Subject</option>
+            { typeof(subjects) !== "undefined" && subjects.map((subject: any) => (
+              <option key={subject._id} value={subject._id}>{subject.name}</option>
+            ))}
+          </select>
+        </div>
+        <button
+          type="submit"
+          className='btn btn-md bg-primary text-white border-none cursor-pointer hover:bg-white hover:text-black'
+        >Join</button>
       </form>
     </div>
   );

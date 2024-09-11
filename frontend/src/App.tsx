@@ -15,7 +15,7 @@ import AddQuiz from './pages/AddQuiz';
 import Dashboard from './pages/Dashboard';
 import Navbar from './components/Navbar';
 import Classes from './pages/Classes';
-import LobbyScreen from './pages/Lobby';
+import Lobby from './pages/Lobby';
 import Lecture from './pages/Lecture';
 
 const App: React.FC = () => {
@@ -31,8 +31,10 @@ const App: React.FC = () => {
           <Route path='login' element={authUser? <Navigate to='/dashboard'/>: <Login/>}/>
           <Route path='signup' element={authUser? <Navigate to='/dashboard'/>: <Signup/>}/>
           <Route path='feedback' element={authUser? <Feedback/>:<Navigate to='/login'/>}/>          
-          <Route path='lobby' element={authUser? <LobbyScreen/>:<Navigate to='/login'/>}/>
-          <Route path='lecture/:id' element={authUser? <Lecture/>:<Navigate to='/login'/>}/>
+          <Route path='lecture'>
+            <Route index element={authUser? <Lobby/>: <Navigate to='/login'/>}/>
+            <Route path=':id' element={authUser? <Lecture/>:<Navigate to='/login'/>}/>
+          </Route>
           <Route path='notes'>
             <Route index element={authUser? <Notes/>: <Navigate to='/login'/>}/>
             <Route path='add' element={authUser && authUser.role === "Teacher"? <AddNote/>:<Navigate to='/login'/>}/>

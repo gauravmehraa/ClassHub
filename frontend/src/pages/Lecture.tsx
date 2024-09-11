@@ -2,16 +2,25 @@ import React, { useEffect, useCallback, useState } from "react";
 import ReactPlayer from "react-player";
 import peer from "../utils/p2p";
 import { useSocketContext } from "../context/SocketContext";
+import { useAuthContext } from "../context/AuthContext";
 
 const Lecture: React.FC = () => {
   const socket = useSocketContext();
+  const { authUser } = useAuthContext();
+
   const [remoteSocketId, setRemoteSocketId] = useState<string | null>(null);
   const [myStream, setMyStream] = useState<MediaStream | null>(null);
   const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
 
+  const [remoteEmail, setRemoteEmail] = useState("");
+  const [myStreamMuted, setMyStreamMuted] = useState(true);
+  const [remoteStreamMuted, setRemoteStreamMuted] = useState(true);
+
+  const buttonClass = "mx-auto btn btn-md bg-primary text-white border-none cursor-pointer hover:bg-white hover:text-black"
+
   const handleUserJoined = useCallback(
     ({ email, id }: { email: string; id: string }) => {
-      console.log(`Email ${email} joined room`);
+      setRemoteEmail(email);
       setRemoteSocketId(id);
     },
     []
@@ -24,7 +33,7 @@ const Lecture: React.FC = () => {
     });
     const offer = await peer.getOffer();
     if (!socket) {
-      console.log("no socket");
+      console.log("No Socket");
       return;
     }
     socket.emit("user:call", { to: remoteSocketId, offer });
@@ -34,7 +43,7 @@ const Lecture: React.FC = () => {
   const handleIncomingCall = useCallback(
     async ({ from, offer }: { from: string; offer: RTCSessionDescriptionInit }) => {
       if (!socket) {
-        console.log("no socket");
+        console.log("No Socket");
         return;
       }
       setRemoteSocketId(from);
@@ -43,7 +52,6 @@ const Lecture: React.FC = () => {
         video: true,
       });
       setMyStream(stream);
-      console.log(`Incoming Call`, from, offer);
       const ans = await peer.getAnswer(offer);
       socket.emit("call:accepted", { to: from, ans });
     },
@@ -61,7 +69,6 @@ const Lecture: React.FC = () => {
   const handleCallAccepted = useCallback(
     ({ from, ans }: { from: string; ans: RTCSessionDescriptionInit }) => {
       peer.setLocalDescription(ans);
-      console.log("Call Accepted!");
       sendStreams();
     },
     [sendStreams]
@@ -70,7 +77,7 @@ const Lecture: React.FC = () => {
   const handleNegoNeeded = useCallback(async () => {
     const offer = await peer.getOffer();
     if (!socket) {
-      console.log("no socket");
+      console.log("No Socket");
       return;
     }
     socket.emit("peer:nego:needed", { offer, to: remoteSocketId });
@@ -87,7 +94,7 @@ const Lecture: React.FC = () => {
     async ({ from, offer }: { from: string; offer: RTCSessionDescriptionInit }) => {
       const ans = await peer.getAnswer(offer);
       if (!socket) {
-        console.log("no socket");
+        console.log("No Socket");
         return;
       }
       socket.emit("peer:nego:done", { to: from, ans });
@@ -102,18 +109,17 @@ const Lecture: React.FC = () => {
   useEffect(() => {
     peer.peer.addEventListener("track", (ev: RTCTrackEvent) => {
       const [remoteStream] = ev.streams;
-      console.log("GOT TRACKS!!");
       setRemoteStream(remoteStream);
     });
   }, []);
 
   useEffect(() => {
     if (!socket) {
-      console.log("no socket");
+      console.log("No Socket");
       return;
     }
     socket.on("user:joined", handleUserJoined);
-    socket.on("incmming:call", handleIncomingCall);
+    socket.on("incoming:call", handleIncomingCall);
     socket.on("call:accepted", handleCallAccepted);
     socket.on("peer:nego:needed", handleNegoNeedIncomming);
     socket.on("peer:nego:final", handleNegoNeedFinal);
@@ -135,23 +141,57 @@ const Lecture: React.FC = () => {
   ]);
 
   return (
-    <div>
-      <h1>Room Page</h1>
-      <h4>{remoteSocketId ? "Connected" : "No one in room"}</h4>
-      {myStream && <button onClick={sendStreams}>Send Stream</button>}
-      {remoteSocketId && <button onClick={handleCallUser}>CALL</button>}
-      {myStream && (
-        <>
-          <h1>My Stream</h1>
-          <ReactPlayer playing muted height="100px" width="200px" url={myStream} />
-        </>
-      )}
-      {remoteStream && (
-        <>
-          <h1>Remote Stream</h1>
-          <ReactPlayer playing muted height="100px" width="200px" url={remoteStream} />
-        </>
-      )}
+    <div className="flex flex-col text-black py-4 sm:py-8 overflow-auto max-h-screen w-full">
+      <div className="hidden md:block text-3xl text-center font-semibold py-4">Lecture</div>
+      <div className="text-lg text-center my-6">
+        {remoteSocketId ? "Connected" : "Room Empty"}
+      </div>
+      { myStream ?
+        <button
+          className={buttonClass}
+          onClick={sendStreams}
+        >Video</button>:
+        null
+      }
+      {
+      remoteSocketId && (!myStream || !remoteStream)? 
+        <button
+        className={buttonClass}
+          onClick={handleCallUser}
+        >Join</button>:
+        null
+      }
+      <div className="flex flex-row flex-wrap justify-center mt-12 w-full sm:w-10/12 mx-auto">
+        <div className="mx-auto">
+          <div>{myStream && authUser.email}</div>
+          { 
+            myStream ?
+            <div>
+              <ReactPlayer playing muted={myStreamMuted} height="200px" width="400px" url={myStream} />
+              <button
+                className={buttonClass}
+                onClick={(e) => setMyStreamMuted(!myStreamMuted)}
+              >{myStreamMuted? "Unmute":"Mute"}</button>
+            </div>
+            :
+            null
+          }
+        </div>
+        <div className="mx-auto">
+          <div>{remoteEmail}</div>
+          {
+            remoteStream ?
+            <div>
+              <ReactPlayer playing muted={remoteStreamMuted} height="200px" width="400px" url={remoteStream} />:
+              <button
+                  className={buttonClass}
+                  onClick={(e) => setRemoteStreamMuted(!remoteStreamMuted)}
+                >{remoteStreamMuted? "Unmute":"Mute"}</button>
+            </div>:
+            null
+          }
+        </div>
+      </div>
     </div>
   );
 };

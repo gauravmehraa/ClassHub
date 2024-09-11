@@ -1,6 +1,6 @@
 import React, { FormEvent, useState } from 'react'
 import useAddNote from '../hooks/notes/useAddNote';
-import useGetSubjects from '../hooks/subjects/useGetSubjects';
+import useGetAllSubjects from '../hooks/subjects/useGetAllSubjects';
 import { sleep } from '../utils/sleep';
 
 const AddNote = () => {
@@ -10,7 +10,7 @@ const AddNote = () => {
   const [file, setFile] = useState<File | null>(null);
 
   const { addNote, loading } = useAddNote();
-  const { subjects } = useGetSubjects();
+  const { allSubjects } = useGetAllSubjects();
 
   const inputClass = 'w-full mt-2 input input-bordered bg-white flex items-center focus:outline-none'
 
@@ -74,7 +74,7 @@ const AddNote = () => {
             autoComplete="off"
             onChange={(e) => setSubjectID(e.target.value)}
           >
-            { typeof(subjects) !== "undefined" && subjects.map((subject: any) => (
+            { typeof(allSubjects) !== "undefined" && allSubjects.map((subject: any) => (
               <option key={subject._id} value={subject._id}>{subject.name}</option>
             ))}
           </select>

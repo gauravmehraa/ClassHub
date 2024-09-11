@@ -3,20 +3,20 @@ import { MouseEvent, useEffect, useState } from "react";
 import useDeleteFeedback from "../hooks/feedback/useDeletFeedback";
 import { getDate } from "../utils/date";
 import { sleep } from "../utils/sleep";
-import useGetSubjects from "../hooks/subjects/useGetSubjects";
+import useGetAllSubjects from "../hooks/subjects/useGetAllSubjects";
 import useAllotSubject from "../hooks/subjects/useAllotSubject";
 import { MdOutlineSearchOff } from "react-icons/md";
 
 const AllotSubjectModal = (props: { currentClass: any }) => {
   const { loading: allotLoading, allotSubject } = useAllotSubject();
-  const { loading: subjectsLoading, subjects } = useGetSubjects();
+  const { loading: subjectsLoading, allSubjects } = useGetAllSubjects();
   const [remainingSubjects, setRemainingSubjects] = useState<any[]>([]);
   const [allotedSubject, setAllotedSubject] = useState("");
 
   useEffect(() => {
-    const temp = subjects.filter((subject: any) => !props.currentClass.subjects.includes(subject._id.toString()));
+    const temp = allSubjects.filter((subject: any) => !props.currentClass.subjects.includes(subject._id.toString()));
     setRemainingSubjects(temp);
-  }, [subjects, props.currentClass])
+  }, [allSubjects, props.currentClass])
 
   const handleCancel = async(e: MouseEvent) => {
     setAllotedSubject("");

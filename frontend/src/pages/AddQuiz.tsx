@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from 'react'
-import useGetSubjects from '../hooks/subjects/useGetSubjects';
+import useGetAllSubjects from '../hooks/subjects/useGetAllSubjects';
 import useAddQuiz from '../hooks/quiz/useAddQuiz';
 
 const AddQuiz = () => {
@@ -11,7 +11,7 @@ const AddQuiz = () => {
   const [fadeInIndex, setFadeInIndex] = useState(-1);
 
   const { addQuiz, loading } = useAddQuiz();
-  const { subjects } = useGetSubjects();
+  const { allSubjects } = useGetAllSubjects();
 
   const inputClass = 'w-full mt-2 input input-bordered flex items-center bg-white focus:outline-none';
 
@@ -85,7 +85,7 @@ const AddQuiz = () => {
             required={true}
           >
             <option value="" disabled={true} selected>Select Subject</option>
-            { typeof(subjects) !== "undefined" && subjects.map((subject: any) => (
+            { typeof(allSubjects) !== "undefined" && allSubjects.map((subject: any) => (
               <option key={subject._id} value={subject._id}>{subject.name}</option>
             ))}
           </select>
