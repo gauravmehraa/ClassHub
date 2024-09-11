@@ -5,6 +5,35 @@ import Class from "../models/class.model";
 
 export const getSubjects = async(req: Request, res: Response) => {
   try{
+    const { _id, classID } = req.user;
+    const role = req.cookies.role;
+    let subjects: any[] = [];
+    if(role === "Teacher"){
+      subjects = await Subject.find({
+        teacherID: { $eq: { _id } }
+      }).select("-createdAt -updatedAt -__v");
+    }
+    else{
+      const temp = await Class.findById(classID).select("subjects").populate({
+        path: "subjects",
+        select: "-createdAt -updatedAt -__v"
+      });
+      if(!temp){
+        res.status(500).json({error: "No subjects"});
+        return;
+      }
+      subjects = temp.subjects;
+    }
+    res.status(200).json(subjects);
+  }
+  catch (error) {
+    console.log(`[ERROR] - Get Subjects Controller: ${(error as Error).message}`);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+export const getAllSubjects = async(req: Request, res: Response) => {
+  try{
     const subjects: ISubject[] = await Subject.find().select("-createdAt -updatedAt -__v");
     res.status(200).json(subjects);
   }
