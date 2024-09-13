@@ -100,27 +100,6 @@ export const editSubject = async(req: Request, res: Response) => {
   }
 }
 
-export const deleteSubject = async(req: Request, res: Response) => {
-  try{
-    const { id: subjectID } = req.params;
-
-    const subject = await Subject.findById(subjectID);
-
-    if(!subject){
-      res.status(500).json({ error: "No subject to be deleted" });
-      return;
-    }
-
-    await Subject.findByIdAndDelete(subjectID);
-    res.status(200).json({ message: "Subject successfully deleted" });
-
-  }
-  catch (error) {
-    console.log(`[ERROR] - Delete Subject Controller: ${(error as Error).message}`);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-}
-
 export const allocateSubject = async(req: Request, res: Response) => {
   try{
     const { classID, subjectID } = req.body;
