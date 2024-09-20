@@ -5,6 +5,8 @@ import { IStudent } from "../types/student.type";
 import Teacher from "../models/teacher.model";
 import Student from "../models/student.model";
 import { generateTeacherToken, generateStudentToken } from "../utils/token";
+import Log from "../models/log.model";
+import insertLog from "../utils/log";
 
 export const signup = async(req: Request, res: Response) => {
   try{
@@ -40,6 +42,7 @@ export const signup = async(req: Request, res: Response) => {
     if(newUser){
       generateTeacherToken(newUser._id, res);
       await newUser.save();
+      await insertLog({ teacherID: newUser._id, action: "created faculty account"});
       res.status(201).json({
         name: newUser.name,
         email: newUser.email,
@@ -85,7 +88,14 @@ export const login = async(req: Request, res: Response) => {
       role
     }
 
-    if(user instanceof Student) data.classID = user.classID;
+    if(user instanceof Student){
+      data.classID = user.classID;
+      await insertLog({ studentID: user._id, action: "logged in"});
+    }
+    else{
+      await insertLog({ teacherID: user._id, action: "logged in"});
+    }
+
     res.status(201).json(data);
   }
   catch (error) {
@@ -94,9 +104,13 @@ export const login = async(req: Request, res: Response) => {
   }
 }
 
-export const logout = (req: Request, res: Response) => {
+export const logout = async(req: Request, res: Response) => {
   try{
-    const email: string = req.user.email;
+    const { email, _id } = req.user;
+    const { role } = req.cookies;
+    if(role === "Teacher") await insertLog({ teacherID: _id, action: "logged out"});
+    else await insertLog({ studentID: _id, action: "logged out"});
+
     res.cookie("jwt", "", { maxAge: 0 });
     res.cookie("role", "", { maxAge: 0 });
     res.status(200).json({ message: `Logged out successfully from ${email}`});

@@ -12,6 +12,7 @@ import quizRoutes from "./routes/quiz.routes";
 import gradeRoutes from "./routes/grades.routes";
 import feedbackRoutes from "./routes/feedback.routes";
 import statsRoutes from "./routes/stats.routes";
+import logsRoutes from "./routes/log.routes";
 
 import { app, server } from "./sockets/socket"
 
@@ -31,6 +32,7 @@ app.use('/api/quiz', quizRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/grades', gradeRoutes);
 app.use('/api/stats', statsRoutes);
+app.use('/api/logs', logsRoutes);
 
 server.listen(PORT, () => {
   connectToDB();
