@@ -1,9 +1,9 @@
 import { Types } from "mongoose";
 import Log from "../models/log.model";
 
-const insertLog = async({ studentID, teacherID, action }: { studentID?: Types.ObjectId, teacherID?: Types.ObjectId, action: string }) => {
+const insertLog = async({ userID, userType, action, targetID, targetType }: { userID: Types.ObjectId, userType: "Student" | "Teacher", action: string, targetID?: Types.ObjectId, targetType?: string }) => {
   const newLog = new Log({
-    studentID, teacherID,  action,
+    userID, action, userType, targetID, targetType,
     time: new Date().toISOString(),
   })
   await newLog.save();

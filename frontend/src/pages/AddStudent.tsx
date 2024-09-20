@@ -17,7 +17,6 @@ const AddStudent = () => {
     phoneNumber: '', gender: 'Male', classID: ''
   });
 
-  console.log(data);
   const handleReset: any = async(e: FormEvent) => {
     setData({
       role: "Student",
@@ -144,7 +143,7 @@ const AddStudent = () => {
           />
         </div>
 
-        {/* Phone Number */}
+        {/* Gender */}
         <div className="mt-4">
           <label className="ml-2 font-semibold">Gender</label>
           <label className="w-full mt-2 grow swap input bg-white input-bordered">

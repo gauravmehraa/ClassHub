@@ -2,14 +2,24 @@ import { model, Schema } from "mongoose";
 import { ILog } from "../types/log.type";
 
 const logSchema = new Schema<ILog>({
-  studentID: {
+  userType: {
+    type: String,
+    enum: ['Teacher', 'Student'],
+    required: true,
+  },
+  userID: {
     type: Schema.Types.ObjectId,
-    ref: "Student",
+    refPath: 'userType',
+    required: true,
+  },
+  targetType: {
+    type: String,
+    enum: ['Teacher', 'Student'],
     required: false,
   },
-  teacherID: {
+  targetID: {
     type: Schema.Types.ObjectId,
-    ref: "Teacher",
+    refPath: 'targetType',
     required: false,
   },
   action: {

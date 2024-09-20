@@ -7,6 +7,21 @@ export function getMonth(timestamp: string): string {
   return months[date.getMonth()];
 }
 
+export function getTime(timestamp: string): string {
+  const date = new Date(timestamp);
+  let hours = date.getHours();
+  const minutes = date.getMinutes();
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12;
+  hours = hours ? hours : 12;
+  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+  const day = date.getUTCDate();
+  const month = date.toLocaleString('en-US', { month: 'short' });
+  const year = date.getUTCFullYear();
+
+  return `${hours}:${formattedMinutes} ${ampm} ${day}-${month}-${year}`;
+}
+
 export function getDateFormatted(timestamp: string): string {
   const date = new Date(timestamp);
   const day = date.getDate();

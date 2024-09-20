@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Feedback from "../models/feedback.model";
 import { IFeedback } from "../types/feedback.type";
+import insertLog from "../utils/log";
 
 export const getFeedback = async(req: Request, res: Response) => {
   try{
@@ -35,6 +36,13 @@ export const addFeedback = async(req: Request, res: Response) => {
     const newFeedback = new Feedback({ studentID, teacherID, content, rating });
     if(newFeedback){
       await newFeedback.save();
+      await insertLog({
+        userID: teacherID,
+        userType: "Teacher",
+        action: `gave feeback for `,
+        targetID: studentID,
+        targetType: "Student"
+      });
       res.status(201).json({
         _id: newFeedback._id,
         studentID: newFeedback.studentID,

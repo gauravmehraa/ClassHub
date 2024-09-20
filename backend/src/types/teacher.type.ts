@@ -5,5 +5,6 @@ export interface ITeacher {
   name: string;
   email: string;
   hashedPassword: string;
+  gender: "Male" | "Female";
   qualification: string[];
 }

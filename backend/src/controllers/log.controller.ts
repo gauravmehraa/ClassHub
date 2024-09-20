@@ -6,12 +6,9 @@ export const getLogs = async(req: Request, res: Response) => {
   try{
     const logs: ILog[] = await Log.find().sort({ createdAt: -1 }).limit(100)
     .populate({
-      path: "studentID",
-      select: "_id name email"
-    }).populate({
-      path: "teacherID",
-      select: "_id name email"
-    }).select("-createdAt -updatedAt -__v");
+      path: "userID",
+      select: "_id name email gender"
+    }).populate("targetID").select("-createdAt -updatedAt -__v");
     res.status(200).json(logs);
   }
   catch (error) {

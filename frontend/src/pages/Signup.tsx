@@ -12,6 +12,7 @@ const Signup = () => {
     password: "",
     confirmPassword: "",
     qualification: "",
+    gender: "Male",
     secret: "",
   });
 
@@ -114,6 +115,14 @@ const Signup = () => {
               value={data.secret}
               onChange={(e) => setData({...data, secret: e.target.value})}
             />
+          </div>
+
+          <div className="my-4 mx-auto focus:outline-none bg-white sm:w-3/4">
+            <label className="w-full mt-2 grow swap input bg-white input-bordered">
+              <input type="checkbox" onClick={()=>setData({...data, gender: data.gender === 'Female'? 'Male': 'Female'})}/>
+              <div className="swap-off">Male</div>
+              <div className="swap-on">Female</div>
+            </label>
           </div>
 
           <div className={inputClass}>

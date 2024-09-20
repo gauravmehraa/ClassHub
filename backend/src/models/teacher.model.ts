@@ -15,6 +15,11 @@ const teacherSchema = new Schema<ITeacher>({
     type: String,
     required: true,
   },
+  gender: {
+    type: String,
+    enum: ["Male", "Female"],
+    required: true,
+  },
   qualification: {
     type: [String],
     required: true,

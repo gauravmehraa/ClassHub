@@ -1,16 +1,14 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import { ITeacher } from "../types/teacher.type";
-import { IStudent } from "../types/student.type";
 import Teacher from "../models/teacher.model";
 import Student from "../models/student.model";
 import { generateTeacherToken, generateStudentToken } from "../utils/token";
-import Log from "../models/log.model";
 import insertLog from "../utils/log";
 
 export const signup = async(req: Request, res: Response) => {
   try{
-    const { name, email, password, confirmPassword, qualification, secret } = req.body;
+    const { name, email, password, confirmPassword, qualification, gender, secret } = req.body;
 
     if(!process.env.SECRET_PHRASE){
       throw new Error("No secret phrase defined");
@@ -37,12 +35,12 @@ export const signup = async(req: Request, res: Response) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const newUser = new Teacher({ name, email, hashedPassword, qualification });
+    const newUser = new Teacher({ name, email, hashedPassword, gender, qualification });
 
     if(newUser){
       generateTeacherToken(newUser._id, res);
       await newUser.save();
-      await insertLog({ teacherID: newUser._id, action: "created faculty account"});
+      await insertLog({ userID: newUser._id, userType: "Teacher", action: "created faculty account"});
       res.status(201).json({
         name: newUser.name,
         email: newUser.email,
@@ -71,10 +69,12 @@ export const login = async(req: Request, res: Response) => {
       res.status(400).json({ error: "Invalid username or password" });
       return;
     }
-
+    
     const validPassword: boolean = await bcrypt.compare(password, user.hashedPassword);
-
+    
     if (!validPassword) {
+      if(role === "Teacher") await insertLog({ userID: user._id, userType: "Teacher", action: "failed login"});
+      else await insertLog({ userID: user._id, userType: "Student", action: "failed login"});
       res.status(400).json({ error: "Invalid username or password" });
       return;
     }
@@ -90,11 +90,9 @@ export const login = async(req: Request, res: Response) => {
 
     if(user instanceof Student){
       data.classID = user.classID;
-      await insertLog({ studentID: user._id, action: "logged in"});
+      await insertLog({ userID: user._id, userType: "Student", action: "logged in successfully"});
     }
-    else{
-      await insertLog({ teacherID: user._id, action: "logged in"});
-    }
+    else await insertLog({ userID: user._id, userType: "Teacher", action: "logged in successfully"});
 
     res.status(201).json(data);
   }
@@ -108,8 +106,8 @@ export const logout = async(req: Request, res: Response) => {
   try{
     const { email, _id } = req.user;
     const { role } = req.cookies;
-    if(role === "Teacher") await insertLog({ teacherID: _id, action: "logged out"});
-    else await insertLog({ studentID: _id, action: "logged out"});
+    if(role === "Teacher") await insertLog({ userID: _id, userType: "Teacher", action: "logged out"});
+    else await insertLog({ userID: _id, userType: "Student", action: "logged out"});
 
     res.cookie("jwt", "", { maxAge: 0 });
     res.cookie("role", "", { maxAge: 0 });
