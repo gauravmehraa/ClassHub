@@ -11,7 +11,7 @@ const Students = () => {
   useEffect(() => {
     setClasses(Object.keys(students));
     setCurrentClass(classes[0]);
-  }, [students]);
+  }, [students, classes]);
   return (
     <div className="flex flex-col text-black sm:p-8 overflow-auto w-full">
       <div>
@@ -33,7 +33,7 @@ const Students = () => {
       </div>
       {
         loading ?
-        <span className='loading loading-spinner mx-auto text-white'></span>:
+        <span className='loading loading-spinner mx-auto my-auto text-primary'></span>:
         <div className="flex flex-col gap-4 m-4 sm:m-8">
           { Object.keys(students).length === 0?
             <div className='font-semibold text-2xl flex gap-2 items-center my-auto mx-auto'> <MdOutlineSearchOff className='text-primary w-8 h-8'/> No students </div>:

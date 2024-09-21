@@ -1,21 +1,19 @@
 import { useState } from "react";
-import FeedbackCard from "../components/FeedbackCard";
-import useGetFeedback from "../hooks/feedback/useGetFeedback";
+import LogCard from "../components/LogCard";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
-import { useAuthContext } from "../context/AuthContext";
+import useGetLogs from "../hooks/logs/useGetLogs";
 
-const Feedback = () => {
-  const { authUser} = useAuthContext();
-  const { loading, feedbacks } = useGetFeedback();
+const Logs = () => {
+  const { loading, logs } = useGetLogs();
 
   const [page, setPage] = useState(1);
 
-  const itemsPerPage = 6;
-  const pages = Math.ceil(feedbacks.length / itemsPerPage);
+  const itemsPerPage = 10;
+  const pages = Math.ceil(logs.length / itemsPerPage);
 
   const start = (page - 1) * itemsPerPage;
   const end = page * itemsPerPage;
-  const currentPage = feedbacks.slice(start, end);
+  const currentPage = logs.slice(start, end);
 
   const previousPage = () => {
     if(page !== 1) setPage(page - 1);
@@ -26,14 +24,13 @@ const Feedback = () => {
 
   return (
     <div className="flex flex-col text-black py-4 sm:py-8 overflow-auto max-h-screen w-full">
-      <div className="hidden md:block text-3xl text-center font-semibold py-4">Feedbacks</div>
-      <div className="text-xl text-center py-2 w-11/12 sm:w-1/2 mx-auto">{ authUser.role === "Teacher"? "Take a look at the feedbacks you've given for your students.": "Take a look at the feedbacks given by your teachers." }</div>
+      <div className="hidden md:block text-3xl text-center font-semibold pt-4">Logs</div>
     {
       loading ?
       <span className='loading loading-spinner mx-auto my-auto text-primary'></span>:
       <div className="flex flex-col my-2 sm:my-8 items-center">
-        { feedbacks.length === 0?
-          <div className="mx-auto"> No feedback to show </div>:
+        { logs.length === 0?
+          <div className="mx-auto"> No logs to show </div>:
           <>
             <div className="join mb-4">
               <button onClick={previousPage} className="join-item btn bg-white border-none text-black hover:bg-primary hover:text-white"><GrFormPrevious className="w-4 h-4"/></button>
@@ -41,8 +38,8 @@ const Feedback = () => {
               <button onClick={nextPage} className="join-item btn bg-white border-none text-black hover:bg-primary hover:text-white"><GrFormNext className="w-4 h-4"/></button>
             </div>
 
-            {currentPage.map((feedback: { _id: React.Key | null | undefined; }, index: number) => (
-              <FeedbackCard key={feedback._id} data={feedback} showInfo={true} index={index}/>
+            {currentPage.map((log: { _id: React.Key | null | undefined; }, index: number) => (
+              <LogCard key={log._id} data={log} index={index}/>
             ))}
           </>
         }
@@ -52,4 +49,4 @@ const Feedback = () => {
   )
 }
 
-export default Feedback
+export default Logs

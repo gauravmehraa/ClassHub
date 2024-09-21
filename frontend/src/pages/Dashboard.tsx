@@ -6,12 +6,12 @@ import { TbGraphOff } from 'react-icons/tb';
 import useGetLogs from '../hooks/logs/useGetLogs';
 import { MdOutlineSearchOff } from 'react-icons/md';
 import LogCard from '../components/LogCard';
+import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
   const { authUser } = useAuthContext();
-  const { averageGrades } = useGetAverageGrades();
+  const { loading: gradesLoading, averageGrades } = useGetAverageGrades();
   const { loading: logsLoading, logs } = useGetLogs();
-  console.log(logs);
 
   const gradeData: any = [["Quiz", "Average %", "Attempted %"]];
   Object.keys(averageGrades).forEach(quizID => {
@@ -38,11 +38,17 @@ const Dashboard = () => {
   return (
     <div className="flex flex-col text-black py-4 sm:py-8 overflow-auto max-h-screen w-full">
       { authUser && authUser.role === "Teacher"?
-      (JSON.stringify(averageGrades) === "{}" ?
-      <div className='font-semibold text-2xl flex gap-2 items-center my-auto mx-auto'> <TbGraphOff className='text-primary w-8 h-8'/> No statistics </div>:
-      <div className='mx-6 rounded-lg bg-white p-8'>
-        <Chart chartType="Bar" width="100%" height="400px" data={gradeData} options={options} />
-      </div>): null
+      (
+        gradesLoading? <div className='min-h-96 p-8 mx-6 rounded-lg flex bg-white'><span className='loading loading-spinner mx-auto text-primary'></span></div>
+        :
+        ( JSON.stringify(averageGrades) === "{}"?
+          <div className='font-semibold text-2xl flex gap-2 items-center my-auto mx-auto'> <TbGraphOff className='text-primary w-8 h-8'/> No statistics </div>:
+          <div className='mx-6 rounded-lg bg-white p-8'>
+            <Chart chartType="Bar" width="100%" height="384px" data={gradeData} options={options} />
+          </div>
+        )
+      )
+      :null
       }
       { authUser && authUser.role === "Teacher"?
       <Section data={logs} dataLoading={logsLoading} title={"Logs"}>
@@ -59,8 +65,8 @@ const Dashboard = () => {
 
 const Section = (props: { data: any, dataLoading: boolean, title: string, children: React.ReactNode }) => {
   return (
-    <div className={`flex flex-col m-6 min-h-96 max-h-96  ${props.data.length % 2 === 0? "bg-gray-200": "bg-gray-100"}`}>
-      <div className='text-2xl rounded-tl-lg rounded-tr-lg text-center py-4 text-white bg-slate-600'>{props.title}</div>
+    <div className={`flex flex-col m-6 min-h-96 ${props.data.length % 2 === 0? "bg-gray-200": "bg-gray-100"}`}>
+      <Link to="/logs"><div className='text-2xl rounded-tl-lg rounded-tr-lg text-center py-4 text-white bg-slate-600'>{props.title}</div></Link>
       <div className='w-full rounded-bl-lg rounded-br-lg h-full flex flex-col overflow-auto'>
         {
           props.dataLoading ?

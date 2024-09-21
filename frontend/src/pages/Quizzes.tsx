@@ -13,7 +13,7 @@ const Quizzes = () => {
       { authUser.role === "Teacher" && <Link to ="add" className="mx-auto mt-4 btn btn-md border-none bg-primary text-white hover:bg-white hover:text-black">Add Quiz</Link> }
     {
       loading ?
-      <span className='loading loading-spinner mx-auto text-white'></span>:
+      <span className='loading loading-spinner mx-auto my-auto text-primary'></span>:
       <div className="flex flex-row flex-wrap gap-4 m-2 sm:m-8 items-center justify-center">
         { quizzes.length === 0?
           <div> No quiz to show </div>:

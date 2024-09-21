@@ -14,7 +14,7 @@ const logSchema = new Schema<ILog>({
   },
   targetType: {
     type: String,
-    enum: ['Teacher', 'Student'],
+    enum: ['Teacher', 'Student', 'Subject', 'Note', 'Quiz', 'Class'],
     required: false,
   },
   targetID: {

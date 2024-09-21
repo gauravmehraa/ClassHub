@@ -29,7 +29,7 @@ const Classes = () => {
       <AddClassModal/>
     {
       loading ?
-      <span className='loading loading-spinner mx-auto text-white'></span>:
+      <span className='loading loading-spinner mx-auto my-auto text-primary'></span>:
       <div className="flex flex-col my-2 sm:my-8 items-center">
         { classes.length === 0?
           <div className="mx-auto"> No classes to show </div>:

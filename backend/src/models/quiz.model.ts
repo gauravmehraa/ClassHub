@@ -19,7 +19,7 @@ const quizSchema = new Schema<IQuiz>({
   },
   score: {
     type: Number,
-    required: false,
+    required: true,
   }
 }, { timestamps: true });
 

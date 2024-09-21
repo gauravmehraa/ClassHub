@@ -39,7 +39,7 @@ export const addFeedback = async(req: Request, res: Response) => {
       await insertLog({
         userID: teacherID,
         userType: "Teacher",
-        action: `gave feeback for `,
+        action: `gave feedback for `,
         targetID: studentID,
         targetType: "Student"
       });
@@ -79,6 +79,13 @@ export const editFeedback = async(req: Request, res: Response) => {
     }
 
     await feedback.save();
+    await insertLog({
+      userID: teacherID,
+      userType: "Teacher",
+      action: `edited feedback for `,
+      targetID: feedback.studentID,
+      targetType: "Student"
+    });
     res.status(200).json(feedback);
 
   }
@@ -99,7 +106,13 @@ export const deleteFeedback = async(req: Request, res: Response) => {
       res.status(500).json({ error: "No feedback to be deleted" });
       return;
     }
-
+    await insertLog({
+      userID: teacherID,
+      userType: "Teacher",
+      action: `deleted feedback for `,
+      targetID: feedback.studentID,
+      targetType: "Student"
+    });
     await feedback.deleteOne();
     res.status(200).json({ message: "Feedback successfully deleted" });
 

@@ -2,6 +2,7 @@ import { FormEvent, useState } from 'react'
 import useLogin from "../hooks/auth/useLogin";
 import { IoEye, IoEyeOff, IoPerson, IoKey } from "react-icons/io5";
 import { Link } from 'react-router-dom';
+import images from '../assets/images';
 
 const Login = () => {
 
@@ -23,7 +24,7 @@ const Login = () => {
     <div className='h-fit my-auto flex flex-col items-center md:items-start md:flex-row flex-wrap mx-auto w-11/12 md:w-8/12 py-8 text-black bg-white rounded-2xl text-center'>
       <div className='w-full h-full md:w-6/12 flex justify-center items-center my-auto'>
         <img
-          src={'https://i.pinimg.com/564x/cf/66/33/cf66334166ddd4c120148dc07c492449.jpg'}
+          src={images.splash}
           className='rounded-2xl h-5/6 w-5/6 p-6'
           alt='hero'
         />
@@ -33,7 +34,7 @@ const Login = () => {
 
       <div className='w-full md:w-5/12 h-full'>
         <img 
-          src={'https://www.lms.org/files/assets/logo.png'}
+          src={images.logo}
           className='w-6/12 mx-auto my-6'
           alt='ClassHub Logo'
         />

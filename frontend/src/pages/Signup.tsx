@@ -2,6 +2,7 @@ import { FormEvent, useState } from 'react'
 import { IoEye, IoEyeOff, IoPerson, IoKey, IoSchool, IoShieldCheckmark } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 import useSignup from '../hooks/auth/useSignup';
+import images from '../assets/images';
 
 const Signup = () => {
 
@@ -19,7 +20,7 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const inputClass = "input input-bordered flex items-center gap-2 my-4 mx-auto focus:outline-none bg-white sm:w-3/4";
+  const inputClass = "input border-1 border-slate-300 flex items-center gap-2 my-4 mx-auto focus:outline-none bg-white";
 
   const { loading, signup } = useSignup();
 
@@ -30,9 +31,9 @@ const Signup = () => {
 
   return (
     <div className='h-fit my-auto flex flex-col items-center md:items-start md:flex-row flex-wrap mx-auto w-11/12 md:w-8/12 py-8 text-black bg-white rounded-2xl text-center'>
-      <div className='w-full h-full md:w-6/12 flex justify-center items-center my-auto'>
+      <div className='w-full h-full md:w-5/12 flex justify-center items-center my-auto'>
         <img
-          src={'https://i.pinimg.com/564x/cf/66/33/cf66334166ddd4c120148dc07c492449.jpg'}
+          src={images.splash}
           className='rounded-2xl h-5/6 w-5/6 p-6'
           alt='hero'
         />
@@ -40,12 +41,12 @@ const Signup = () => {
 
       <div className="md:w/1-12 divider divider-horizontal"></div>
 
-      <div className='w-full md:w-5/12 h-full'>
-        <img 
+      <div className='w-full md:w-6/12 h-full'>
+        {/* <img 
           src={'https://www.lms.org/files/assets/logo.png'}
           className='w-6/12 mx-auto my-6'
           alt='ClassHub Logo'
-        />
+        /> */}
 
         <form onSubmit={handleSubmit} className="w-full px-8">
         <div className='text-black text-xl font-semibold'>Create Faculty Account</div>
@@ -117,14 +118,6 @@ const Signup = () => {
             />
           </div>
 
-          <div className="my-4 mx-auto focus:outline-none bg-white sm:w-3/4">
-            <label className="w-full mt-2 grow swap input bg-white input-bordered">
-              <input type="checkbox" onClick={()=>setData({...data, gender: data.gender === 'Female'? 'Male': 'Female'})}/>
-              <div className="swap-off">Male</div>
-              <div className="swap-on">Female</div>
-            </label>
-          </div>
-
           <div className={inputClass}>
             <IoSchool/>
             <input
@@ -136,6 +129,14 @@ const Signup = () => {
               value={data.qualification}
               onChange={(e) => setData({...data, qualification: e.target.value})}
             />
+          </div>
+
+          <div className="my-4 mx-auto focus:outline-none bg-white sm:w-3/4">
+            <label className="w-full mt-2 grow swap input bg-white focus:outline-none border-1 border-slate-300">
+              <input type="checkbox" onClick={()=>setData({...data, gender: data.gender === 'Female'? 'Male': 'Female'})}/>
+              <div className="swap-off">Male</div>
+              <div className="swap-on">Female</div>
+            </label>
           </div>
 
           <button type="submit" className="btn bg-primary border-none text-white block mx-auto my-4" disabled={loading}>

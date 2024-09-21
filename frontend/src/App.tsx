@@ -17,6 +17,7 @@ import Navbar from './components/Navbar';
 import Classes from './pages/Classes';
 import Lobby from './pages/Lobby';
 import Lecture from './pages/Lecture';
+import Logs from './pages/Logs';
 
 const App: React.FC = () => {
 
@@ -50,6 +51,7 @@ const App: React.FC = () => {
             <Route path='view' element={authUser? <Quiz/>:<Navigate to='/login'/>}/>
             <Route path='add' element={authUser && authUser.role === "Teacher"? <AddQuiz/>:<Navigate to='/login'/>}/>
           </Route>
+          <Route path='logs' element={authUser && authUser.role === "Teacher"? <Logs/>:<Navigate to='/login'/>}/>
         </Route>
         <Route path='*' element={<Dashboard/>}/>
       </Routes>

@@ -11,7 +11,7 @@ const Notes = () => {
     <div className="flex flex-col text-black py-4 sm:py-8 overflow-auto max-h-screen w-full">
       {
         loading ?
-        <span className='loading loading-spinner mx-auto text-white'></span>:
+        <span className='loading loading-spinner mx-auto my-auto text-primary'></span>:
         <div className="flex flex-col gap-4 m-4 sm:m-8">
           { authUser.role === "Teacher"?
           <Link to ="add" className="mx-auto btn btn-lg border-none bg-primary text-white hover:bg-white hover:text-black">Add Note</Link>
