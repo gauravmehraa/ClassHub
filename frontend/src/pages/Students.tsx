@@ -11,7 +11,7 @@ const Students = () => {
   useEffect(() => {
     setClasses(Object.keys(students));
     setCurrentClass(classes[0]);
-  }, [students, classes]);
+  }, [students]);
   return (
     <div className="flex flex-col text-black sm:p-8 overflow-auto w-full">
       <div>
