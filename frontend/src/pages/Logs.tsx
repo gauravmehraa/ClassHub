@@ -1,14 +1,14 @@
 import { useState } from "react";
-import LogCard from "../components/LogCard";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 import useGetLogs from "../hooks/logs/useGetLogs";
+import { getTime } from "../utils/date";
 
 const Logs = () => {
   const { loading, logs } = useGetLogs();
 
   const [page, setPage] = useState(1);
 
-  const itemsPerPage = 10;
+  const itemsPerPage = 20;
   const pages = Math.ceil(logs.length / itemsPerPage);
 
   const start = (page - 1) * itemsPerPage;
@@ -38,9 +38,33 @@ const Logs = () => {
               <button onClick={nextPage} className="join-item btn bg-white border-none text-black hover:bg-primary hover:text-white"><GrFormNext className="w-4 h-4"/></button>
             </div>
 
-            {currentPage.map((log: { _id: React.Key | null | undefined; }, index: number) => (
+            <div className="rounded-lg w-9/12 block overflow-x-auto mx-8">
+            <table border={1} className="table w-full" cellSpacing={20}>
+              <tr className="bg-slate-600 text-white">
+                <th>Role</th>
+                <th>Action</th>
+                <th>Time</th>
+              </tr>
+              {currentPage.map((log: any, index: number) => (
+                <tr className={`${index % 2 === 0? "bg-gray-200": "bg-gray-100"}`}>
+                  <td>{log.userType}</td>
+                  <td>
+                    {` ${log.userID.name}`} 
+                    {` ${log.action}`}
+                    {` ${log.targetID?.name || ""}`}
+                    {` ${log.targetID?.topic || ""}`}
+                    {` ${log.targetID?.year || ""} ${log.targetID?.program || ""}`}
+                    {` ${log.targetID?.title || ""}`}
+                  </td>
+                  <td>{getTime(log.time)}</td>
+                </tr>
+              ))}
+            </table>
+            </div>
+
+            {/* {currentPage.map((log: { _id: React.Key | null | undefined; }, index: number) => (
               <LogCard key={log._id} data={log} index={index}/>
-            ))}
+            ))} */}
           </>
         }
       </div>

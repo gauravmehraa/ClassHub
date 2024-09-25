@@ -1,24 +1,27 @@
 import React from 'react'
-import useGetAverageGrades from '../hooks/stats/useGetAverageGrades'
 import Chart from 'react-google-charts';
+import { Link } from 'react-router-dom';
 import { useAuthContext } from '../context/AuthContext';
 import { TbGraphOff } from 'react-icons/tb';
-import useGetLogs from '../hooks/logs/useGetLogs';
 import { MdOutlineSearchOff } from 'react-icons/md';
 import LogCard from '../components/LogCard';
-import { Link } from 'react-router-dom';
+import StatCard from '../components/StatCard';
+import useGetLogs from '../hooks/logs/useGetLogs';
+import useGetStatistics from '../hooks/stats/useGetStatistics';
+import useGetAverageGrades from '../hooks/stats/useGetAverageGrades'
 
 const Dashboard = () => {
   const { authUser } = useAuthContext();
   const { loading: gradesLoading, averageGrades } = useGetAverageGrades();
+  const { loading: statisticsLoading, statistics } = useGetStatistics();
   const { loading: logsLoading, logs } = useGetLogs();
+
+  console.log(statistics);
 
   const gradeData: any = [["Quiz", "Average %", "Attempted %"]];
   Object.keys(averageGrades).forEach(quizID => {
     gradeData.push([averageGrades[quizID].topic, averageGrades[quizID].averagePercent, averageGrades[quizID].attempted]);
   });
-
-  //const checker = () => Object.keys(averageGrades).every((v: any) => averageGrades[v].attempted === 0);
 
   const options = {
     chart: {
@@ -37,6 +40,36 @@ const Dashboard = () => {
 
   return (
     <div className="flex flex-col text-black py-4 sm:py-8 overflow-auto max-h-screen w-full">
+      
+      <div className='mx-auto flex flex-row flex-wrap gap-8 justify-center items-center w-11/12 my-8'>
+        <StatCard
+          title='Total Likes'
+          value='25.6k'
+          description='21% more than last month'
+          icon={<div className="radial-progress text-primary" style={{ "--value": 70 } as React.CSSProperties} role="progressbar">
+          70%
+        </div>}
+        />
+        <StatCard
+          title='Total Likes'
+          value='25.6k'
+          description='21% more than last month'
+          icon={<MdOutlineSearchOff className='h-8 w-8'/>}
+        />
+        <StatCard
+          title='Total Likes'
+          value='25.6k'
+          description='21% more than last month'
+          icon={<MdOutlineSearchOff className='h-8 w-8'/>}
+        />
+        <StatCard
+          title='Total Likes'
+          value='25.6k'
+          description='21% more than last month'
+          icon={<MdOutlineSearchOff className='h-8 w-8'/>}
+        />
+      </div>
+
       { authUser && authUser.role === "Teacher"?
       (
         gradesLoading? <div className='min-h-96 p-8 mx-6 rounded-lg flex bg-white'><span className='loading loading-spinner mx-auto text-primary'></span></div>

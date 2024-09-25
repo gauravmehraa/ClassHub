@@ -1,8 +1,10 @@
 import { Router } from "express";
 import { verifyTeacher, verifyUser } from "../middleware/verify";
-import { getAverageGrades } from "../controllers/stats.controller";
+import { getAverageGrades, getStatistics } from "../controllers/stats.controller";
 
 const router: Router = Router();
+
+router.get("/", verifyUser, getStatistics)
 
 router.get("/grades", verifyTeacher, getAverageGrades)
 
