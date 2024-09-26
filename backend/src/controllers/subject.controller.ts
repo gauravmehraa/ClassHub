@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import Subject from "../models/subject.model";
 import { ISubject } from "../types/subject.type";
 import Class from "../models/class.model";
+import insertLog from "../utils/log";
 
 export const getSubjects = async(req: Request, res: Response) => {
   try{
@@ -103,6 +104,7 @@ export const editSubject = async(req: Request, res: Response) => {
 export const allocateSubject = async(req: Request, res: Response) => {
   try{
     const { classID, subjectID } = req.body;
+    const id = req.user._id;
 
     const updatedClass = await Class.findById(classID);
     
@@ -113,6 +115,13 @@ export const allocateSubject = async(req: Request, res: Response) => {
 
     updatedClass.subjects.push(subjectID);
     await updatedClass.save();
+    await insertLog({
+      userID: id,
+      userType: "Teacher",
+      action: `alloted subject for `,
+      targetID: classID,
+      targetType: "Class"
+    });
     res.status(200).json(updatedClass);
   }
   catch (error) {

@@ -16,3 +16,18 @@ export const getLogs = async(req: Request, res: Response) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
+
+export const getAllLogs = async(req: Request, res: Response) => {
+  try{
+    const logs: ILog[] = await Log.find().sort({ createdAt: -1 })
+    .populate({
+      path: "userID",
+      select: "_id name email gender"
+    }).populate("targetID").select("-createdAt -updatedAt -__v");
+    res.status(200).json(logs);
+  }
+  catch (error) {
+    console.log(`[ERROR] - Get All Logs Controller: ${(error as Error).message}`);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}

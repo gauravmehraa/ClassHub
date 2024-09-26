@@ -6,6 +6,7 @@ import Student from "../models/student.model";
 import Teacher from "../models/teacher.model";
 import Subject from "../models/subject.model";
 import Note from "../models/notes.model";
+import Feedback from "../models/feedback.model";
 
 
 export const getAverageGrades = async(req: Request, res: Response) => {
@@ -59,10 +60,7 @@ export const getStatistics = async(req: Request, res: Response) => {
       });
       const attemptedQuizIDs = grades.map((grade: any) => grade.quizID.toString());
       const filteredQuizzes = quizzes.filter((quiz: any) => { return !attemptedQuizIDs.includes(quiz._id.toString()) });
-      const attemptPercentage = (filteredQuizzes.length / quizzes.length) * 100;
-      data.push({ title: "Quizzes Attempted", stat: attemptPercentage, value: `${filteredQuizzes.length} out of ${quizzes.length}`, description: ""})
-    }
-    if(role === "Student"){
+      const attemptPercentage = ((quizzes.length - filteredQuizzes.length) / quizzes.length) * 100;
       const subjectsMap: Record<string, string> = studentClass.subjects.reduce((acc: any, subject: any) => {
         acc[subject._id] = subject.name;
         return acc;
@@ -70,7 +68,16 @@ export const getStatistics = async(req: Request, res: Response) => {
       const notes = await Note.find(
         { subjectID: { $in: Object.keys(subjectsMap) }}
       ).select("-updatedAt -__v");
-      data.push({ title: "Notes", stat: notes.length, value: notes.length, description: "Notes given by faculty"});
+      const feedbacks = await Feedback.find({ studentID: { $eq: id }});
+      const feedbackScore = feedbacks.reduce((accumulator, feedback) => accumulator + parseFloat(feedback.rating.toString()), 0);
+      const totalFeedbackScore = feedbacks.length * 5;
+      const averageFeedbackPercent = (feedbackScore / totalFeedbackScore) * 100;
+
+      data.push({ title: "Quizzes Attempted", stat: parseFloat(attemptPercentage.toFixed(2)), value: `${quizzes.length - filteredQuizzes.length} out of ${quizzes.length}`, description: ""})
+      data.push({ title: "Subjects", stat: studentClass.subjects.length, value: studentClass.subjects.length, description: "Subjects alloted"});
+      data.push({ title: "Notes", stat: notes.length, value: notes.length, description: "Documents given"});
+      if(feedbacks.length === 0) data.push({ title: "Performance", stat: 0, value: 0, description: "Insufficient Data"});
+      else data.push({ title: "Performance", stat: parseFloat(averageFeedbackPercent.toFixed(2)), value: parseFloat((feedbackScore / feedbacks.length).toFixed(2)), description: "Average feedback rating"});
     }
 
     res.status(200).json(data);

@@ -15,9 +15,9 @@ export function getTime(timestamp: string): string {
   hours = hours % 12;
   hours = hours ? hours : 12;
   const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-  const day = date.getUTCDate();
+  const day = date.getDate();
   const month = date.toLocaleString('en-US', { month: 'short' });
-  const year = date.getUTCFullYear();
+  const year = date.getFullYear();
 
   return `${hours}:${formattedMinutes} ${ampm} ${day}-${month}-${year}`;
 }

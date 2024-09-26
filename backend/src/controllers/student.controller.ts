@@ -6,6 +6,7 @@ import Subject from "../models/subject.model";
 import { IClass } from "../types/class.type";
 import { IStudent } from "../types/student.type";
 import Grade from "../models/grade.model";
+import insertLog from "../utils/log";
 
 export const getStudentsByTeacher = async(req: Request, res: Response): Promise<void> => {
   try{
@@ -40,6 +41,7 @@ export const getStudentsByTeacher = async(req: Request, res: Response): Promise<
 
 export const addStudent = async(req: Request, res: Response): Promise<void> => {
   try{
+    const id = req.user._id;
     const { name, email, password, confirmPassword, dateOfBirth, address, phoneNumber, gender, classID } = req.body;
 
     // check password fields
@@ -62,6 +64,13 @@ export const addStudent = async(req: Request, res: Response): Promise<void> => {
 
     if(newUser){
       await newUser.save();
+      await insertLog({
+        userID: id,
+        userType: "Teacher",
+        action: `registered `,
+        targetID: newUser._id,
+        targetType: "Student"
+      });
       res.status(201).json({
         name: newUser.name,
         email: newUser.email,

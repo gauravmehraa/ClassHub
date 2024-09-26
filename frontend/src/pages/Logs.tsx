@@ -8,7 +8,7 @@ const Logs = () => {
 
   const [page, setPage] = useState(1);
 
-  const itemsPerPage = 20;
+  const itemsPerPage = 15;
   const pages = Math.ceil(logs.length / itemsPerPage);
 
   const start = (page - 1) * itemsPerPage;

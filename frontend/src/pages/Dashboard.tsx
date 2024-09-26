@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { useAuthContext } from '../context/AuthContext';
 import { TbGraphOff } from 'react-icons/tb';
 import { MdOutlineSearchOff } from 'react-icons/md';
+import { IoDocumentsSharp } from "react-icons/io5";
+import { TbBooks } from "react-icons/tb";
 import LogCard from '../components/LogCard';
 import StatCard from '../components/StatCard';
 import useGetLogs from '../hooks/logs/useGetLogs';
@@ -25,7 +27,7 @@ const Dashboard = () => {
 
   const options = {
     chart: {
-      title: "Quiz Statistics",
+      title: "",
     },
     colors: ['#7284fe', 'orange'],
     axes: {
@@ -41,23 +43,24 @@ const Dashboard = () => {
   return (
     <div className="flex flex-col text-black py-4 sm:py-8 overflow-auto max-h-screen w-full">
       
+      
       <div className='mx-auto flex flex-row flex-wrap gap-8 justify-center items-center w-11/12 my-8'>
-        <StatCard
-          title={statistics[0].title}
-          value={statistics[0].value}
-          statistic={statistics[0].stat}
-          description={statistics[0].description}
+      { authUser.role === "Student" &&
+        statistics.map((stat: any, index: number) => (
+          <StatCard
+          title={stat.title}
+          value={stat.value}
+          statistic={stat.stat}
+          description={stat.description}
           icon={
-            <div className="radial-progress text-primary" style={{ "--value": statistics[0].stat } as React.CSSProperties} role="progressbar">{statistics[0].stat}%</div>
+            index === 0? <div className={`radial-progress ${stat.stat >= 80? "text-success": stat.stat >= 40? "text-warning": "text-error"}`} style={{ "--value": stat.stat } as React.CSSProperties} role="progressbar">{stat.stat}%</div>:
+            index === 1? <TbBooks className='text-primary h-12 w-12'/>:
+            index === 2? <IoDocumentsSharp className='text-primary h-12 w-12'/>:
+            <div className={`radial-progress ${stat.stat >= 80? "text-success": stat.stat >= 40? "text-warning": "text-error"}`} style={{ "--value": stat.stat } as React.CSSProperties} role="progressbar">{stat.stat}%</div>
           }
         />
-        <StatCard
-          title={statistics[1].title}
-          value={statistics[1].value}
-          statistic={statistics[1].stat}
-          description={statistics[1].description}
-          icon={<TbGraphOff/>}
-        />
+        ))
+      }
       </div>
 
       { authUser && authUser.role === "Teacher"?
@@ -66,7 +69,7 @@ const Dashboard = () => {
         :
         ( JSON.stringify(averageGrades) === "{}"?
           <div className='font-semibold text-2xl flex gap-2 items-center my-auto mx-auto'> <TbGraphOff className='text-primary w-8 h-8'/> No statistics </div>:
-          <div className='mx-6 rounded-lg bg-white p-8'>
+          <div className='mx-6 rounded-lg bg-white px-8 py-12 flex justify-center'>
             <Chart chartType="Bar" width="100%" height="384px" data={gradeData} options={options} />
           </div>
         )
