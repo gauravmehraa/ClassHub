@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 
-const StatCard = (props: { title: string, value: string, description: string, icon: ReactNode}) => {
+const StatCard = (props: { title: string, value: string, statistic: string, description: string, icon: ReactNode}) => {
   return (
     <div className="stats shadow w-full md:w-auto">
       <div className="stat py-8 bg-white">

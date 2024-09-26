@@ -43,30 +43,20 @@ const Dashboard = () => {
       
       <div className='mx-auto flex flex-row flex-wrap gap-8 justify-center items-center w-11/12 my-8'>
         <StatCard
-          title='Total Likes'
-          value='25.6k'
-          description='21% more than last month'
-          icon={<div className="radial-progress text-primary" style={{ "--value": 70 } as React.CSSProperties} role="progressbar">
-          70%
-        </div>}
+          title={statistics[0].title}
+          value={statistics[0].value}
+          statistic={statistics[0].stat}
+          description={statistics[0].description}
+          icon={
+            <div className="radial-progress text-primary" style={{ "--value": statistics[0].stat } as React.CSSProperties} role="progressbar">{statistics[0].stat}%</div>
+          }
         />
         <StatCard
-          title='Total Likes'
-          value='25.6k'
-          description='21% more than last month'
-          icon={<MdOutlineSearchOff className='h-8 w-8'/>}
-        />
-        <StatCard
-          title='Total Likes'
-          value='25.6k'
-          description='21% more than last month'
-          icon={<MdOutlineSearchOff className='h-8 w-8'/>}
-        />
-        <StatCard
-          title='Total Likes'
-          value='25.6k'
-          description='21% more than last month'
-          icon={<MdOutlineSearchOff className='h-8 w-8'/>}
+          title={statistics[1].title}
+          value={statistics[1].value}
+          statistic={statistics[1].stat}
+          description={statistics[1].description}
+          icon={<TbGraphOff/>}
         />
       </div>
 
