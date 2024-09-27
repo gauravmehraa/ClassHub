@@ -108,7 +108,7 @@ const Navbar = () => {
       
       <div className="drawer justify-center">
         <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
-        <div className='absolute w-full h-full flex justify-center items-center pr-12 text-black font-roboto text-3xl font-regular'>{routes[location.pathname]}</div>
+        <div className='absolute w-full h-full flex justify-center items-center pr-12 text-black font-inter text-3xl font-regular'>{routes[location.pathname]}</div>
         <div className="drawer-side">
           <label htmlFor="my-drawer-3" aria-label="close sidebar" className="drawer-overlay"></label>
           <ul className="menu bg-white min-h-full w-80 p-4 gap-2">

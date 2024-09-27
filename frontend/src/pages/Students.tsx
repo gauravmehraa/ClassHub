@@ -10,7 +10,7 @@ const Students = () => {
   const [currentClass, setCurrentClass] = useState("");
   useEffect(() => {
     setClasses(Object.keys(students));
-    setCurrentClass(classes[0]);
+    setCurrentClass(Object.keys(students)[0]);
   }, [students]);
   return (
     <div className="flex flex-col text-black sm:p-8 overflow-auto w-full">

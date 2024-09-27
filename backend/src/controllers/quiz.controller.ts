@@ -8,6 +8,7 @@ import { IQuiz } from "../types/quiz.type";
 import Class from "../models/class.model";
 import Grade from "../models/grade.model";
 import { IQuestion } from "../types/question.type";
+import insertLog from "../utils/log";
 
 export const getQuizzesByTeacher = async(req: Request, res: Response) => {
   try{
@@ -68,6 +69,7 @@ export const getQuizzesByClass = async(req: Request, res: Response) => {
 export const addQuiz = async(req: Request, res: Response) => {
   try{
     const { topic, subjectID, questions } = req.body;
+    const id = req.user._id;
 
     const existingQuiz: IQuiz[] = await Quiz.find({
       topic: { $eq: topic },
@@ -92,6 +94,7 @@ export const addQuiz = async(req: Request, res: Response) => {
 
     if(quiz){
       await quiz.save();
+      await insertLog({ userID: id, userType: "Teacher", action: "added quiz for ", targetID: quiz.subjectID, targetType: "Quiz"})
       res.status(201).json(quiz);
     }
     else{
@@ -108,6 +111,7 @@ export const editQuiz = async(req: Request, res: Response) => {
   try{
     const { id: quizID } = req.params;
     const { topic, subjectID } = req.body;
+    const id = req.user._id;
 
     const updatedQuiz = await Quiz.findByIdAndUpdate(
       quizID,
@@ -121,6 +125,7 @@ export const editQuiz = async(req: Request, res: Response) => {
     }
 
     await updatedQuiz.save();
+    await insertLog({ userID: id, userType: "Teacher", action: "edited quiz ", targetID: updatedQuiz._id, targetType: "Quiz"})
     res.status(200).json(updatedQuiz);
   }
   catch (error) {
@@ -132,6 +137,7 @@ export const editQuiz = async(req: Request, res: Response) => {
 export const deleteQuiz = async(req: Request, res: Response) => {
   try{
     const { id: quizID } = req.params;
+    const id = req.user._id;
     const quiz = await Quiz.findById(quizID);
 
     if(!quiz){
@@ -142,6 +148,7 @@ export const deleteQuiz = async(req: Request, res: Response) => {
     await Question.deleteMany(
       { _id: { $in: quiz.questions }}
     );
+    await insertLog({ userID: id, userType: "Teacher", action: "deleted quiz ", targetID: quiz.subjectID, targetType: "Subject"})
     await Quiz.findByIdAndDelete(quizID);
     res.status(200).json({ message: "Quiz successfully deleted" });
   }
@@ -183,6 +190,7 @@ export const submitQuiz = async(req: Request, res: Response) => {
     const newGrade = new Grade({studentID, quizID, score, grade});
     if(newGrade){
       await newGrade.save();
+      await insertLog({ userID: studentID, userType: "Student", action: "submitted quiz ", targetID: quizID, targetType: "Quiz"})
       res.status(200).json(response);
     }
     else{

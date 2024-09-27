@@ -34,6 +34,7 @@ export default {
 		fontFamily: {
 			"roboto": ['Roboto'],
 			"inter": ['Inter'],
+			"helvetica": ['Helvetica'],
 		}
   },
   plugins: [

@@ -3,9 +3,10 @@ import Chart from 'react-google-charts';
 import { Link } from 'react-router-dom';
 import { useAuthContext } from '../context/AuthContext';
 import { TbGraphOff } from 'react-icons/tb';
-import { MdOutlineSearchOff } from 'react-icons/md';
+import { MdOutlineSearchOff, MdGroups } from 'react-icons/md';
 import { IoDocumentsSharp } from "react-icons/io5";
 import { TbBooks } from "react-icons/tb";
+import { SiGoogleclassroom } from "react-icons/si";
 import LogCard from '../components/LogCard';
 import StatCard from '../components/StatCard';
 import useGetLogs from '../hooks/logs/useGetLogs';
@@ -17,8 +18,6 @@ const Dashboard = () => {
   const { loading: gradesLoading, averageGrades } = useGetAverageGrades();
   const { loading: statisticsLoading, statistics } = useGetStatistics();
   const { loading: logsLoading, logs } = useGetLogs();
-
-  console.log(statistics);
 
   const gradeData: any = [["Quiz", "Average %", "Attempted %"]];
   Object.keys(averageGrades).forEach(quizID => {
@@ -42,26 +41,58 @@ const Dashboard = () => {
 
   return (
     <div className="flex flex-col text-black py-4 sm:py-8 overflow-auto max-h-screen w-full">
-      
-      
-      <div className='mx-auto flex flex-row flex-wrap gap-8 justify-center items-center w-11/12 my-8'>
-      { authUser.role === "Student" &&
-        statistics.map((stat: any, index: number) => (
-          <StatCard
-          title={stat.title}
-          value={stat.value}
-          statistic={stat.stat}
-          description={stat.description}
-          icon={
-            index === 0? <div className={`radial-progress ${stat.stat >= 80? "text-success": stat.stat >= 40? "text-warning": "text-error"}`} style={{ "--value": stat.stat } as React.CSSProperties} role="progressbar">{stat.stat}%</div>:
-            index === 1? <TbBooks className='text-primary h-12 w-12'/>:
-            index === 2? <IoDocumentsSharp className='text-primary h-12 w-12'/>:
-            <div className={`radial-progress ${stat.stat >= 80? "text-success": stat.stat >= 40? "text-warning": "text-error"}`} style={{ "--value": stat.stat } as React.CSSProperties} role="progressbar">{stat.stat}%</div>
-          }
-        />
-        ))
-      }
+      <div className='w-full flex flex-row flex-wrap justify-center gap-8'>
+        <div className='shadow flex flex-row gap-6 px-12 text-white font-helvetica text-2xl font-medium justify-between items-center bg-primary glass max-h-48 min-h-48 mx-6 rounded-xl'>
+          <img src={`https://avatar.iran.liara.run/public/${authUser.gender === 'Male'? 'boy': 'girl'}?username=${authUser.email}`} alt="User" className="rounded-full w-24 h-24 border-primary border-2" />
+          <div> Welcome Back!<br/>{authUser.gender === "Male"? "Mr.": "Ms."} {authUser.name}</div>
+        </div>
+        <div className='shadow flex flex-row gap-6 px-12 text-white font-helvetica text-2xl font-medium justify-between items-center bg-primary glass max-h-48 min-h-48 mx-6 rounded-xl'>
+          <div> Welcome Back!<br/>{authUser.gender === "Male"? "Mr.": "Ms."} {authUser.name}</div>
+          <img src={`https://avatar.iran.liara.run/public/${authUser.gender === 'Male'? 'boy': 'girl'}?username=${authUser.email}`} alt="User" className="rounded-full w-24 h-24 border-primary border-2" />
+        </div>
       </div>
+        {/* <div className='shadow flex flex-row gap-6 px-12 text-white font-helvetica text-2xl font-medium justify-between items-center bg-primary glass max-h-48 min-h-48 mx-6 rounded-xl'>
+          <div> Welcome Back!<br/>{authUser.gender === "Male"? "Mr.": "Ms."} {authUser.name}</div>
+          <img src={`https://avatar.iran.liara.run/public/${authUser.gender === 'Male'? 'boy': 'girl'}?username=${authUser.email}`} alt="User" className="rounded-full w-24 h-24 border-primary border-2" />
+        </div> */}
+      { statisticsLoading?
+      <div className='shadow bg-white max-h-48 min-h-48 max-w-full mt-4 mb-8 mx-6 rounded-xl flex'><span className='loading loading-spinner mx-auto my-auto text-primary'></span></div>:
+      (<div className='mx-auto flex flex-row flex-wrap gap-8 justify-center items-center w-11/12 my-8'>
+        { authUser.role === "Student" &&
+          statistics.map((stat: any, index: number) => (
+            <StatCard
+            title={stat.title}
+            value={stat.value}
+            statistic={stat.stat}
+            description={stat.description}
+            icon={
+              index === 0? <div className={`radial-progress ${stat.stat >= 80? "text-success": stat.stat >= 40? "text-warning": "text-error"}`} style={{ "--value": stat.stat } as React.CSSProperties} role="progressbar">{stat.stat}%</div>:
+              index === 1? <TbBooks className='text-primary h-12 w-12'/>:
+              index === 2? <IoDocumentsSharp className='text-primary h-12 w-12'/>:
+              <div className={`radial-progress ${stat.stat >= 80? "text-success": stat.stat >= 40? "text-warning": "text-error"}`} style={{ "--value": stat.stat } as React.CSSProperties} role="progressbar">{stat.stat}%</div>
+            }
+          />
+          ))
+        }
+        { authUser.role === "Teacher" &&
+          statistics.map((stat: any, index: number) => (
+            <StatCard
+            title={stat.title}
+            value={stat.value}
+            statistic={stat.stat}
+            description={stat.description}
+            icon={
+              index === 0? <div className={`radial-progress ${stat.stat >= 80? "text-success": stat.stat >= 40? "text-warning": "text-error"}`} style={{ "--value": stat.stat } as React.CSSProperties} role="progressbar">{stat.stat}%</div>:
+              index === 1? <MdGroups className='text-primary h-12 w-12'/>:
+              index === 2? <SiGoogleclassroom className='text-black h-12 w-12'/>:
+              <div className={`radial-progress ${stat.stat >= 80? "text-success": stat.stat >= 40? "text-warning": "text-error"}`} style={{ "--value": stat.stat } as React.CSSProperties} role="progressbar">{stat.stat}%</div>
+            }
+          />
+          ))
+        }
+      </div>
+      )
+      }
 
       { authUser && authUser.role === "Teacher"?
       (
@@ -69,7 +100,7 @@ const Dashboard = () => {
         :
         ( JSON.stringify(averageGrades) === "{}"?
           <div className='font-semibold text-2xl flex gap-2 items-center my-auto mx-auto'> <TbGraphOff className='text-primary w-8 h-8'/> No statistics </div>:
-          <div className='mx-6 rounded-lg bg-white px-8 py-12 flex justify-center'>
+          <div className='mx-6 shadow rounded-lg bg-white px-8 py-12 flex justify-center'>
             <Chart chartType="Bar" width="100%" height="384px" data={gradeData} options={options} />
           </div>
         )

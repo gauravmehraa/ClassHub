@@ -20,3 +20,8 @@
   font-family: Inter;
   src: url("../src/assets/fonts/Inter-Regular.ttf");
 }
+
+@font-face {
+  font-family: Helvetica;
+  src: url("../src/assets/fonts/Helvetica.ttf");
+}

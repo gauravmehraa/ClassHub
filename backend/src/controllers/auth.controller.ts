@@ -85,6 +85,7 @@ export const login = async(req: Request, res: Response) => {
     const data: any = {
       name: user.name,
       email: user.email,
+      gender: user.gender,
       role
     }
 

@@ -3,7 +3,6 @@ import Quiz from "../models/quiz.model";
 import Grade from "../models/grade.model";
 import Class from "../models/class.model";
 import Student from "../models/student.model";
-import Teacher from "../models/teacher.model";
 import Subject from "../models/subject.model";
 import Note from "../models/notes.model";
 import Feedback from "../models/feedback.model";
@@ -74,12 +73,31 @@ export const getStatistics = async(req: Request, res: Response) => {
       const averageFeedbackPercent = (feedbackScore / totalFeedbackScore) * 100;
 
       data.push({ title: "Quizzes Attempted", stat: parseFloat(attemptPercentage.toFixed(2)), value: `${quizzes.length - filteredQuizzes.length} out of ${quizzes.length}`, description: ""})
-      data.push({ title: "Subjects", stat: studentClass.subjects.length, value: studentClass.subjects.length, description: "Subjects alloted"});
-      data.push({ title: "Notes", stat: notes.length, value: notes.length, description: "Documents given"});
+      data.push({ title: "Subjects", stat: studentClass.subjects.length, value: studentClass.subjects.length, description: ""});
+      data.push({ title: "Notes", stat: notes.length, value: notes.length, description: ""});
       if(feedbacks.length === 0) data.push({ title: "Performance", stat: 0, value: 0, description: "Insufficient Data"});
-      else data.push({ title: "Performance", stat: parseFloat(averageFeedbackPercent.toFixed(2)), value: parseFloat((feedbackScore / feedbacks.length).toFixed(2)), description: "Average feedback rating"});
+      else data.push({ title: "Feedback", stat: parseFloat(averageFeedbackPercent.toFixed(2)), value: parseFloat((feedbackScore / feedbacks.length).toFixed(2)), description: "Class Performance"});
     }
+    if(role === "Teacher"){
+      const subjects = await Subject.find({ teacherID: { $eq: id }});
+      const subjectIDs = subjects.map((subject: any) => subject._id);
+      const classes = await Class.find({ subjects: { $in: subjectIDs }});
+      const classIDs = classes.map((currentClass: any) => currentClass._id);
+      const students = await Student.find({ classID: { $in: classIDs }});
 
+      const quizzes = await Quiz.find({ subjectID: { $in: subjectIDs }});
+      let attempted = 0;
+      let total = 0;
+      for(let quiz of quizzes){
+        const scores = await Grade.find({ quizID: quiz._id }).select("score -_id");
+        attempted += scores.length;
+        total += students.length;
+      }
+      const attemptPercent = parseFloat(((attempted / total) * 100).toFixed(2));
+      data.push({ title: "Quiz Completion", stat: attemptPercent, value: `${attempted} out of ${total}`, description: ""});
+      data.push({ title: "Classes", stat: classes.length, value: classes.length, description: ""});
+      data.push({ title: "Students", stat: students.length, value: students.length, description: "No. of learners"});
+    }
     res.status(200).json(data);
   }
   catch (error) {

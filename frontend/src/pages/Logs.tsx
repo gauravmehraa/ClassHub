@@ -38,12 +38,12 @@ const Logs = () => {
               <button onClick={nextPage} className="join-item btn bg-white border-none text-black hover:bg-primary hover:text-white"><GrFormNext className="w-4 h-4"/></button>
             </div>
 
-            <div className="rounded-lg w-9/12 block overflow-x-auto mx-8">
+            <div className="rounded-lg w-full mx-2 md:w-9/12 block overflow-x-auto md:mx-8">
             <table border={1} className="table w-full" cellSpacing={20}>
               <tr className="bg-slate-600 text-white">
-                <th>Role</th>
-                <th>Action</th>
-                <th>Time</th>
+                <th style={ {width: "15%"}}>Role</th>
+                <th style={ {width: "50%"}}>Action</th>
+                <th style={ {width: "35%"}}>Time</th>
               </tr>
               {currentPage.map((log: any, index: number) => (
                 <tr className={`${index % 2 === 0? "bg-gray-200": "bg-gray-100"}`}>
@@ -61,10 +61,6 @@ const Logs = () => {
               ))}
             </table>
             </div>
-
-            {/* {currentPage.map((log: { _id: React.Key | null | undefined; }, index: number) => (
-              <LogCard key={log._id} data={log} index={index}/>
-            ))} */}
           </>
         }
       </div>

@@ -27,7 +27,7 @@ const App: React.FC = () => {
       { authUser? <Navbar/>: null}
       <Routes>
         <Route path='/'>
-          <Route path ='' element={authUser? <Dashboard/>: <Navigate to='/login'/>}/>
+          <Route index element={authUser? <Navigate to='/dashboard'/>: <Navigate to='/login'/>}/>
           <Route path ='dashboard' element={authUser? <Dashboard/>: <Navigate to='/login'/>}/>
           <Route path='login' element={authUser? <Navigate to='/dashboard'/>: <Login/>}/>
           <Route path='signup' element={authUser? <Navigate to='/dashboard'/>: <Signup/>}/>
@@ -53,7 +53,7 @@ const App: React.FC = () => {
           </Route>
           <Route path='logs' element={authUser && authUser.role === "Teacher"? <Logs/>:<Navigate to='/login'/>}/>
         </Route>
-        <Route path='*' element={<Dashboard/>}/>
+        <Route path='*' element={<Navigate to='/dashboard'/>}/>
       </Routes>
       <Toaster/>
     </div>
