@@ -17,6 +17,8 @@ const Students = () => {
       <div>
         <h1 className='hidden md:block text-3xl text-center font-semibold mt-8 sm:mt-0'>Students</h1>
       </div>
+      { !loading &&
+      <>
       <Link to ="add" className='btn btn-md mx-auto mt-6 bg-primary text-white border-none cursor-pointer hover:bg-white hover:text-black'>Add Student</Link>
       <div className="mt-6 flex flex-col mx-auto w-11/12 sm:w-auto">
         <select
@@ -31,6 +33,8 @@ const Students = () => {
           ))}
         </select>
       </div>
+      </>
+      }
       {
         loading ?
         <span className='loading loading-spinner mx-auto my-auto text-primary'></span>:

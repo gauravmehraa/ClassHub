@@ -7,21 +7,20 @@ import useGetGrades from '../hooks/quiz/useGetGrades';
 import GradeCard from '../components/GradeCard';
 import AddFeedbackModal from '../components/AddFeedbackModal';
 import EditStudentModal from '../components/EditStudentModal';
-import useGetAllSubjects from '../hooks/subjects/useGetAllSubjects';
 import { MdOutlineMail, MdOutlinePhone, MdOutlineHome, MdOutlineMale, MdOutlineFemale, MdArrowBackIos } from "react-icons/md";
 import { LiaBirthdayCakeSolid } from "react-icons/lia";
 import { MdOutlineSearchOff } from "react-icons/md";
 import { TbGraphOff } from "react-icons/tb";
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
+import useGetSubjectsByClass from '../hooks/subjects/useGetSubjectsByClass';
 
 const Profile = () => {
   const location = useLocation();
   const { student, course } = location.state;
   const { loading: feedbackLoading, feedbacks } = useGetFeedback();
-  const { loading: subjectsLoading, allSubjects } = useGetAllSubjects();
+  const { loading: subjectsLoading, subjects } = useGetSubjectsByClass(student.classID._id);
   const { loading: gradesLoading, grades } = useGetGrades(student._id);
   const filteredFeedbacks = feedbacks.filter((feedback: any)=> feedback.studentID._id.toString() === student._id.toString());
-
 
   const gradeData: any = [];
   grades.forEach((grade: any) => {
@@ -85,6 +84,17 @@ const Profile = () => {
           </div>
         </div>
       </div>
+      { subjectsLoading?
+        <div className='shadow bg-white max-h-48 min-h-48 max-w-full mt-4 mb-8 mx-6 rounded-xl flex'><span className='loading loading-spinner mx-auto my-auto text-primary'></span></div>:
+        <div className='flex flex-row flex-wrap justify-evenly items-center gap-6 py-8 px-4 mx-6 sm:px-8 sm:mx-12 my-6 bg-white rounded-lg'>
+          { subjects.length === 0?
+            <></>:
+            subjects.map((subject: any, index: number) => (
+            <div className='bg-primary glass rounded-lg p-4 text-white'> {subject.name} </div>
+          ))
+          }
+        </div>
+      }
       <div className='flex flex-row flex-wrap'>
         <div className='flex flex-col px-4 mt-8 w-full items-center gap-8 md:w-1/2 '>
           <div className={`flex flex-col min-h-[445px] max-h-[445px]  w-full md:w-11/12 ${true? "bg-gray-200": "bg-gray-100"}`}>

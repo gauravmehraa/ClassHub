@@ -2,23 +2,22 @@ import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 import { useAuthContext } from '../../context/AuthContext';
 
-const useGetGrades = (studentID: any) => {
+const useGetAllLogs = () => {
   const [loading, setLoading] = useState(false);
-  const [grades, setGrades] = useState([] as any);
+  const [allLogs, setAllLogs] = useState([] as any);
   const { authUser } = useAuthContext();
-  
+
   useEffect(() => {
-    const getGrades = async() => {
-      if(studentID === "none" && authUser.role === "Teacher") return;
+    const getAllLogs = async() => {
       setLoading(true);
       try{
-        const response: Response = await fetch(`/api/grades/${studentID}`);
+        if(authUser.role !== "Teacher") return;
+        const response: Response = await fetch("/api/logs/all");
         const data = await response.json();
         if(data.error){
           throw new Error(data.error);
         }
-        data.sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-        setGrades(data);
+        setAllLogs(data);
       }
       catch (error){
         toast.error((error as Error).message);
@@ -27,9 +26,9 @@ const useGetGrades = (studentID: any) => {
         setLoading(false);
       }
     }
-    getGrades();
-  }, [authUser.role, studentID]);
-  return { loading, grades };
+    getAllLogs();
+  }, [authUser]);
+  return { loading, allLogs };
 }
 
-export default useGetGrades;
+export default useGetAllLogs;

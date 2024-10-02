@@ -23,7 +23,7 @@ const Quiz = () => {
   
   return (
     <div className="flex flex-col text-black px-6 sm:px-4 py-4 sm:py-8 overflow-auto max-h-screen w-full">
-      <div className='text-3xl font-bold mt-8 text-center underline underline-offset-8'>{quiz.topic}</div>
+      <div className='text-3xl font-bold mt-8 text-center'>{quiz.topic}</div>
       {
         JSON.stringify(correctAnswers) !== "{}" &&
         <div className='text-xl font-bold mt-8 text-center'>Grade Obtained: {correctAnswers.grade}</div>

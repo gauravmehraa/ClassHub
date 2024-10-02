@@ -1,12 +1,14 @@
 import { Router } from "express";
 import { verifyTeacher, verifyUser } from "../middleware/verify";
-import { addSubject, getSubjects, getAllSubjects, editSubject, allocateSubject } from "../controllers/subject.controller";
+import { addSubject, getSubjects, getAllSubjects, editSubject, allocateSubject, getSubjectsByClass } from "../controllers/subject.controller";
 
 const router: Router = Router();
 
 router.get("/", verifyUser, getSubjects);
 
 router.get("/all", verifyTeacher, getAllSubjects);
+
+router.get("/class/:id", verifyTeacher, getSubjectsByClass);
 
 router.post("/add", verifyTeacher, addSubject);
 

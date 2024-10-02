@@ -44,6 +44,21 @@ export const getAllSubjects = async(req: Request, res: Response) => {
   }
 }
 
+export const getSubjectsByClass = async(req: Request, res: Response) => {
+  try{
+    const { id: classID } = req.params;
+    const subjects = await Class.findById(classID).select("subjects").populate({
+      path: "subjects",
+      select: "-createdAt -updatedAt -__v"
+    });
+    res.status(200).json(subjects?.subjects || []);
+  }
+  catch (error) {
+    console.log(`[ERROR] - Get Subjects By Class Controller: ${(error as Error).message}`);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
 export const addSubject = async(req: Request, res: Response) => {
   try{
     const { id: teacherID } = req.user;

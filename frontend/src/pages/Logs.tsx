@@ -1,19 +1,19 @@
 import { useState } from "react";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
-import useGetLogs from "../hooks/logs/useGetLogs";
+import useGetAllLogs from "../hooks/logs/useGetAllLogs";
 import { getTime } from "../utils/date";
 
 const Logs = () => {
-  const { loading, logs } = useGetLogs();
+  const { loading, allLogs } = useGetAllLogs();
 
   const [page, setPage] = useState(1);
 
   const itemsPerPage = 15;
-  const pages = Math.ceil(logs.length / itemsPerPage);
+  const pages = Math.ceil(allLogs.length / itemsPerPage);
 
   const start = (page - 1) * itemsPerPage;
   const end = page * itemsPerPage;
-  const currentPage = logs.slice(start, end);
+  const currentPage = allLogs.slice(start, end);
 
   const previousPage = () => {
     if(page !== 1) setPage(page - 1);
@@ -29,7 +29,7 @@ const Logs = () => {
       loading ?
       <span className='loading loading-spinner mx-auto my-auto text-primary'></span>:
       <div className="flex flex-col my-2 sm:my-8 items-center">
-        { logs.length === 0?
+        { allLogs.length === 0?
           <div className="mx-auto"> No logs to show </div>:
           <>
             <div className="join mb-4">
