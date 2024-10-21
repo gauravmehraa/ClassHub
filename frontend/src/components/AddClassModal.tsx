@@ -17,10 +17,11 @@ const AddClassModal = () => {
   }
 
   const handleSubmit: any = async(e: MouseEvent) => {
-    await addClass({ year, program, seats });
+    const success = await addClass({ year, program, seats });
     (document.getElementById("class_add") as HTMLDialogElement).close();
+    handleCancel(e);
     await sleep(800);
-    window.location.reload();
+    if(success) window.location.reload();
   }
   return (
     <div className="flex items-center">

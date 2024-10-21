@@ -9,8 +9,6 @@ import { VscFeedback } from "react-icons/vsc";
 import { PiStudent, PiExam } from "react-icons/pi";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { BiLogOut } from "react-icons/bi";
-import { TbSettings } from "react-icons/tb";
-//import { SiGoogleclassroom } from "react-icons/si";
 import images from "../assets/images";
 
 const Navbar = () => {
@@ -28,7 +26,7 @@ const Navbar = () => {
     '/notes/add' : 'Add Note',
     '/classes' : 'Classes',
     '/quiz' : 'Quizzes',
-    '/quiz/view' : 'Attempting Quiz',
+    '/quiz/view' : `${authUser.role === "Teacher"? 'Viewing Quiz':'Attempting Quiz'}`,
     '/lecture' : 'Lobby',
     '/logs' : 'Logs',
   }
@@ -76,9 +74,6 @@ const Navbar = () => {
         </NavLink>
       </div>
       <div className='mt-auto flex flex-col items-center gap-6 pb-6 font-semibold'>
-        <NavLink to="help" className='flex flex-row items-center gap-3'>
-          <TbSettings className='w-6 h-6'/> Settings
-        </NavLink>
         <div onClick={logout} className='cursor-pointer flex flex-row items-center gap-3'>
           <BiLogOut className='h-6 w-6'/>
         { loading ? <span className='loading loading-spinner'></span>: <div>Logout</div> }
@@ -157,9 +152,6 @@ const Navbar = () => {
               </NavLink>
             </li>
             <div className='mt-auto flex flex-col items-center gap-6 pb-8 font-semibold'>
-              <NavLink to="help" className='flex flex-row items-center gap-3' onClick={handleClose}>
-                <TbSettings className='w-6 h-6'/> Settings
-              </NavLink>
               <div onClick={logout} className='cursor-pointer flex flex-row items-center gap-3'>
                 <BiLogOut className='h-6 w-6'/>
               { loading ? <span className='loading loading-spinner'></span>: <div>Logout</div> }

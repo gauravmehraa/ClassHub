@@ -3,6 +3,7 @@ import useGetClasses from "../hooks/classes/useGetClasses";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 import ClassCard from "../components/ClassCard";
 import AddClassModal from "../components/AddClassModal";
+import AddSubjectModal from "../components/AddSubjectModal";
 
 const Classes = () => {
   const { loading, classes } = useGetClasses();
@@ -27,6 +28,7 @@ const Classes = () => {
     <div className="flex flex-col text-black py-4 sm:py-8 overflow-auto max-h-screen w-full">
       <div className="hidden md:block text-3xl text-center font-semibold py-4">Classes</div>
       <AddClassModal/>
+      <AddSubjectModal/>
     {
       loading ?
       <span className='loading loading-spinner mx-auto my-auto text-primary'></span>:

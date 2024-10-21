@@ -5,6 +5,7 @@ import { generateFilename, extractFilename } from "../utils/filename";
 import Note from "../models/notes.model";
 import Class from "../models/class.model";
 import Subject from "../models/subject.model";
+import insertLog from "../utils/log";
 
 export const getNotesByClass = async(req: Request, res: Response): Promise<void> => {
   try{
@@ -78,6 +79,7 @@ export const getNotesByTeacher = async(req: Request, res: Response): Promise<voi
 export const addNote = async(req: Request, res: Response) => {
   try{
     const { subjectID, title, description } = req.body;
+    const { id: teacherID } = req.user;
     const file = req.file;
     
     const s3 = await connectToS3();
@@ -106,6 +108,13 @@ export const addNote = async(req: Request, res: Response) => {
     const note = new Note(data);
     if(note){
       await note.save();
+      await insertLog({
+        userID: teacherID,
+        userType: "Teacher",
+        action: `uploaded notes `,
+        targetID: note._id,
+        targetType: "Note"
+      });
       res.status(201).json(note);
     }
     else{
@@ -121,6 +130,7 @@ export const addNote = async(req: Request, res: Response) => {
 export const editNote = async(req: Request, res: Response) => {
   try{
     const { id: noteID } = req.params;
+    const { id: teacherID } = req.user;
     const { title, description } = req.body;
     const file = req.file;
     
@@ -166,6 +176,13 @@ export const editNote = async(req: Request, res: Response) => {
       return;
     }
     await updatedNote.save();
+    await insertLog({
+      userID: teacherID,
+      userType: "Teacher",
+      action: `edited notes `,
+      targetID: updatedNote._id,
+      targetType: "Note"
+    });
     res.status(200).json(updatedNote);
 
   }
@@ -178,6 +195,7 @@ export const editNote = async(req: Request, res: Response) => {
 export const deleteNote = async(req: Request, res: Response) => {
   try{
     const { id: noteID } = req.params;
+    const { id: teacherID } = req.user;
     const s3 = await connectToS3();
 
     if(!s3){
@@ -197,7 +215,11 @@ export const deleteNote = async(req: Request, res: Response) => {
 
     const deleteCommand = new DeleteObjectCommand(deleteParameters);
     await s3.send(deleteCommand);
-
+    await insertLog({
+      userID: teacherID,
+      userType: "Teacher",
+      action: `delete note ${note.title}`,
+    });
     await note.deleteOne();
     res.status(201).json({message: "Note successfully deleted"});
   }

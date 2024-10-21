@@ -20,10 +20,11 @@ const EditClassModal = (props: { currentClass: any }) => {
   }
 
   const handleSubmit: any = async(e: MouseEvent) => {
-    await editClass({year, program, seats, subjects}, props.currentClass._id);
+    const success = await editClass({year, program, seats, subjects}, props.currentClass._id);
     (document.getElementById(`class_edit_${props.currentClass._id}`) as HTMLDialogElement).close();
+    handleCancel(e);
     await sleep(800);
-    window.location.reload();
+    if(success)window.location.reload();
   }
   return (
     <div className="flex items-center ml-4">

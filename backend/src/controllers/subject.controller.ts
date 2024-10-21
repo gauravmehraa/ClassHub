@@ -74,6 +74,13 @@ export const addSubject = async(req: Request, res: Response) => {
     const newSubject = new Subject({ name, teacherID });
     if(newSubject){
       await newSubject.save();
+      await insertLog({
+        userID: teacherID,
+        userType: "Teacher",
+        action: `created subject `,
+        targetID: newSubject._id,
+        targetType: "Subject"
+      });
       res.status(201).json({
         _id: newSubject._id,
         name: newSubject.name,

@@ -28,9 +28,9 @@ const AddNote = () => {
     formData.append("subjectID", subjectID);
     if(description.trim() !== "") formData.append("description", description);
     if(file) formData.append("file", file);
-    await addNote(formData);
+    const success = await addNote(formData);
     await sleep(800);
-    window.location.reload();
+    if(success) window.location.reload();
     setTitle("");
     setDescription("");
     setSubjectID("");

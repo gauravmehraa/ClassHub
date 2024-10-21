@@ -5,6 +5,8 @@ const useAddClass = () => {
   const [loading, setLoading] = useState(false);
 
   const addClass = async(newClass: any) => {
+    const success: boolean = handleInputErrors(newClass);
+    if(!success) return false;
     setLoading(true);
     try{
       const response: Response = await fetch("/api/class/add",{
@@ -23,10 +25,27 @@ const useAddClass = () => {
     }
     finally{
       setLoading(false);
+      return true;
     }
   }
 
   return { loading, addClass }
+}
+
+function handleInputErrors(newClass: any){
+  if(!newClass.year){
+    toast.error("Year cannot be blank");
+    return false;
+  }
+  if(!newClass.program){
+    toast.error("Program cannot be blank");
+    return false;
+  }
+  if(!newClass.seats){
+    toast.error("Seats cannot be blank");
+    return false;
+  }
+  return true;
 }
 
 export default useAddClass;

@@ -15,10 +15,11 @@ const AddFeedbackModal = (props: { student: any }) => {
   }
 
   const handleSubmit: any = async(e: MouseEvent) => {
-    await addFeedback({content, rating, studentID: props.student._id});
+    const success = await addFeedback({content, rating, studentID: props.student._id});
     (document.getElementById("feedback_add") as HTMLDialogElement).close();
+    handleCancel();
     await sleep(800);
-    window.location.reload();
+    if(success) window.location.reload();
   }
   return (
     <div className="flex items-center">

@@ -15,8 +15,6 @@ import AddQuiz from './pages/AddQuiz';
 import Dashboard from './pages/Dashboard';
 import Navbar from './components/Navbar';
 import Classes from './pages/Classes';
-import Lobby from './pages/Lobby';
-import Lecture from './pages/Lecture';
 import Logs from './pages/Logs';
 
 const App: React.FC = () => {
@@ -31,11 +29,7 @@ const App: React.FC = () => {
           <Route path ='dashboard' element={authUser? <Dashboard/>: <Navigate to='/login'/>}/>
           <Route path='login' element={authUser? <Navigate to='/dashboard'/>: <Login/>}/>
           <Route path='signup' element={authUser? <Navigate to='/dashboard'/>: <Signup/>}/>
-          <Route path='feedback' element={authUser? <Feedback/>:<Navigate to='/login'/>}/>          
-          <Route path='lecture'>
-            <Route index element={authUser? <Lobby/>: <Navigate to='/login'/>}/>
-            <Route path=':id' element={authUser? <Lecture/>:<Navigate to='/login'/>}/>
-          </Route>
+          <Route path='feedback' element={authUser? <Feedback/>:<Navigate to='/login'/>}/>
           <Route path='notes'>
             <Route index element={authUser? <Notes/>: <Navigate to='/login'/>}/>
             <Route path='add' element={authUser && authUser.role === "Teacher"? <AddNote/>:<Navigate to='/login'/>}/>

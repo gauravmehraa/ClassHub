@@ -90,6 +90,7 @@ export const addStudent = async(req: Request, res: Response): Promise<void> => {
 export const editStudent = async(req: Request, res: Response): Promise<void> => {
   try{
     const { id: studentID } = req.params;
+    const { id: teacherID } = req.user;
     const { name, email, dateOfBirth, address, phoneNumber, gender, classID } = req.body;
 
     const student = await Student.findByIdAndUpdate(
@@ -99,11 +100,18 @@ export const editStudent = async(req: Request, res: Response): Promise<void> => 
     );
 
     if(!student){
-      res.status(500).json({ error: "No student to be deleted" });
+      res.status(500).json({ error: "No student to be edited" });
       return;
     }
 
     await student.save();
+    await insertLog({
+      userID: teacherID,
+      userType: "Teacher",
+      action: `edited student `,
+      targetID: student._id,
+      targetType: "Student"
+    });
     res.status(200).json(student);
   }
   catch (error) {

@@ -6,7 +6,7 @@ import { TbGraphOff } from 'react-icons/tb';
 import { MdOutlineSearchOff, MdGroups } from 'react-icons/md';
 import { IoDocumentsSharp } from "react-icons/io5";
 import { TbBooks } from "react-icons/tb";
-import { SiGoogleclassroom } from "react-icons/si";
+import { SiGoogleclassroom, SiBookstack } from "react-icons/si";
 import LogCard from '../components/LogCard';
 import StatCard from '../components/StatCard';
 import useGetLogs from '../hooks/logs/useGetLogs';
@@ -44,20 +44,18 @@ const Dashboard = () => {
     averageGradeData.push([averageGrades[quizID].topic, averageGrades[quizID].averagePercent, averageGrades[quizID].attempted]);
   });
 
-  const averageGradeOptions = {
+  let averageGradeOptions: any = {
     chart: {
       title: "",
     },
     colors: ['#7284fe', 'orange'],
-    axes: {
-      x: {
-        all: {
-          range: { min: 0, max: 100 }
-        }
-      },
-    },
-    bars: 'horizontal'
   };
+
+  if(window.innerWidth >= 766){
+    averageGradeOptions = {...averageGradeOptions, bars: 'horizontal', axes: { x : { all: { range: { min: 0, max: 100 }}}}}
+  } else {
+    averageGradeOptions = {...averageGradeOptions, legend: { position: "none" }, bars: 'vertical', axes: { y : { all: { range: { min: 0, max: 100 }}, x : { all: { range: { min: 0, max: 100 }}}}}}
+  }
 
   return (
     <div className="flex flex-col text-black py-4 sm:py-8 mx-0 overflow-auto max-h-screen w-full">
@@ -98,7 +96,7 @@ const Dashboard = () => {
                   index === 0? <div className={`radial-progress ${stat.stat >= 80? "text-success": stat.stat >= 40? "text-warning": "text-error"}`} style={{ "--value": stat.stat } as React.CSSProperties} role="progressbar">{stat.stat}%</div>:
                   index === 1? <MdGroups className='text-primary h-12 w-12'/>:
                   index === 2? <SiGoogleclassroom className='text-black h-12 w-12'/>:
-                  <div className={`radial-progress ${stat.stat >= 80? "text-success": stat.stat >= 40? "text-warning": "text-error"}`} style={{ "--value": stat.stat } as React.CSSProperties} role="progressbar">{stat.stat}%</div>
+                  <SiBookstack className='text-black h-12 w-12'/>
                 }
               />
               ))
@@ -129,7 +127,7 @@ const Dashboard = () => {
         ( JSON.stringify(averageGrades) === "{}"?
           <div className='font-semibold text-2xl flex gap-2 items-center my-auto mx-auto'> <TbGraphOff className='text-primary w-8 h-8'/> No statistics </div>:
           <div className='mx-6 shadow rounded-lg bg-white px-8 py-12 flex justify-center'>
-            <Chart chartType="Bar" width="100%" height="384px" data={averageGradeData} options={averageGradeOptions} />
+            <Chart chartType="Bar" width="100%" height={`${window.innerHeight >= 766? '384px': '500px'}`} legendToggle data={averageGradeData} options={averageGradeOptions} />
           </div>
         )
       )

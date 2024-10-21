@@ -1,23 +1,24 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-const useAddFeedback = () => {
+const useAddSubject = () => {
   const [loading, setLoading] = useState(false);
 
-  const addFeedback = async(feedback: any) => {
-    const success = handleInputErrors(feedback);
+  const addSubject = async(newSubject: any) => {
+    const success = handleInputErrors(newSubject);
     if(!success) return false;
+    setLoading(true);
     try{
-      const response: Response = await fetch("/api/feedback/add",{
+      const response: Response = await fetch("/api/subject/add",{
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(feedback),
+        body: JSON.stringify(newSubject),
       });
       const data = await response.json();
       if(data.error){
         throw new Error(data.error);
       }
-      toast.success("Feedback successfully added.")
+      toast.success("Subject successfully added.")
     }
     catch (error){
       toast.error((error as Error).message);
@@ -28,15 +29,15 @@ const useAddFeedback = () => {
     }
   }
 
-  return { loading, addFeedback }
+  return { loading, addSubject }
 }
 
-function handleInputErrors(feedback: any){
-  if(!feedback.rating){
-    toast.error("Rating cannot be blank");
+function handleInputErrors(subject: any){
+  if(!subject.name){
+    toast.error("Subject name cannot be blank");
     return false;
   }
   return true;
 }
 
-export default useAddFeedback;
+export default useAddSubject;

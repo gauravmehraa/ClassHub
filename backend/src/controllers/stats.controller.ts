@@ -97,6 +97,7 @@ export const getStatistics = async(req: Request, res: Response) => {
       data.push({ title: "Quiz Completion", stat: attemptPercent, value: `${attempted} out of ${total}`, description: ""});
       data.push({ title: "Classes", stat: classes.length, value: classes.length, description: ""});
       data.push({ title: "Students", stat: students.length, value: students.length, description: "No. of learners"});
+      data.push({ title: "Subjects", stat: subjects.length, value: subjects.length, description: "No. of subjects"});
     }
     res.status(200).json(data);
   }

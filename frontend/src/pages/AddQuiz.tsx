@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from 'react'
+import { FormEvent, useState } from 'react'
 import useGetAllSubjects from '../hooks/subjects/useGetAllSubjects';
 import useAddQuiz from '../hooks/quiz/useAddQuiz';
 
@@ -44,7 +44,8 @@ const AddQuiz = () => {
 
   const handleSubmit: any = async(e: FormEvent) => {
     e.preventDefault();
-    await addQuiz({topic, subjectID, questions});
+    const success = await addQuiz({topic, subjectID, questions});
+    if(success) handleReset(e);
   }
 
   const handleOptionChange = (questionIndex: number, optionIndex: number, newValue: string) => {

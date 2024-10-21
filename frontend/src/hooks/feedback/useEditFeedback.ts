@@ -5,6 +5,8 @@ const useEditFeedback = () => {
   const [loading, setLoading] = useState(false);
 
   const editFeedback = async(updatedFeedback: any, feedbackID: string) => {
+    const success = handleInputErrors(updatedFeedback);
+    if(!success) return false;
     setLoading(true);
     try{
       const response: Response = await fetch(`/api/feedback/edit/${feedbackID}`,{
@@ -23,10 +25,19 @@ const useEditFeedback = () => {
     }
     finally{
       setLoading(false);
+      return true;
     }
   }
 
   return { loading, editFeedback }
+}
+
+function handleInputErrors(feedback: any){
+  if(!feedback.rating){
+    toast.error("Rating cannot be blank");
+    return false;
+  }
+  return true;
 }
 
 export default useEditFeedback;

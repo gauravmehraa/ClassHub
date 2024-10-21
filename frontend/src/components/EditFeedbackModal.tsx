@@ -17,10 +17,11 @@ const EditFeedbackModal = (props: { feedback: any }) => {
   }
 
   const handleSubmit: any = async(e: MouseEvent) => {
-    await editFeedback({content, rating}, props.feedback._id);
+    const success = await editFeedback({content, rating}, props.feedback._id);
     (document.getElementById(`feedback_edit_${props.feedback._id}`) as HTMLDialogElement).close();
+    handleCancel(e);
     await sleep(800);
-    window.location.reload();
+    if(success) window.location.reload();
   }
   return (
     <div className="flex items-center ml-auto">
