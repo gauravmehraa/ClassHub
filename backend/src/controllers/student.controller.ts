@@ -57,6 +57,17 @@ export const addStudent = async(req: Request, res: Response): Promise<void> => {
       return;
     }
 
+    const existingClass = await Class.findById(classID);
+    if(!existingClass){
+      res.status(400).json({error: "Class does not exist"});
+      return;
+    }
+    const seatsTaken = await Student.find({ classID: { $eq: classID }});
+    if(existingClass.seats < seatsTaken.length + 1){
+      res.status(400).json({error: "Class has reached its capacity"});
+      return;
+    }
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -92,6 +103,17 @@ export const editStudent = async(req: Request, res: Response): Promise<void> => 
     const { id: studentID } = req.params;
     const { id: teacherID } = req.user;
     const { name, email, dateOfBirth, address, phoneNumber, gender, classID } = req.body;
+
+    const existingClass = await Class.findById(classID);
+    if(!existingClass){
+      res.status(400).json({error: "Class does not exist"});
+      return;
+    }
+    const seatsTaken = await Student.find({ classID: { $eq: classID }});
+    if(existingClass.seats < seatsTaken.length + 1){
+      res.status(400).json({error: "Class has reached its capacity"});
+      return;
+    }
 
     const student = await Student.findByIdAndUpdate(
       studentID,

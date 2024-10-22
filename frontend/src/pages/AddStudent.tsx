@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useState } from 'react'
 import { IoEye, IoEyeOff } from 'react-icons/io5';
 import useGetClasses from '../hooks/classes/useGetClasses';
 import useAddStudent from '../hooks/students/useAddStudent';
@@ -16,6 +16,7 @@ const AddStudent = () => {
     name: '', email: '', password: '', confirmPassword: '', dateOfBirth: '', address: '',
     phoneNumber: '', gender: 'Male', classID: ''
   });
+  const [displayDate, setDisplayDate] = useState('');
 
   const handleReset: any = async(e: FormEvent) => {
     setData({
@@ -23,6 +24,17 @@ const AddStudent = () => {
       name: '', email: '', password: '', confirmPassword: '', dateOfBirth: '', address: '',
       phoneNumber: '', gender: 'Male', classID: ''
     });
+  }
+
+  const handleDate: any = async(e: ChangeEvent<HTMLInputElement>) => {
+    try{
+      const d = e.target.value;
+      if (new Date(d) > new Date()) return; // Prevent future dates
+      setData({ ...data, dateOfBirth: d });
+    }
+    catch{
+      setData({...data, dateOfBirth: ''})
+    }
   }
 
   const handleSubmit: any = async(e: FormEvent) => {
@@ -105,7 +117,8 @@ const AddStudent = () => {
           <label className="ml-2 font-semibold">Date of Birth</label>
           <input
             type='date'
-            onChange={(e) => setData({...data, dateOfBirth: new Date(e.target.value).toISOString()})}
+            onChange={handleDate}
+            value={data.dateOfBirth ? data.dateOfBirth.split('T')[0] : ''}
             className={inputClass}
             autoComplete='false'
             autoCapitalize='true'

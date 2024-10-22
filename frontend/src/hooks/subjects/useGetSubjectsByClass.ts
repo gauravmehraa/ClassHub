@@ -14,7 +14,6 @@ const useGetSubjectsByClass = (classID: string) => {
         if(data.error){
           throw new Error(data.error);
         }
-        console.log(data)
         const sorted = data.sort((a: any, b: any) => a.name.localeCompare(b.name));
         setSubjects(sorted);
       }

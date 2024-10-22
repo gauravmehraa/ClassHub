@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { IClass } from "../types/class.type";
 import Class from "../models/class.model";
 import insertLog from "../utils/log";
+import Student from "../models/student.model";
 
 export const getClasses = async(req: Request, res: Response) => {
   try{

@@ -90,7 +90,7 @@ const Profile = () => {
           { subjects.length === 0?
             <></>:
             subjects.map((subject: any, index: number) => (
-            <div className='bg-primary glass rounded-lg p-4 text-white'> {subject.name} </div>
+            <div key={index} className='bg-primary glass rounded-lg p-4 text-white'> {subject.name} </div>
           ))
           }
         </div>

@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from "react";
+import { ChangeEvent, MouseEvent, useState } from "react";
 import { sleep } from "../utils/sleep";
 import useGetClasses from "../hooks/classes/useGetClasses";
 import useEditStudent from "../hooks/students/useEditStudent";
@@ -7,9 +7,9 @@ const EditStudentModal = (props: { student: any }) => {
 
   const { classes } = useGetClasses();
   const { loading, editStudent } = useEditStudent();
-
+  
   const inputClass = 'w-full mt-2 bg-white input input-bordered flex items-center focus:outline-none border-2 border-gray-200';
-
+  
   const [data, setData] = useState({
     name: props.student.name,
     address: props.student.address,
@@ -19,7 +19,7 @@ const EditStudentModal = (props: { student: any }) => {
     gender: props.student.gender,
     classID: props.student.classID._id,
   });
-
+  
   const handleCancel: any = async(e: MouseEvent) => {
     setData({
       name: props.student.name,
@@ -32,11 +32,23 @@ const EditStudentModal = (props: { student: any }) => {
     });
   }
 
+  const handleDate: any = async(e: ChangeEvent<HTMLInputElement>) => {
+    try{
+      const d = e.target.value;
+      if (new Date(d) > new Date()) return; // Prevent future dates
+      setData({ ...data, dateOfBirth: d });
+    }
+    catch{
+      setData({...data, dateOfBirth: ''})
+    }
+  }
+
   const handleSubmit: any = async(e: MouseEvent) => {
-    await editStudent(data, props.student._id);
+    const success = await editStudent(data, props.student._id);
     (document.getElementById(`student_edit_${props.student._id}`) as HTMLDialogElement).close();
+    handleCancel(e);
     await sleep(800);
-    window.location.reload();
+    if(success) window.location.reload();
   }
   return (
     <div className="flex items-center">
@@ -74,8 +86,9 @@ const EditStudentModal = (props: { student: any }) => {
           <label className="ml-2 font-semibold">Date of Birth</label>
           <input
             type='date'
-            defaultValue={new Date(data.dateOfBirth).toISOString().split('T')[0]}
-            onChange={(e) => setData({...data, dateOfBirth: new Date(e.target.value).toISOString()})}
+            //defaultValue={new Date(data.dateOfBirth).toISOString().split('T')[0]}
+            value={data.dateOfBirth ? data.dateOfBirth.split('T')[0] : ''}
+            onChange={handleDate}
             className={inputClass}
             autoComplete='false'
           />
