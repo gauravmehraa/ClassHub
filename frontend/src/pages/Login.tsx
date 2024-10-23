@@ -34,7 +34,7 @@ const Login = () => {
 
       <div className='w-full md:w-5/12 h-full'>
         <img 
-          src={images.logo}
+          src={images.logofull}
           className='w-6/12 mx-auto my-6'
           alt='ClassHub Logo'
         />

@@ -42,7 +42,7 @@ const Navbar = () => {
     <>
     <nav className='max-h-screen min-h-screen border-r-0 border-slate-400 min-w-72 max-w-72 bg-white md:flex flex-col text-black font-roboto hidden'> 
       <img 
-        src={images.logo}
+        src={images.logofull}
         className='w-8/12 mx-auto h-fit mt-auto'
         alt='ClassHub Logo'
       />
@@ -108,7 +108,7 @@ const Navbar = () => {
           <label htmlFor="my-drawer-3" aria-label="close sidebar" className="drawer-overlay"></label>
           <ul className="menu bg-white min-h-full w-80 p-4 gap-2">
           <img 
-            src={images.logo}
+            src={images.logofull}
             className='w-7/12 mx-auto my-auto'
             alt='ClassHub Logo'
           />

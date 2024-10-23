@@ -42,12 +42,7 @@ const Signup = () => {
       <div className="md:w/1-12 divider divider-horizontal"></div>
 
       <div className='w-full md:w-6/12 h-full'>
-        {/* <img 
-          src={'https://www.lms.org/files/assets/logo.png'}
-          className='w-6/12 mx-auto my-6'
-          alt='ClassHub Logo'
-        /> */}
-
+      
         <form onSubmit={handleSubmit} className="w-full px-8">
         <div className='text-black text-xl font-semibold'>Create Faculty Account</div>
 
